@@ -365,7 +365,7 @@ function copyToClipboard(copyText) {
                                   +`
                                   </div>
                                   <h5 class="fr-can-name"><a href="`+baseUrl+`/training/`+item.slug+`">`+item.name+`</a></h5>
-                                  <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm:ss a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm:ss a')+`</small>
+                                  <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small>
                                 </div>
                               </div>
 

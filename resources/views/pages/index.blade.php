@@ -1,6 +1,15 @@
 @extends('layouts.app-public')
 @section('title', 'Home')
 @section('content')
+    <style>
+        .steps li::before {
+            content: "•";
+            color: #2EA5E4;
+            font-weight: bold;
+            display: inline-block;
+            width: 15px;
+        }
+    </style>
     <div id="main-wrapper">	
         <!-- start :: banner -->
         <div class="home-slider margin-bottom-0" id="bannerItemSlider">
@@ -107,7 +116,7 @@
         </section>
         <!-- end   :: news   -->
         <!-- start :: training   -->
-        <section class="image-cover" style="background:#0f161a url(assets/img/pattern.png) no-repeat;">
+        <section class="image-cover" style="background:#061f2d url(assets/img/pattern.png) no-repeat;">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-10">
@@ -126,7 +135,107 @@
             </div>
         </section>
         <!-- end   :: training   -->
-        <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
+        <!-- start :: collaborator   -->
+        <section class="bg-cover" style="background:#061f2d url(assets/img/curve.svg)no-repeat">
+            <div class="container">
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-10 col-sm-12">
+                        <div class="reio_o9i text-center mb-5">
+                            <h2 class="text-light">Kolaborator</h2>
+                            <p class="text-light">Sipambelum bekerja sama dengan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-9 col-md-10 col-sm-12 flex-wrap justify-content-center text-center">
+                        <div class="pertner_flexio">
+                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
+                            <h5>Google Inc</h5>
+                        </div>
+                        <div class="pertner_flexio">
+                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
+                            <h5>Dribbbdio</h5>
+                        </div>
+                        <div class="pertner_flexio">
+                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
+                            <h5>Lio Vission</h5>
+                        </div>
+                        <div class="pertner_flexio">
+                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
+                            <h5>Alzerra</h5>
+                        </div>
+                        <div class="pertner_flexio">
+                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
+                            <h5>Skyepio</h5>
+                        </div>
+                        <div class="pertner_flexio">
+                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
+                            <h5>Twikller</h5>
+                        </div>
+                        <div class="pertner_flexio">
+                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
+                            <h5>Sincherio</h5>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="ht-110"></div>
+        </section>
+        <!-- end   :: collaborator   -->
+        <!-- start :: steps   -->
+        <section>
+            <div class="container">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="eplios_tags">
+                            <div class="tags-1">01</div>
+                            <h2 class="mb-4">Penyelenggara Pelatihan</h2>
+                            <p>
+                                Pelatihan ditambahkan dan dikelola oleh Pemerintah Daerah berdasarkan potensi lokal dan kebutuhan UMKM yang ada di Katingan. Jika Anda membutuhkan pelatihan tertentu, silahkan: 
+                            </p>
+                            <ul class="mt-5 steps">
+                                <li>Mengisi kebutuhan pelatihan di data UMKM Anda</li>
+                                <li>Belum punya UMKM terkait? Atau, bahkan belum terdaftar kepesertaannya untuk ikut pelatihan? Silahkan daftar di kecamatan Anda</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12">
+                        <div class="text-center">
+                            <img src="{{asset('assets/img/step-1.png')}}" class="img-fluid" alt="" />
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        
+        <section class="pt-0">
+            <div class="container">
+                <div class="row align-items-center justify-content-between">
+                
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12">
+                        <div class="text-center">
+                            <img src="{{asset('assets/img/step-2.png')}}" class="img-fluid" alt="" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="eplios_tags right">
+                            <div class="tags-2">02</div>
+                            <h2 class="mb-4">Mengikuti Pelatihan</h2>
+                            <p>Untuk mendapatkan akses ke pelatihan yang sedang dibuka, silahkan hubungi kecamatan Anda. Sebelumnya, pastikan Anda/UMKM Anda telah terdaftar. Jika belum, kunjungi kecamatan Anda dengan membawa file berikut ini:</p>
+                            <a href="#" class="btn exliou btn-danger mt-5">Download Form Disini</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+        <!-- end   :: steps   -->
     </div>
 @endsection
 @section('addition_script')

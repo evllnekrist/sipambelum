@@ -54,7 +54,7 @@
                   @else
                     <li>                       
                       <a href="{{route('user.training')}}" class="alio_green">
-                          <i class="fa fa-search mr-2"></i><span class="dn-lg">Cari Pelatihan</span>
+                        <i class="fas fa-sign-in-alt me-1"></i><span class="dn-lg ml-3">Masuk</span>
                       </a>
                     </li>
                   @endauth
