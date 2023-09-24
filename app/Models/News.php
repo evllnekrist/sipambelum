@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
+    protected $table = 'tr_news';
+    public $timestamps = false;
     protected $fillable = [
         'slug',
         'title',
@@ -21,6 +23,4 @@ class News extends Model
         'sequence',
         'publish_at'
     ];
-    protected $table = 'tr_news';
-    public $timestamps = false;
 }

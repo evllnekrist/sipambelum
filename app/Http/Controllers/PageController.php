@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\SelectionList;
 use App\Models\Page;
 use App\Models\Banner;
+use App\Models\Training;
+use App\Models\Trainee;
 use DB;
 
 class PageController extends Controller
@@ -39,7 +41,7 @@ class PageController extends Controller
         $data['selected'] = Page::where('slug',$slug)->first();
         if($data['selected']){
           $data['title'] = $data['selected']->title;
-          return view('user.page', $data);
+          return view('pages.page', $data);
         }else{
           $error_details = array(
             'title' => 'Oops!', 
@@ -69,6 +71,32 @@ class PageController extends Controller
     // -------------------------------------- VIEW -------------------------------------- end
 
     // -------------------------------------- CALLED BY AJAX ---------------------------- start
+      public function get_list(Request $request)
+      {
+          $validator = Validator::make($request->all(), [
+            'page' => 'required',
+            'page_size' => 'required',
+          ]); 
+          if ($validator->fails()) {
+            return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
+          }
+          
+          try {
+            $data = Page::limit($request->page_size)->get();
+            return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
+          } catch (Exception $e) {
+            return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+          }
+      }
+      public function get_listfull(Request $request)
+      {
+        try {
+          $data = Page::orderBy('created_at', 'DESC')->get();
+          return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
+        } catch (Exception $e) {
+          return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+        }
+      }
       public function post_add(Request $request)
       {
           $validator = Validator::make($request->all(), [
@@ -176,6 +204,20 @@ class PageController extends Controller
           try {
             $output = Page::where('id', $id)->delete();
             return json_encode(array('status'=>true, 'message'=>'Berhasil menghapus data', 'data'=>$output));
+          } catch (Exception $e) {
+            return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+          }
+      }
+      public function get_statistics_trainee_of_training(Request $request)
+      {
+          try {
+            $data['training']['count'] = Training::count();
+            $data['trainee'] = Trainee::select(DB::raw("
+              SUM(CASE WHEN ms_trainee.level = 'beginner' THEN 1 ELSE 0 END) AS count_beginner,
+              SUM(CASE WHEN ms_trainee.level = 'mid' THEN 1 ELSE 0 END) AS count_mid,
+              SUM(CASE WHEN ms_trainee.level = 'adv' THEN 1 ELSE 0 END) AS count_adv
+            "))->first();
+            return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
           } catch (Exception $e) {
             return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
           }

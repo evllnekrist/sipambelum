@@ -1,4 +1,4 @@
-console.log('HOME 23-05-17 01')
+console.log('HOME 23-09-24 01')
 
 $(function(){
    // enable for dynamic banner ------ start
@@ -26,8 +26,7 @@ $(function(){
   });
   inlineCSS();
   // enable for dynamic banner ------ end
-  getStatistics_LegalProduct_ByType('#LegalProductStatistic')
-  getNewsList(1,3)
-  getOrgList('#orgItemCarousel')
-  getSelectionList('#servicePreview','JDIH_SERVICE')
+  getStatistics_traineeOfTraining()
+  getNewsList(1,4)
+  getSelectionList('#collaboratorPreview','COLLABORATOR')
 });

@@ -11,7 +11,7 @@ class Banner extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'ms_banner';
+    protected $table = 'tr_banner';
     protected $fillable = [
       'name',
       'img_main',

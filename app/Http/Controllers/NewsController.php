@@ -19,7 +19,7 @@ class NewsController extends Controller
   public function user_index()
   {
     $data['items'] = News::get();
-    return view('user.news', $data);
+    return view('pages.news', $data);
   }
   
   public function user_detail($slug)
@@ -27,7 +27,7 @@ class NewsController extends Controller
       $data['selected'] = News::where('slug',$slug)->first();
       if($data['selected']){
         $data['news'] = News::orderBy('created_at', 'desc')->skip(0)->take(5)->get();
-        return view('user.news-detail', $data);
+        return view('pages.news-detail', $data);
       }else{
         return $this->show_error_user('Berita');
       }
@@ -56,6 +56,23 @@ class NewsController extends Controller
   // -------------------------------------- VIEW -------------------------------------- end
 
   // -------------------------------------- CALLED BY AJAX ---------------------------- start
+  public function get_list(Request $request)
+  {
+      $validator = Validator::make($request->all(), [
+        'page' => 'required',
+        'page_size' => 'required',
+      ]); 
+      if ($validator->fails()) {
+        return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
+      }
+      
+      try {
+        $data = News::limit($request->page_size)->get();
+        return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
+      } catch (Exception $e) {
+        return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+      }
+  }
   public function get_listfull(Request $request)
   {
     try {
