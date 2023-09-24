@@ -9,6 +9,7 @@ const formatterMonth = new Intl.DateTimeFormat('en-US', { month: 'short' });
 const baseUrl = window.location.origin;
 const loadingElementImg = `<div class="mx-auto"><img src="../../assets/img/loading.gif"></div>`;
 const loadingElement = `<div class="mx-auto">memuat...</div>`;
+moment.locale('id')
 
 $('.nospace').on('keyup', function(event) {
   if((event.target.value).includes(' ')){
@@ -101,6 +102,27 @@ function copyToClipboard(copyText) {
     $(appendTo+'Loading').hide()
   }
 
+  function getStatistics_traineeOfTraining(){
+    let payload = {}; let appendTo = '#statisticsHomepageInfo';
+    axios.post(baseUrl+'/api/get-statistics-trainee-of-training', payload, apiHeaders)
+    .then(function (response) {
+      // console.log('[HOMEPAGE STATISTICS] response..',response);
+      if(response.data.status && response.data.data) {
+        $('#count_training').html(response.data.data.training.count);
+        $('#count_beginner').html(response.data.data.trainee.count_beginner);
+        $('#count_intermediate').html(response.data.data.trainee.count_mid);
+        $('#count_advance').html(response.data.data.trainee.count_adv);
+      }else{
+        // swallalert here
+        $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C1)</b></center>`);
+      }
+    })
+    .catch(function (error) {
+      // swallalert here
+      $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
+    });
+  }
+
   function getBannerList(appendTo=''){
     let payload = {page: 1, page_size: 3};
     axios.post(baseUrl+'/api/get-banner-list', payload, apiHeaders)
@@ -139,27 +161,6 @@ function copyToClipboard(copyText) {
             $(appendTo).html(`<center><b class="text-warning">tidak ada data</b></center>`);
           }
         }
-      }else{
-        // swallalert here
-        $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C1)</b></center>`);
-      }
-    })
-    .catch(function (error) {
-      // swallalert here
-      $(appendTo).html(`<center><b class="text-warning">count_Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
-    });
-  }
-
-  function getStatistics_traineeOfTraining(){
-    let payload = {}; let appendTo = '#statisticsHomepageInfo';
-    axios.post(baseUrl+'/api/get-statistics-trainee-of-training', payload, apiHeaders)
-    .then(function (response) {
-      // console.log('[HOMEPAGE STATISTICS] response..',response);
-      if(response.data.status && response.data.data) {
-        $('#count_training').html(response.data.data.training.count);
-        $('#count_beginner').html(response.data.data.trainee.count_beginner);
-        $('#count_intermediate').html(response.data.data.trainee.count_mid);
-        $('#count_advance').html(response.data.data.trainee.count_adv);
       }else{
         // swallalert here
         $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C1)</b></center>`);
@@ -240,7 +241,6 @@ function copyToClipboard(copyText) {
                               <div class="blog-body">
                                 <h4 class="bl-title">
                                   <a href="`+baseUrl+`/news/`+item.slug+`" class="line-clamp-wrap line-clamp-2">`+item.title+`</a>
-                                  <span class="latest_new_post">New</span>
                                 </h4>
                                 <p><small class="line-clamp-wrap line-clamp-3">`+item.caption+`</small></p>
                               </div>
@@ -269,7 +269,124 @@ function copyToClipboard(copyText) {
     })
     .catch(function (error) {
       // swallalert here
-      $(appendTo).html(`<center><b class="text-warning">count_Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
+      $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
+    });
+  }
+
+  function getTrainingList(page=1,page_size=3,withPagination=false){
+    let appendTo = '#trainingItemPreview';
+    $(appendTo).html(loadingElementImg);
+    let payload = {page:page, page_size:page_size};
+    axios.post(baseUrl+'/api/get-training-list', payload, apiHeaders)
+    .then(function (response) {
+      // console.log('[TRAINING] response..',response);
+      let template = '';
+      if(response.data.status) {
+        // i::data pagination----------------------------------------------------------------------------START
+          if(withPagination){
+            let max_page = Math.ceil(response.data.data_count_total/page_size);
+            if(page >= 1){
+              template += `
+              <li class="page-item">
+                <a class="page-link" onclick="getTrainingList(1,`+page_size+`,`+withPagination+`)" aria-label="Pertama">
+                <span class="ti-arrow-left"></span>
+                <span class="sr-only">Pertama</span>
+                </a>
+              </li>`;
+            }
+            if(page-1 >= 1){
+              template += `<li class="page-item"><a class="page-link" onclick="getTrainingList(`+(page-1)+`,`+page_size+`,`+withPagination+`)">`+(page-1)+`</a></li>`;
+            }
+            template += `<li class="page-item active"><a class="page-link" onclick="getTrainingList(`+(page)+`,`+page_size+`,`+withPagination+`)">`+(page)+`</a></li>`;
+            if(page+1 <=  max_page){
+              template += `<li class="page-item"><a class="page-link" onclick="getTrainingList(`+(page+1)+`,`+page_size+`,`+withPagination+`)">`+(page+1)+`</a></li>`;
+            }
+            if(page < max_page){
+              template += `
+              <li class="page-item">
+                <a class="page-link" onclick="getTrainingList(`+(max_page)+`,`+page_size+`,`+withPagination+`)" aria-label="Terakhir">
+                <span class="ti-arrow-right"></span>
+                <span class="sr-only">Terakhir</span>
+                </a>
+              </li>`;
+            }
+            $(appendTo+'_pagination').html(template);
+            $(appendTo+'_filterInfo').html(`Menampilkan `+response.data.data_count_start+`-`+response.data.data_count_end+` dari `+response.data.data_count_total+` data`);
+          }
+        // i::data pagination------------------------------------------------------------------------------END
+        // i::data display-------------------------------------------------------------------------------START
+          template = '';
+          if(response.data.data && response.data.data.length > 0) {
+            // let i = 0;
+            (response.data.data).forEach((item) => {
+              let imgToDisplay = baseUrl+'/assets/img/no-image-clean.png'
+              let img = new Image();
+              img.src = item.img_main+"?_="+(new Date().getTime());
+              img.onload = function () {
+                imgToDisplay = item.img_main
+                $('#training_'+item.id+'_img').attr("src",imgToDisplay)
+              }
+              // console.log(item.img_author==null,profileToDisplay)
+              template +=`<div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                            <div class="grid_agents style-2">
+
+                              <div class="grid_agents-wrap">
+                                <div class="fr-grid-thumb">
+                                  <a href="agent-page.html">
+                                    <img id="training_`+item.id+`_img" src="`+imgToDisplay+`" class="img-fluid mx-auto my-auto" alt="">
+                                  </a>
+                                  <ul class="inline_social">
+                                    <li>
+                                      <a href="#"><i class="fa fa-info" aria-hidden="true"></i></a>
+                                    </li>
+                                    <li>
+                                      <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Alamat:</em><br>`+item.address+`">
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Email:</em><br>`+item.contact_email+`">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Telepon/WA:</em><br>`+item.contact_phone+`">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                                
+                                <div class="fr-grid-deatil">
+                                  <div class="mb-2">
+                                  `+(item.is_online?
+                                    `<b class="badge badge-warning">Online</b>`:
+                                    `<b class="badge badge-success">Offline</b>`)
+                                  +`
+                                  </div>
+                                  <h5 class="fr-can-name"><a href="`+baseUrl+`/training/`+item.slug+`">`+item.name+`</a></h5>
+                                  <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm:ss a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm:ss a')+`</small>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>`;
+              // i++;
+            });
+            $(appendTo).html(template);
+            $('.trainingItemPreviewTooltips').tooltip();
+          }else{
+            $(appendTo).html(`<center><b class="text-warning">tidak ada data</b></center>`);
+          }
+        // i::data display-------------------------------------------------------------------------------START
+      }else{
+        // swallalert here
+        $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C1)</b></center>`);
+      }
+    })
+    .catch(function (error) {
+      // swallalert here
+      $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
     });
   }
 
@@ -382,85 +499,7 @@ function copyToClipboard(copyText) {
     })
     .catch(function (error) {
       // swallalert here
-      $(appendTo).html(`<center><b class="text-warning">count_Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
-    });
-  }
-
-  function getOrgList(appendTo=''){
-    let payload = {page: 1, page_size: 0};
-    axios.post(baseUrl+'/api/get-org-list', payload, apiHeaders)
-    .then(function (response) {
-      // console.log('[ORG] response..',response);
-      let template = '';
-      if(response.data.status) {
-        if(appendTo){
-          if(response.data.data && response.data.data.length > 0) {
-            let i = 0;
-            let imgToDisplay = baseUrl+'/no-profile.jpg'
-            let img = new Image();
-            img.src = response.data.data[i].img_main+"?_="+(new Date().getTime());
-            img.onload = function () {
-              imgToDisplay = response.data.data[i].img_main
-              $('#org_'+response.data.data[i].id+'_img').attr("src",imgToDisplay)
-            }
-            template = `<div class="col-12 col-md-5">
-                          <div style="margin-top: 120px">
-                              <img src="`+imgToDisplay+`" id="org_`+response.data.data[i].id+`_img" class="rounded-circle d-block m-auto" alt="pic_chief" width="160" height="160">  
-                          </div>
-                        </div>
-                        <div class="col-12 col-md-7">
-                          <h2 style="margin-top: 50px">`+response.data.data[i].desc_title+`</h2>
-                          <p>`+response.data.data[i].desc_body+`</p>
-                          <div class="author font-size-sm mt-4">
-                            `+response.data.data[i].name+`<br />
-                            <span class="text-muted">`+response.data.data[i].job_title+`</span>
-                          </div>
-                        </div>`;
-            $(appendTo+'_chief').html(template);
-            template = '';
-            (response.data.data).forEach((item) => {
-              img.src = item.img_main+"?_="+(new Date().getTime());
-              img.onload = function () {
-                imgToDisplay = item.img_main
-                $('#org_staff_'+item.id+'_img').attr("src",imgToDisplay)
-              }
-              template +=`<div class="carousel-item `+(i==0?'active':'')+`">
-                            <div class="d-block w-100"> 
-                              <div class="single_items">
-                                  <div class="grid_agents2">
-                                      <div class="sec-heading center" style="margin-top: 50px">
-                                          <h3>Anggota</h3>
-                                      </div>
-                                      <div class="grid_member">
-                                        <div class="fr-grid-thumbb">
-                                            <a href="#">
-                                                <img src="`+imgToDisplay+`" id="org_staff_`+item.id+`_img" class="img-fluid" alt="pic_member">
-                                            </a>
-                                        </div>
-                                        <div class="fr-grid-deatil">
-                                            <span>`+item.job_title+`</span>
-                                            <h5 class="fr-can-name"><a href="agent-page.html">`+item.name+`</a></h5>
-                                        </div>
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                          </div>`;
-              i++;
-            });
-            $(appendTo).html(template);
-          }else{
-            $(appendTo+'_chief').html(`<center><b class="text-warning">tidak ada data</b></center>`);
-          }
-        }
-      }else{
-        // swallalert here
-        $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C1)</b></center>`);
-      }
-    })
-    .catch(function (error) {
-      // swallalert here
-      $(appendTo+'_chief').html(`<center><b class="text-warning">Gagal mendapatkan data</b></center>`);
+      $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
     });
   }
 
@@ -523,7 +562,7 @@ function copyToClipboard(copyText) {
     })
     .catch(function (error) {
       // swallalert here
-      $(appendTo).html(`<center><b class="text-warning">count_Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
+      $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
     });
   }
   
@@ -537,17 +576,17 @@ function copyToClipboard(copyText) {
     // 'top_review'        : 'Review Tertinggi'
   };
 
-  function addCount(id,act,type){
-    axios.get(baseUrl+'/api/'+type+'/post-act/'+id+'/'+act, [], apiHeaders)
-    .then(function (response) {
-      console.log('[add '+act+' count of '+type+'] response..',response);
-      // if(response.data.status) {
+  // function addCount(id,act,type){
+  //   axios.get(baseUrl+'/api/'+type+'/post-act/'+id+'/'+act, [], apiHeaders)
+  //   .then(function (response) {
+  //     console.log('[add '+act+' count of '+type+'] response..',response);
+  //     // if(response.data.status) {
        
-      // }else{
-      //   // swallalert here
-      // }
-    })
-    .catch(function (error) {
-      // swallalert here
-    });
-  }
+  //     // }else{
+  //     //   // swallalert here
+  //     // }
+  //   })
+  //   .catch(function (error) {
+  //     // swallalert here
+  //   });
+  // }

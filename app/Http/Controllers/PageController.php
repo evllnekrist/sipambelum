@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use App\Models\SelectionList;
+use App\Models\Option;
 use App\Models\Page;
 use App\Models\Banner;
 use App\Models\Training;
@@ -32,10 +32,6 @@ class PageController extends Controller
         // echo "</pre>";die();
         return view('pages.index',$data);
       }
-      public function index()
-      {
-        return view('admin.page.index');
-      }
       public function user_index($slug)
       {
         $data['selected'] = Page::where('slug',$slug)->first();
@@ -49,6 +45,10 @@ class PageController extends Controller
           );
           return view('admin.error.404', $error_details);
         }
+      }
+      public function admin_index()
+      {
+        return view('admin.page.index');
       }
       public function form_add()
       {

@@ -19,6 +19,7 @@ class Training extends Model
         'desc',
         'img_main',
         'file_main',
+        'is_online',
         'address',
         'contact_phone',
         'contact_email',

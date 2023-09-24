@@ -23,7 +23,7 @@ use App\Http\Controllers\LocalPotentialController;
 // system ---- in ENGLISH ----------------------------------------------------- start
 Route::group(['prefix' => 'api'], function () {
     Route::post('/get-statistics-trainee-of-training', [PageController::class, 'get_statistics_trainee_of_training']);
-    Route::post('/get-option-list', [PageController::class, 'get_selection_list']);
+    Route::post('/get-selection-list', [PageController::class, 'get_options']);
     Route::post('/get-user-list', [PageController::class, 'get_list']);
     Route::post('/get-page-list', [PageController::class, 'get_list']);
     Route::post('/get-banner-list', [BannerController::class, 'get_list']);

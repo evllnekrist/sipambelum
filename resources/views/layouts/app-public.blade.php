@@ -33,6 +33,7 @@
       <script src="{{asset('assets/js/custom.js')}}"></script>
       <script src="{{asset('assets/js/axios.min.js')}}"></script>
       <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>
+      <script src="{{asset('assets/plugins/moment/moment-with-locales.min.js')}}"></script>
       @yield('addition_script')
 	  </body>
 </html>

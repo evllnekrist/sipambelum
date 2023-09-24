@@ -117,10 +117,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-center" id="trainingItemPreview">
+                <div class="row justify-content-center gx-xl-3 gx-md-4 gx-4 gy-4" id="trainingItemPreview">
                     <div class="mx-auto"><img src="{{asset('assets/img/loading-dark.gif')}}"></div>
                 </div>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mt-5">
                     <a href="{{route('user.training')}}" class="btn btn-whites rounded">Tampilkan Lebih Banyak</a>
                 </div>
             </div>

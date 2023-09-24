@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 // use Auth;
 use App\Models\LegalProductStatistics;
 
-class SelectionList extends Model
+class Option extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'ms_selection_list';
+    protected $table = 'ms_option';
     protected $fillable = [
         'type',
         'value',
