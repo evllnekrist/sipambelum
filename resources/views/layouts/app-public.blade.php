@@ -12,7 +12,7 @@
       @yield('addition_css')
     </head>
     <body class="yellow-skin @yield('body-class')">
-      @include('includes.nav')
+      @include('includes.nav-public')
       <div class="preloader"></div>
       @yield('content')
       @include('includes.footer')
