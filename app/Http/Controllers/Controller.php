@@ -25,7 +25,7 @@ class Controller extends BaseController
         'title' => 'Yaah...',
         'desc' => $object_name . ' yang Anda cari tidak ditemukan.'
       );
-      return view('admin.error.404', $error_details);
+      return view('pages-admin.error.404', $error_details);
     }
 
     function getClientIP()

@@ -1,5 +1,4 @@
-console.log('REGISTER-INDEX IDX V-23-05-22 01')
-console.log('baseUrl ',baseUrl)
+console.log('REGISTER IDX')
 
 function doDelete(id,name){
   if(confirm("Apakah Anda yakin menghapus user '"+name+"'? Aksi ini tidak dapat dibatalkan.")){
@@ -14,7 +13,7 @@ function doDelete(id,name){
           // html: "...",
           confirmButtonText: 'Ya, terima kasih',
         });
-        window.location = baseUrl+'/admin-jdih-katkab/user';
+        window.location = baseUrl+'/admin-katkab/user';
       }else{
         Swal.fire({
           icon: 'warning',
@@ -82,7 +81,7 @@ $(function () {
                 },className: "text-center" 
               },
               { data: null, render: function ( data, type, row ) { // https://editor.datatables.net/examples/api/triggerButton.html
-                  return '<a href="'+baseUrl+'/admin-jdih-katkab/profile/'+data.id+'" target="_blank">'+data.name+'</a>';
+                  return '<a href="'+baseUrl+'/admin-katkab/profile/'+data.id+'" target="_blank">'+data.name+'</a>';
                 },className: "align-middle" 
               },
               { data: 'email',className: "align-middle" },

@@ -35,20 +35,20 @@ class TrainingController extends Controller
 
   public function admin_index()
   {
-    return view('admin.training.index');
+    return view('pages-admin.training.index');
   }
 
   public function form_add()
   {
     $data = array();
-    return view('admin.training.add', $data);
+    return view('pages-admin.training.add', $data);
   }
   
   public function form_edit($id)
   {
     $data['selected'] = Training::find($id);
     if($data['selected']){
-      return view('admin.training.edit', $data);
+      return view('pages-admin.training.edit', $data);
     }else{
       return $this->show_error_admin('Berita');
     }

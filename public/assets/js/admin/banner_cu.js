@@ -1,5 +1,4 @@
-console.log('BANNER CU V-23-05-17 01')
-console.log('baseUrl ',baseUrl)
+console.log('BANNER CU')
 
 $(function(){
   $("#input-file").fileinput();
@@ -36,7 +35,7 @@ $(function(){
             // html: "...",
             confirmButtonText: 'Ya, terima kasih',
           });
-          window.location = baseUrl+'/admin-jdih-katkab/banner';
+          window.location = baseUrl+'/admin-katkab/banner';
         }else{
           Swal.fire({
             icon: 'warning',
@@ -85,7 +84,7 @@ $(function(){
             // html: "...",
             confirmButtonText: 'Ya, terima kasih',
           });
-          // window.location = baseUrl+'/admin-jdih-katkab/banner';
+          // window.location = baseUrl+'/admin-katkab/banner';
         }else{
           Swal.fire({
             icon: 'warning',

@@ -1300,7 +1300,9 @@ html body .b-all {
   color: #f33066 !important; }
 
 .text-muted {
-  color: #8d97ad !important; }
+  color: #8d97ad  !important; }
+.text-muted2 {
+color: #b9c2d6  !important; }
 
 .text-warning {
   color: #ff9b20 !important; }
@@ -1335,6 +1337,13 @@ html body .text-dark {
 html body .text-themecolor {
   color:#e42d29; }
 
+.label_squeeze{
+    margin-top: -10px;
+}
+.label_subtitle{
+    font-size: 70%;
+    color: gray;
+}
 /*------------------------ Global Settings: Lists ------------------*/
 .lists-4, .lists-3, .lists-2, .lists-1 {
     margin: 0;
@@ -1838,6 +1847,10 @@ a.btn-trans-video i {
 .btn:focus {
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+.buttons-html5,.buttons-print{
+    padding: 5px 15px !important;
 }
 
 .btn-link-transp {

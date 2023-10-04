@@ -35,20 +35,20 @@ class NewsController extends Controller
 
   public function admin_index()
   {
-    return view('admin.news.index');
+    return view('pages-admin.news.index');
   }
 
   public function form_add()
   {
     $data = array();
-    return view('admin.news.add', $data);
+    return view('pages-admin.news.add', $data);
   }
   
   public function form_edit($id)
   {
     $data['selected'] = News::find($id);
     if($data['selected']){
-      return view('admin.news.edit', $data);
+      return view('pages-admin.news.edit', $data);
     }else{
       return $this->show_error_admin('Berita');
     }

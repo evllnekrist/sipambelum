@@ -1,5 +1,4 @@
-console.log('NEWS IDX V-23-06-28 01')
-console.log('baseUrl ',baseUrl)
+console.log('NEWS IDX')
 
 $(function(){
   $("#input-file").fileinput();
@@ -34,7 +33,7 @@ $(function(){
             // html: "...",
             confirmButtonText: 'Ya, terima kasih',
           });
-          window.location = baseUrl+'/admin-jdih-katkab/news';
+          window.location = baseUrl+'/admin-katkab/news';
         }else{
           Swal.fire({
             icon: 'warning',
@@ -91,7 +90,7 @@ $(function(){
             // html: "...",
             confirmButtonText: 'Ya, terima kasih',
           });
-          window.location = baseUrl+'/admin-jdih-katkab/news';
+          window.location = baseUrl+'/admin-katkab/news';
         }else{
           Swal.fire({
             icon: 'warning',

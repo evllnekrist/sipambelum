@@ -1,5 +1,4 @@
-console.log('BANNER IDX V-23-05-22 01')
-console.log('baseUrl ',baseUrl)
+console.log('BANNER IDX')
 
 function doDelete(id,name){
   if(confirm("Apakah Anda yakin menghapus banner '"+name+"'? Aksi ini tidak dapat dibatalkan.")){
@@ -14,7 +13,7 @@ function doDelete(id,name){
           // html: "...",
           confirmButtonText: 'Ya, terima kasih',
         });
-        window.location = baseUrl+'/admin-jdih-katkab/banner';
+        window.location = baseUrl+'/admin-katkab/banner';
       }else{
         Swal.fire({
           icon: 'warning',
@@ -48,73 +47,71 @@ function doDelete(id,name){
   }
 }
 
-$(function () {
-  // $("#example1").DataTable({
-  //   "responsive": true, "lengthChange": false, "autoWidth": false,
-  //   "buttons": ["copy", "excel", "pdf", "print", "colvis"]
-  // }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-  // $('#example2').DataTable({
-  //   "paging": true,
-  //   "lengthChange": false,
-  //   "searching": false,
-  //   "ordering": true,
-  //   "info": true,
-  //   "autoWidth": false,
-  //   "responsive": true,
-  // });
-
-  function getData(){
-    $('#page-loading').html(loadingElement);
-    let url = baseUrl+'/api/get-banner-list'
-    let page = 1, pageSize = 10
-    let payload = {page: page, page_size: pageSize}
-    console.log('tryin to retrieve data....',url)
-    axios.post(url, payload, apiHeaders)
-    .then(function (response) {
-      //console.log('[DATA] response..',response.data.data);
-      if(response.data.status) {
-          $('#data-list').DataTable({ // https://datatables.net/manual/data/
-            dom: 'Bfrtip',
-            data: response.data.data,
-            columns: [ 
-              { data: null, render: function ( data, type, row ) { // https://editor.datatables.net/examples/api/triggerButton.html
-                  return '<a href="'+baseUrl+'/admin-jdih-katkab/banner/edit/'+data.id+'" target="_blank">'+data.name+'</a>';
-                } 
-              },
-              // { data: 'img_main' },
-              { data: 'title' },
-              { data: 'subtitle' },
-              // { data: 'url_link' },
-              // { data: 'button_link' },
-              { data: 'button_title' },
-              { data: 'publish_start' },
-              { data: 'publish_end' },
-              { data: null, render: function ( data, type, row ) { 
-                  return '<a onclick="doDelete('+data.id+',`'+data.name+'`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>';
-                } 
-              },
-            ],
-          });
-      }else{
-        Swal.fire({
-          icon: 'warning',
-          width: 600,
-          title: "Gagal",
-          html: response.data.message,
-          confirmButtonText: 'Ya',
+function getData(){
+  $('#page-loading').html(loadingElement);
+  let url = baseUrl+'/api/get-banner-list'
+  let page = 1, pageSize = 10
+  let payload = {page: page, page_size: pageSize}
+  console.log('tryin to retrieve data....',url)
+  axios.post(url, payload, apiHeaders)
+  .then(function (response) {
+    //console.log('[DATA] response..',response.data.data);
+    if(response.data.status) {
+        var table = $('#data-list').DataTable({ // https://datatables.net/manual/data/
+          dom: 'Bfrtip',
+          data: response.data.data,
+          columns: [ 
+            { data: 'id'},
+            { data: null, render: function ( data, type, row ) {
+                return '<img src="'+data.img_main+'" alt="'+data.title+'" height="70px">';
+              }, className: "text-center" 
+            },
+            { data: null, render: function ( data, type, row ) {
+                return '<a href="'+baseUrl+'/admin-katkab/banner/edit/'+data.id+'" target="_blank">'+data.name+'</a>';
+              } 
+            },
+            { data: 'title' },
+            { data: 'subtitle' },
+            // { data: 'url_link' },
+            // { data: 'button_link' },
+            { data: 'button_title' },
+            { data: 'publish_start' },
+            { data: 'publish_end' },
+            { data: null, render: function ( data, type, row ) { 
+                return '<a onclick="doDelete('+data.id+',`'+data.name+'`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>';
+              } 
+            },
+          ],
         });
-      }
-    })
-    .catch(function (error) {
+
+          
+        table.on('order.dt search.dt', function () {
+            var i = 1;
+
+            table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                this.data(i++);
+            });
+        })
+        .draw();
+    }else{
       Swal.fire({
-        icon: 'error',
+        icon: 'warning',
         width: 600,
-        title: "Error",
-        html: error,
+        title: "Gagal",
+        html: response.data.message,
         confirmButtonText: 'Ya',
       });
-      console.log(error);
+    }
+  })
+  .catch(function (error) {
+    Swal.fire({
+      icon: 'error',
+      width: 600,
+      title: "Error",
+      html: error,
+      confirmButtonText: 'Ya',
     });
-  }
-  getData()
-});
+    console.log(error);
+  });
+}
+getData()

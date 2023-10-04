@@ -5,17 +5,8 @@
                 
                 <div class="col-lg-5 col-md-5">
                     <div class="footer_widget">
-                        <img src="assets/img/logo-light.png" class="img-footer small mb-4" alt="" />
-                        <h4 class="extream mb-3">Do you need help with<br>anything?</h4>
-                        <p>Receive updates, hot deals, tutorials, discounts sent straignt in your inbox every month</p>
-                        <div class="foot-news-last mt-4">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Email Address">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-danger b-0 text-light">Subscribe</button>
-                                </div>
-                            </div>
-                        </div>
+                        <img src="{{asset('assets/img/logo-light.png')}}" class="img-footer small mb-4" alt="" />
+                        <h4 class="extream mb-3">Sistem Informasi<br>Pelatihan Keterampilan Terintegrasi<br>Berbasis Potensi Lokal untuk Masyarakat</h4>
                     </div>
                 </div>
                 
@@ -24,42 +15,35 @@
                     
                         <div class="col-lg-4 col-md-4">
                             <div class="footer_widget">
-                                <h4 class="widget_title">Layouts</h4>
+                                <h4 class="widget_title">Navigasi</h4>
                                 <ul class="footer-menu">
-                                    <li><a href="#">Home Page</a></li>
-                                    <li><a href="#">About Page</a></li>
-                                    <li><a href="#">Service Page</a></li>
-                                    <li><a href="#">Property Page</a></li>
-                                    <li><a href="#">Contact Page</a></li>
-                                    <li><a href="#">Single Blog</a></li>
+                                    <li><a href="#">Beranda</a></li>
+                                    <li><a href="#">Pelatihan</a></li>
+                                    <li><a href="#">Peserta</a></li>
+                                    <li><a href="#">Berita Terkait</a></li>
                                 </ul>
                             </div>
                         </div>
                                 
                         <div class="col-lg-4 col-md-4">
                             <div class="footer_widget">
-                                <h4 class="widget_title">All Sections</h4>
+                                <h4 class="widget_title">Tentang Kami</h4>
                                 <ul class="footer-menu">
-                                    <li><a href="#">Headers<span class="new">New</span></a></li>
-                                    <li><a href="#">Features</a></li>
-                                    <li><a href="#">Attractive<span class="new">New</span></a></li>
-                                    <li><a href="#">Testimonials</a></li>
-                                    <li><a href="#">Videos</a></li>
-                                    <li><a href="#">Footers</a></li>
+                                    <li><a href="#">SOP</a></li>
+                                    <li><a href="#">Struktur Organisasi</a></li>
+                                    <li><a href="#">Visi Misi</a></li>
+                                    <li><a href="#">Hubungi Kami</a></li>
                                 </ul>
                             </div>
                         </div>
                 
                         <div class="col-lg-4 col-md-4">
                             <div class="footer_widget">
-                                <h4 class="widget_title">Company</h4>
+                                <h4 class="widget_title">Media</h4>
                                 <ul class="footer-menu">
-                                    <li><a href="#">About</a></li>
-                                    <li><a href="#">Blog</a></li>
-                                    <li><a href="#">Pricing</a></li>
-                                    <li><a href="#">Affiliate</a></li>
-                                    <li><a href="#">Login</a></li>
-                                    <li><a href="#">Changelog<span class="update">Update</span></a></li>
+                                    <li><a href="#"><i class="fab fa-instagram mr-3"></i>Instagram</a></li>
+                                    <li><a href="#"><i class="fab fa-facebook-square mr-3"></i>Facebook</a></li>
+                                    <li><a href="#"><i class="fab fa-youtube mr-2"></i>&nbsp;YouTube</a></li>
                                 </ul>
                             </div>
                         </div>

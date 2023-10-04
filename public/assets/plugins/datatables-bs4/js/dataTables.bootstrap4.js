@@ -103,13 +103,15 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 						break;
 
 					case 'previous':
-						btnDisplay = lang.sPrevious;
+						btnDisplay = '<i class="fas fa-caret-left"></i>';
+						// lang.sPrevious;
 						btnClass = button + (page > 0 ?
 							'' : ' disabled');
 						break;
 
 					case 'next':
-						btnDisplay = lang.sNext;
+						btnDisplay = '<i class="fas fa-caret-right"></i>';
+						// lang.sNext;
 						btnClass = button + (page < pages-1 ?
 							'' : ' disabled');
 						break;

@@ -77,39 +77,39 @@ Route::get('news/{id}', [NewsController::class, 'user_detail'])->name('user.news
 
 Route::get('/dashboard', function () {
     return view('pages-admin/dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('admin.dashboard');
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'admin-katkab'], function () {
-        Route::get('/users', [ProfileController::class, 'index'])->name('admin.user');
+        Route::get('/users', [ProfileController::class, 'admin_index'])->name('admin.user');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::get('page', [PageController::class, 'index'])->name('admin.page');
+        Route::get('page', [PageController::class, 'admin_index'])->name('admin.page');
         Route::get('page/add', [PageController::class, 'form_add'])->name('admin.page.add');
         Route::get('page/edit/{id}', [PageController::class, 'form_edit'])->name('admin.page.edit');
 
-        Route::get('banner', [BannerController::class, 'index'])->name('admin.banner');
+        Route::get('banner', [BannerController::class, 'admin_index'])->name('admin.banner');
         Route::get('banner/add', [BannerController::class, 'form_add'])->name('admin.banner.add');
         Route::get('banner/edit/{id}', [BannerController::class, 'form_edit'])->name('admin.banner.edit');
 
-        Route::get('news', [NewsController::class, 'index'])->name('admin.news');
+        Route::get('news', [NewsController::class, 'admin_index'])->name('admin.news');
         Route::get('news/add', [NewsController::class, 'form_add'])->name('admin.news.add');
         Route::get('news/edit/{id}', [NewsController::class, 'form_edit'])->name('admin.news.edit');
 
-        Route::get('training', [TrainingController::class, 'index'])->name('admin.training');
+        Route::get('training', [TrainingController::class, 'admin_index'])->name('admin.training');
         Route::get('training/add', [TrainingController::class, 'form_add'])->name('admin.training.add');
         Route::get('training/edit/{id}', [TrainingController::class, 'form_edit'])->name('admin.training.edit');
 
-        Route::get('trainee', [TraineeController::class, 'index'])->name('admin.trainee');
+        Route::get('trainee', [TraineeController::class, 'admin_index'])->name('admin.trainee');
         Route::get('trainee/add', [TraineeController::class, 'form_add'])->name('admin.trainee.add');
         Route::get('trainee/edit/{id}', [TraineeController::class, 'form_edit'])->name('admin.trainee.edit');
 
-        Route::get('business', [BusinessController::class, 'index'])->name('admin.business');
+        Route::get('business', [BusinessController::class, 'admin_index'])->name('admin.business');
         Route::get('business/add', [BusinessController::class, 'form_add'])->name('admin.business.add');
         Route::get('business/edit/{id}', [BusinessController::class, 'form_edit'])->name('admin.business.edit');
 
-        Route::get('local-potential', [LocalPotentialController::class, 'index'])->name('admin.local-potential');
+        Route::get('local-potential', [LocalPotentialController::class, 'admin_index'])->name('admin.local-potential');
         Route::get('local-potential/add', [LocalPotentialController::class, 'form_add'])->name('admin.local-potential.add');
         Route::get('local-potential/edit/{id}', [LocalPotentialController::class, 'form_edit'])->name('admin.local-potential.edit');
     });

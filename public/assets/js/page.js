@@ -1,4 +1,4 @@
-// console.log('SHARED')
+console.log('SHARED PAGE')
 
 const apiHeaders = {
   "Accept": "*/*",
