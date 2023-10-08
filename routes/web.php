@@ -57,7 +57,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::get('/trainee/post-act/{id}/{act}', [TraineeController::class, 'post_act']);
         Route::post('/trainee/post-add', [TraineeController::class, 'post_add']);
         Route::post('/trainee/post-edit', [TraineeController::class, 'post_edit']);
-        Route::post('/trainee/post-delete/{id}', [TraineeController::class, 'post_delete']);
+        Route::post('/trainee/post-delete/{id}', [TraineeController::class, 'post_delete']);        
     
         Route::get('/local-potential/post-act/{id}/{act}', [LocalPotentialController::class, 'post_act']);
         Route::post('/local-potential/post-add', [LocalPotentialController::class, 'post_add']);
