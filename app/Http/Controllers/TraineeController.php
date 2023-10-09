@@ -24,6 +24,20 @@ class TraineeController extends Controller
         return view('pages-admin.trainee.add');
     }
 
+    public function checkNik(Request $request)
+    {
+        // Ambil nilai NIK dari request
+        $nik = $request->input('nik');
+
+        // Cek apakah NIK sudah terdaftar
+        $trainee = Trainee::where('nik', $nik)->first();
+
+        // Jika NIK sudah terdaftar, kirim respons dengan status true
+        // Jika NIK belum terdaftar, kirim respons dengan status false
+        return response()->json(['status' => $trainee ? true : false]);
+    }
+
+
     public function form_edit($id)
     {
         $data['selected'] = Trainee::find($id);

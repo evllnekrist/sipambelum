@@ -2,7 +2,7 @@ console.log('TRAINING IDX');
 
 function doDelete(id, name) {
   if (confirm("Apakah Anda yakin menghapus trainee dengan ID '" + id + "' dan nama '" + name + "'? Aksi ini tidak dapat dibatalkan.")) {
-    axios.post(baseUrl+'/api/post-delete/' + id, {}, apiHeaders)
+    axios.post(baseUrl+'/api/trainee/post-delete/' + id, {}, apiHeaders)
     .then(function (response) {
       console.log('response..', response);
       if (response.status == 200 && response.data.status) {
@@ -76,7 +76,8 @@ function getData() {
           // Kolom aksi untuk menghapus trainee
           {
             data: null, render: function (data, type, row) {
-              return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>';
+              return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>' +
+                ' <a href="' + baseUrl + '/admin-katkab/trainee/edit/' + data.id + '" class="text-primary"><i class="nav-icon fas fa-edit"></i></a>';
             }
           },
         ],
