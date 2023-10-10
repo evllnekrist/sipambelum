@@ -57,7 +57,7 @@ $(function(){
             icon: 'error',
             width: 600,
             title: "Error",
-            html: "Terjadi kesalahan saat menambahkan data trainee.",
+            html: "Terjadi kesalahan saat menambahkan data peserta.",
             confirmButtonText: 'Ya',
           });
         })

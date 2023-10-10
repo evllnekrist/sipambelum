@@ -21,6 +21,7 @@
             </div>
           </div>
           <div class="card-body">
+          <div class="table-responsive">
             <table id="data-list" class="table table-bordered table-hover">
               <thead>
                 <tr>
@@ -43,6 +44,7 @@
                 <tr><td id="page-loading" colspan="13"></td></tr>
               </tbody>
             </table>
+</div>
           </div>
         </div>
       </div>

@@ -10,6 +10,20 @@
       <link rel="stylesheet" href="{{asset('assets/css/styles.css').'?v='.date('YmdH')}}">
       <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
       @yield('addition_css')
+      <style>
+/* CSS untuk tabel responsif */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Atur ukuran minimum untuk kolom tabel */
+.table-responsive th,
+.table-responsive td {
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+        </style>
     </head>
     <body class="yellow-skin @yield('body-class')">
       @include('includes.nav-public')

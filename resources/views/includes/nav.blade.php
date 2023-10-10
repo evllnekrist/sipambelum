@@ -23,6 +23,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{route('admin.subdistrict')}}">
+                <i class="fas fa-map"></i>Kecamatan
+                </a>
+            </li>
+            <li>
                 <a href="{{route('admin.local-potential')}}">
                 <i class="fas fa-seedling"></i>Potensi Lokal
                 </a>

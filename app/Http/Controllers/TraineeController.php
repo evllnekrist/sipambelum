@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Trainee;
+use App\Models\Subdistrict;
 use DB;
 
 class TraineeController extends Controller
@@ -14,6 +15,13 @@ class TraineeController extends Controller
     {}
 
     // -------------------------------------- VIEW -------------------------------------- start
+
+    public function getSubdistrictList()
+{
+    $subdistricts = Subdistrict::select('id', 'name')->get();
+    return response()->json(['status' => true, 'data' => $subdistricts]);
+}
+
     public function admin_index()
     {
         return view('pages-admin.trainee.index');
@@ -55,14 +63,16 @@ class TraineeController extends Controller
 
     // -------------------------------------- CALLED BY AJAX ---------------------------- start
     public function get_list(Request $request)
-    {
-        try {
-            $data = Trainee::get();
-            return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
-        } catch (\Exception $e) {
-            return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
-        }
+{
+    try {
+        // Mengambil data trainee dan menggabungkannya dengan data subdistrict
+        $data = Trainee::with('subdistrict')->get();
+
+        return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
+    } catch (\Exception $e) {
+        return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
+}
 
     public function post_add(Request $request)
     {

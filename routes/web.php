@@ -9,6 +9,7 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\LocalPotentialController;
+use App\Http\Controllers\SubdistrictController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-selection-list', [PageController::class, 'get_options']);
     Route::post('/get-user-list', [PageController::class, 'get_list']);
     Route::post('/get-page-list', [PageController::class, 'get_list']);
+    Route::post('/get-business-list', [BusinessController::class, 'get_list']);
+    Route::post('/get-business-listful', [BusinessController::class, 'get_list']);
     Route::post('/get-banner-list', [BannerController::class, 'get_list']);
     Route::post('/get-news-listfull', [NewsController::class, 'get_listfull']);
     Route::post('/get-news-list', [NewsController::class, 'get_list']);
@@ -33,6 +36,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-training-list', [TrainingController::class, 'get_list']);
     Route::post('/get-trainee-listfull', [TraineeController::class, 'get_listfull']);
     Route::post('/get-trainee-list', [TraineeController::class, 'get_list']);
+    Route::post('/get-subdistrict-list', [SubdistrictController::class, 'get_list']);
+    Route::post('/get-subdistrict-listful', [SubdistrictController::class, 'get_list']);
+    Route::get('/subdistricts/{subdistrictId}', [SubdistrictController::class, 'getSubdistrictName']);
+    Route::get('/subdistricts', [SubdistrictController::class, 'getSubdistrictId']);
     Route::post('/get-local-potential-listfull', [LocalPotentialController::class, 'get_listfull']);
     Route::post('/get-local-potential-list', [LocalPotentialController::class, 'get_list']);
   
@@ -58,7 +65,19 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('/trainee/post-add', [TraineeController::class, 'post_add']);
         Route::post('/trainee/check-nik', [TraineeController::class, 'checkNik']);
         Route::post('/trainee/post-edit', [TraineeController::class, 'post_edit']);
-        Route::post('/trainee/post-delete/{id}', [TraineeController::class, 'post_delete']);        
+        Route::post('/trainee/post-delete/{id}', [TraineeController::class, 'post_delete']);     
+        
+        Route::get('/business/post-act/{id}/{act}', [BusinessController::class, 'post_act']);
+        Route::get('/business/{id}', [BusinessController::class, 'getBusinessById']);
+        Route::post('/business/post-add', [BusinessController::class, 'post_add']);
+        Route::post('/business/post-edit', [BusinessController::class, 'post_edit']);
+        Route::post('/business/post-delete/{id}', [BusinessController::class, 'post_delete']);  
+        
+        Route::get('/subdistrict/post-act/{id}/{act}', [SubdistrictController::class, 'post_act']);
+        Route::get('/subdistrict/{id}', [SubdistrictController::class, 'getBusinessById']);
+        Route::post('/subdistrict/post-add', [SubdistrictController::class, 'post_add']);
+        Route::post('/subdistrict/post-edit', [SubdistrictController::class, 'post_edit']);
+        Route::post('/subdistrict/post-delete/{id}', [SubdistrictController::class, 'post_delete']); 
     
         Route::get('/local-potential/post-act/{id}/{act}', [LocalPotentialController::class, 'post_act']);
         Route::post('/local-potential/post-add', [LocalPotentialController::class, 'post_add']);
@@ -109,6 +128,10 @@ Route::middleware('auth')->group(function () {
         Route::get('business', [BusinessController::class, 'admin_index'])->name('admin.business');
         Route::get('business/add', [BusinessController::class, 'form_add'])->name('admin.business.add');
         Route::get('business/edit/{id}', [BusinessController::class, 'form_edit'])->name('admin.business.edit');
+
+        Route::get('subdisctrict', [SubdistrictController::class, 'admin_index'])->name('admin.subdistrict');
+        Route::get('subdistrict/add', [SubdistrictController::class, 'form_add'])->name('admin.subdistrict.add');
+        Route::get('subdistrict/edit/{id}', [SubdistrictController::class, 'form_edit'])->name('admin.subdistrict.edit');
 
         Route::get('local-potential', [LocalPotentialController::class, 'admin_index'])->name('admin.local-potential');
         Route::get('local-potential/add', [LocalPotentialController::class, 'form_add'])->name('admin.local-potential.add');

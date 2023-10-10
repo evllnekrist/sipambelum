@@ -25,4 +25,9 @@ class Trainee extends Model
         'email',
         'subdistrict_of_residence',
     ];
+
+    public function subdistrict()
+    {
+        return $this->belongsTo(Subdistrict::class, 'subdistrict_id', 'id');
+    }
 }
