@@ -1,8 +1,8 @@
-console.log('TRAINING IDX');
+console.log('LOCAL POTENTIAL IDX');
 
 function doDelete(id, name) {
-  if (confirm("Apakah Anda yakin menghapus trainee dengan ID '" + id + "' dan nama '" + name + "'? Aksi ini tidak dapat dibatalkan.")) {
-    axios.post(baseUrl+'/api/trainee/post-delete/' + id, {}, apiHeaders)
+  if (confirm("Apakah Anda yakin menghapus Local Potential dengan ID '" + id + "' dan nama '" + name + "'? Aksi ini tidak dapat dibatalkan.")) {
+    axios.post(baseUrl+'/api/local-potential/post-delete/' + id, {}, apiHeaders)
     .then(function (response) {
       console.log('response..', response);
       if (response.status == 200 && response.data.status) {
@@ -12,7 +12,7 @@ function doDelete(id, name) {
           title: "Berhasil",
           confirmButtonText: 'Ya, terima kasih',
         });
-        window.location = baseUrl+'/admin-katkab/trainee';
+        window.location = baseUrl+'/admin-katkab/local-potential';
       } else {
         Swal.fire({
           icon: 'warning',
@@ -45,9 +45,10 @@ function doDelete(id, name) {
     });
   }
 }
+
 function getData() {
   $('#page-loading').html(loadingElement);
-  let url = baseUrl+'/api/get-trainee-list';
+  let url = baseUrl+'/api/get-local-potential-list';
   let page = 1, pageSize = 10;
   let payload = { page: page, page_size: pageSize };
   console.log('tryin to retrieve data....', url);
@@ -60,29 +61,30 @@ function getData() {
         data: response.data.data,
         columns: [
           { data: 'id' },
-          { data: 'nik' },
+          // Sesuaikan kolom-kolom berikut dengan atribut-atribut local potential dari respons API
           { data: 'name' },
-          { data: 'level' },
-          { data: 'sex' },
-          { data: 'religion' },
-          { data: 'place_of_birth' },
-          { data: 'date_of_birth' },
-          { data: 'latest_edu' },
-          { data: 'phone' },
-          { data: 'email' },
+          { data: 'desc' },
           {
-            data: 'subdistrict_of_residence', render: function (data, type, row) {
-              return row.subdistrict ? row.subdistrict.name : ''; // Mengambil nama kecamatan dari objek subdistrict jika ada
+            data: 'img_main',
+          render: function (data, type, row) {
+            return '<img src="' + baseUrl + '/storage/assets/img/localpotential/' + data + '" alt="Image" width="100">';
+          }
+
+          },
+          { data: 'url_link' },
+          {
+            data: 'active', render: function (data, type, row) {
+              return data == 1 ? 'Aktif' : 'Tidak Aktif';
             }
           },
+          // Kolom aksi untuk menghapus local potential
           {
             data: null, render: function (data, type, row) {
               return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>' +
-                ' <a href="' + baseUrl + '/admin-katkab/trainee/edit/' + data.id + '" class="text-primary"><i class="nav-icon fas fa-edit"></i></a>';
+                ' <a href="' + baseUrl + '/admin-katkab/local-potential/edit/' + data.id + '" class="text-primary"><i class="nav-icon fas fa-edit"></i></a>';
             }
           },
         ],
-        
       });
 
       table.on('order.dt search.dt', function () {
@@ -113,5 +115,3 @@ function getData() {
   });
 }
 getData();
-
-

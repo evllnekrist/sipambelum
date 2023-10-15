@@ -16,4 +16,10 @@ class Subdistrict extends Model
         'name',
         'active',
     ];
+
+    public static function getSubdistrictNameById($id)
+    {
+        $subdistrict = Subdistrict::find($id);
+        return $subdistrict ? $subdistrict->name : null;
+    }   
 }

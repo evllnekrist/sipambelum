@@ -40,6 +40,16 @@ class SubdistrictController extends Controller
     // -------------------------------------- VIEW -------------------------------------- end
 
     // -------------------------------------- CALLED BY AJAX ---------------------------- start
+    public function getSubdistrictNameById($id)
+    {
+        $subdistrict = Subdistrict::find($id);
+
+        if ($subdistrict) {
+            return response()->json(['name' => $subdistrict->name]);
+        } else {
+            return response()->json(['name' => 'Not Found'], 404);
+        }
+    }
     public function get_list(Request $request)
     {
         $validator = Validator::make($request->all(), [

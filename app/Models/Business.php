@@ -31,4 +31,9 @@ class Business extends Model
         'is_financial_report',
         'is_business_account',
     ];
+
+    public function subdistrict()
+    {
+        return $this->belongsTo(Subdistrict::class, 'subdistrict', 'id');
+    }
 }

@@ -29,6 +29,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-page-list', [PageController::class, 'get_list']);
     Route::post('/get-business-list', [BusinessController::class, 'get_list']);
     Route::post('/get-business-listful', [BusinessController::class, 'get_list']);
+    Route::get('/get-list-basic', [TraineeController::class, 'getBasicList']); 
+    Route::post('/map-to-business', [BusinessController::class, 'mapToBusiness']);
     Route::post('/get-banner-list', [BannerController::class, 'get_list']);
     Route::post('/get-news-listfull', [NewsController::class, 'get_listfull']);
     Route::post('/get-news-list', [NewsController::class, 'get_list']);
@@ -39,7 +41,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-subdistrict-list', [SubdistrictController::class, 'get_list']);
     Route::post('/get-subdistrict-listful', [SubdistrictController::class, 'get_list']);
     Route::get('/subdistricts/{subdistrictId}', [SubdistrictController::class, 'getSubdistrictName']);
-    Route::get('/subdistricts', [SubdistrictController::class, 'getSubdistrictId']);
+    // Route::get('/subdistricts', [SubdistrictController::class, 'getSubdistrictId']);
+    Route::get('/subdistrict/{id}', [SubdistrictController::class, 'getSubdistrictName']);
     Route::post('/get-local-potential-listfull', [LocalPotentialController::class, 'get_listfull']);
     Route::post('/get-local-potential-list', [LocalPotentialController::class, 'get_list']);
   
@@ -92,6 +95,7 @@ Route::get('training', [TrainingController::class, 'user_index'])->name('user.tr
 Route::get('training/{id}', [TrainingController::class, 'user_detail'])->name('user.training_detail');
 Route::get('trainee', [TraineeController::class, 'user_index'])->name('user.trainee');
 Route::get('trainee/{id}', [TraineeController::class, 'user_detail'])->name('user.trainee_detail');
+Route::get('getTrainingHistory', [TraineeController::class, 'getTrainingHistory'])->name('get.training.history');
 Route::get('news', [NewsController::class, 'user_index'])->name('user.news');
 Route::get('news/{id}', [NewsController::class, 'user_detail'])->name('user.news_detail');
 

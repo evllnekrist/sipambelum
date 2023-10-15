@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Business;
+use App\Models\Trainee;
+use App\Models\MapTraineeBusiness;
 use DB;
 
 class BusinessController extends Controller
@@ -29,6 +31,54 @@ class BusinessController extends Controller
             return $this->show_error_user('Business');
         }
     }
+    public function getSubdistrictList()
+    {
+        $subdistricts = Subdistrict::select('id', 'name')->get();
+        return response()->json(['status' => true, 'data' => $subdistricts]);
+    }
+    public function getBasicList(Request $request)
+{
+    try {
+        $data = Trainee::select('nik', 'name')->get();
+        return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
+    } catch (\Exception $e) {
+        return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+    }
+}
+public function mapToBusiness(Request $request)
+{
+    try {
+        // Ambil data dari request
+        $businessId = $request->input('businessId');
+        $trainees = $request->input('trainees');
+
+        // Simpan data mapping trainee ke bisnis
+        foreach ($trainees as $traineeId) {
+            // Periksa apakah trainee sudah ada dalam mapping (berdasarkan id_trainee dan id_business)
+            $existingMapping = MapTraineeBusiness::where('id_trainee', $traineeId)
+                ->where('id_business', $businessId)
+                ->first();
+
+            // Jika mapping sudah ada, perbarui nilai active menjadi 1
+            // Jika mapping belum ada, buat mapping baru dengan active 1
+            if ($existingMapping) {
+                $existingMapping->update(['active' => 1]);
+            } else {
+                MapTraineeBusiness::create([
+                    'id_business' => $businessId,
+                    'id_trainee' => $traineeId,
+                    'active' => 1, // Set active menjadi 1
+                    // Tambahan kolom lainnya jika ada
+                ]);
+            }
+        }
+
+        return response()->json(['status' => true, 'message' => 'Mapping trainees to business successful']);
+    } catch (\Exception $e) {
+        return response()->json(['status' => false, 'message' => $e->getMessage()]);
+    }
+}
+
     public function getBusinessById($id)
     {
         $business = Business::find($id);
@@ -37,7 +87,13 @@ class BusinessController extends Controller
     }
     public function admin_index()
     {
-        return view('pages-admin.business.index');
+        try {
+            // Mengambil data dari tabel map_trainee_business
+            $data['items'] = MapTraineeBusiness::get();
+            return view('pages-admin.business.index', $data);
+        } catch (\Exception $e) {
+            return $this->show_error_admin('Business');
+        }
     }
 
     public function form_add()
@@ -59,22 +115,25 @@ class BusinessController extends Controller
 
     // -------------------------------------- CALLED BY AJAX ---------------------------- start
     public function get_list(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'page' => 'required',
-            'page_size' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return json_encode(array('status' => false, 'message' => $validator->messages()->first(), 'data' => null));
-        }
+{
+    $validator = Validator::make($request->all(), [
+        'page' => 'required',
+        'page_size' => 'required',
+    ]);
 
-        try {
-            $data = Business::orderBy('created_at', 'desc')->limit($request->page_size)->get();
-            return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
-        } catch (\Exception $e) {
-            return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
-        }
+    if ($validator->fails()) {
+        return json_encode(array('status' => false, 'message' => $validator->messages()->first(), 'data' => null));
     }
+
+    try {
+        // Mengambil data Business dengan menyertakan relasi subdistrict
+        $data = Business::with('subdistrict')->orderBy('created_at', 'desc')->limit($request->page_size)->get();
+        return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
+    } catch (\Exception $e) {
+        return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+    }
+}
+
 
     public function get_listfull(Request $request)
     {

@@ -9,6 +9,7 @@
       <link rel="icon" type="image/x-icon" href="{{asset('logo-katingan.png')}}">
       <link rel="stylesheet" href="{{ asset('assets/css/styles.css').'?v='.date('YmdH')}}">
       <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
+
       @yield('addition_css')
     </head>
     <body class="yellow-skin @yield('body-class')">

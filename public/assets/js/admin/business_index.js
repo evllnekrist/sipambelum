@@ -104,7 +104,11 @@ function getData() {
             { data: 'phone' },
             { data: 'email' },
             { data: 'address' },
-            { data: 'subdistrict' }, // Tampilkan hanya sampai kolom ini
+            {
+              data: 'subdistrict', render: function (data, type, row) {
+                return row.subdistrict ? row.subdistrict.name : ''; // Mengambil nama kecamatan dari objek subdistrict jika ada
+              }
+            },
             {
               data: null,
               render: function (data, type, row) {

@@ -1,13 +1,15 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Trainee;
+use App\Models\Training;
 use App\Models\Subdistrict;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class TraineeController extends Controller
 {
@@ -15,12 +17,65 @@ class TraineeController extends Controller
     {}
 
     // -------------------------------------- VIEW -------------------------------------- start
+     
+
+    // TraineeController.php
+
+public function user_index(Request $request)
+{
+    $nik = $request->input('nik');
+
+    $traineesQuery = Trainee::with('trainingHistory')
+        ->join('ms_subdistrict', 'ms_trainee.subdistrict_of_residence', '=', 'ms_subdistrict.id')
+        ->select('ms_trainee.id','ms_trainee.nik', 'ms_trainee.name', 'ms_trainee.phone', 'ms_trainee.email', 'ms_subdistrict.name as subdistrict_name');
+
+    if (!empty($nik)) {
+        $traineesQuery->where('ms_trainee.nik', $nik);
+    } else {
+        return view('pages.trainee');
+    }
+
+    $trainees = $traineesQuery->get();
+
+    if (count($trainees) > 0) {
+        $data['trainees'] = $trainees;
+        return view('pages.trainee', $data)->with('success', 'Pencarian berhasil ditemukan.');
+    } else {
+        return redirect()->route('user.trainee')->with('message', 'Tidak ada hasil pencarian.');
+    }
+}
+
+public function getTrainingHistory(Request $request)
+{
+    $idTrainee = $request->input('id_trainee');
+
+    $trainingHistory = DB::table('map_trainee_training')
+        ->join('tr_training', 'map_trainee_training.id_training', '=', 'tr_training.id')
+        ->select('tr_training.name as training_name', 'map_trainee_training.active', 'map_trainee_training.is_passed')
+        ->where('map_trainee_training.id_trainee', $idTrainee)
+        ->get();
+
+    return response()->json($trainingHistory);
+}
+
+    
 
     public function getSubdistrictList()
 {
     $subdistricts = Subdistrict::select('id', 'name')->get();
     return response()->json(['status' => true, 'data' => $subdistricts]);
 }
+public function getBasicList(Request $request)
+{
+    try {
+        $data = Trainee::select('id', 'nik', 'name')->get();
+        return response()->json(['status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data]);
+    } catch (\Exception $e) {
+        return response()->json(['status' => false, 'message' => $e->getMessage(), 'data' => null]);
+    }
+    }
+
+    // TraineeController.php
 
     public function admin_index()
     {
@@ -73,6 +128,10 @@ class TraineeController extends Controller
         return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
 }
+    public function subdistrict()
+    {
+        return $this->belongsTo(Subdistrict::class);
+    }
 
     public function post_add(Request $request)
     {

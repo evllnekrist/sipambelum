@@ -92,6 +92,34 @@
   </div>
 </div>
 
+<!-- Modal for Mapping Trainee to Business -->
+<div class="modal fade" id="mapTraineeModal" tabindex="-1" role="dialog" aria-labelledby="mapTraineeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mapTraineeModalLabel">Mapping Trainee to Business</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form id="mapTraineeForm">
+      @csrf <!-- Ini akan memasukkan token CSRF ke dalam formulir -->
+          <div class="form-group">
+            <label for="traineeList">Select Trainee(s)</label>
+            <div id="traineeList">
+        
+
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Map Trainee(s)</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 @endsection
