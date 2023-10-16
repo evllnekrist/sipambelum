@@ -2,7 +2,7 @@
     <div class="container">
         <nav id="navigation" class="navigation navigation-landscape">
             <div class="nav-header">
-                <a class="nav-brand" >
+                <a class="nav-brand" href="{{ route('homepage') }}">
                     <img src="{{ asset('assets/img/logo-light.png') }}" class="logonav" alt="" />
                 </a>
                 <div class="nav-toggle"></div>

@@ -58,6 +58,12 @@ function getData(){
     //console.log('[DATA] response..',response.data.data);
     if(response.data.status) {
         var table = $('#data-list').DataTable({ // https://datatables.net/manual/data/
+          language: {
+            "paginate": {
+              "previous": "<<",
+              "next": ">>"
+            }
+          },
           dom: 'Bfrtip',
           data: response.data.data,
           columns: [ 
@@ -67,7 +73,7 @@ function getData(){
               }, className: "text-center" 
             },
             { data: null, render: function ( data, type, row ) {
-                return '<a href="'+baseUrl+'/admin-katkab/banner/edit/'+data.id+'" target="_blank">'+data.name+'</a>';
+                return '<a href="'+baseUrl+'/admin-katkab/banner/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.name+'</a>';
               } 
             },
             { data: 'title' },

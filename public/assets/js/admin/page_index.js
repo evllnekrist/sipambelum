@@ -58,12 +58,19 @@ function getData(){
   .then(function (response) {
     //console.log('[DATA] response..',response.data.data);
     if(response.data.status) {
-        $('#data-list').DataTable({ // https://datatables.net/manual/data/
+        var table = $('#data-list').DataTable({ // https://datatables.net/manual/data/
+          language: {
+            "paginate": {
+              "previous": "<<",
+              "next": ">>"
+            }
+          },
           dom: 'Bfrtip',
           data: response.data.data,
           columns: [ 
+            { data: 'id'},
             { data: null, render: function ( data, type, row ) { // https://editor.datatables.net/examples/api/triggerButton.html
-                return '<a href="'+baseUrl+'/admin-katkab/page/edit/'+data.id+'" target="_blank">'+data.title+'</a>';
+                return '<a href="'+baseUrl+'/admin-katkab/page/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.title+'</a>';
               } 
             },
             { data: 'slug' },
@@ -71,12 +78,21 @@ function getData(){
                 if(!noDeleteItems.includes(data.slug)){
                   return '<a onclick="doDelete('+data.id+',`'+data.name+'`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>';
                 }else{
-                  return '<small><i>laman wajib</i></small>'
+                  return '<small title="tidak boleh dihapus"><i>laman wajib</i></small>'
                 }
               } 
             },
           ],
         });
+          
+        table.on('order.dt search.dt', function () {
+            var i = 1;
+
+            table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                this.data(i++);
+            });
+        })
+        .draw();
     }else{
       Swal.fire({
         icon: 'warning',

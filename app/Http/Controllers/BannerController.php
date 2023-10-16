@@ -81,7 +81,7 @@ class BannerController extends Controller
                 $filename_to_store = $index.'_'.time().'.'.$extension;
                 // Upload Image
                 $path = $request->file($index)->storeAs('public/'.$default_folder.($index=='file_main'?'file':'image'),$filename_to_store);
-                $data[$index] = '/storage//'.$default_folder.($index=='file_main'?'file':'image')."//".$filename_to_store;
+                $data[$index] = '/storage//'.$default_folder.($index=='file_main'?'file':'image')."/".$filename_to_store;
               }else{
                 unset($data[$index]);
               }

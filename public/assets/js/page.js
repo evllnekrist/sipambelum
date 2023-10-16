@@ -56,8 +56,16 @@ function checkSlug(str){
   }
   // console.log('check_validity',$('[name="check_validity"]').val() )
 }
+function convertToSlug(text) {
+  return text.toLowerCase()
+    .replace(/[^\w ]+/g, "")
+    .replace(/ +/g, "-");
+}
 $('.slug').on('keyup', function(event) {
   checkSlug(event.target.value)
+});
+$('.slug-referencer').on('keyup', function(event) {
+  $('[name="slug"]').val(convertToSlug(event.target.value))
 });
 
 function display(id,id2){

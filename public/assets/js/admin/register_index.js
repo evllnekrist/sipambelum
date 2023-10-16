@@ -73,6 +73,12 @@ $(function () {
       //console.log('[DATA] response..',response.data.data);
       if(response.data.status) {
           $('#data-list').DataTable({ // https://datatables.net/manual/data/
+            language: {
+              "paginate": {
+                "previous": "<<",
+                "next": ">>"
+              }
+            },
             dom: 'Bfrtip',
             data: response.data.data,
             columns: [ 

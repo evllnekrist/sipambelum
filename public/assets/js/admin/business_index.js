@@ -95,6 +95,12 @@ function getData() {
     console.log('[DATA] response..', response.data.data);
     if (response.data.status) {
       var table = $('#data-list').DataTable({
+        language: {
+          "paginate": {
+            "previous": "<<",
+            "next": ">>"
+          }
+        },
         dom: 'Bfrtip',
         data: response.data.data,
         columns: [

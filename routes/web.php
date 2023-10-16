@@ -89,7 +89,7 @@ Route::group(['prefix' => 'api'], function () {
     });
 });
 
-Route::get('/', [PageController::class, 'homepage']);
+Route::get('/', [PageController::class, 'homepage'])->name('homepage');
 Route::get('p/{id}', [PageController::class, 'user_index'])->name('user.page');
 Route::get('training', [TrainingController::class, 'user_index'])->name('user.training');
 Route::get('training/{id}', [TrainingController::class, 'user_detail'])->name('user.training_detail');

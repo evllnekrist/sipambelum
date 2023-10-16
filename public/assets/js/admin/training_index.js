@@ -1,8 +1,8 @@
-console.log('NEWS IDX')
+console.log('training IDX')
 
 function doDelete(id,name){
-  if(confirm("Apakah Anda yakin menghapus '"+name+"'? Aksi ini tidak dapat dibatalkan.")){
-    axios.post(baseUrl+'/api/news/post-delete/'+id, {}, apiHeaders)
+  if(confirm("Apakah Anda yakin menghapus training '"+name+"'? Aksi ini tidak dapat dibatalkan.")){
+    axios.post(baseUrl+'/api/training/post-delete/'+id, {}, apiHeaders)
     .then(function (response) {
       console.log('response..',response);
       if(response.status == 200 && response.data.status) {
@@ -13,7 +13,7 @@ function doDelete(id,name){
           // html: "...",
           confirmButtonText: 'Ya, terima kasih',
         });
-        window.location = baseUrl+'/admin-katkab/news';
+        window.location = baseUrl+'/admin-katkab/training';
       }else{
         Swal.fire({
           icon: 'warning',
@@ -49,7 +49,7 @@ function doDelete(id,name){
 
 function getData(){
   $('#page-loading').html(loadingElement);
-  let url = baseUrl+'/api/get-news-listfull'
+  let url = baseUrl+'/api/get-training-list'
   let page = 1, pageSize = 10
   let payload = {page: page, page_size: pageSize}
   console.log('tryin to retrieve data....',url)
@@ -64,17 +64,31 @@ function getData(){
               "next": ">>"
             }
           },
+          scrollX: true,
           dom: 'Bfrtip',
           data: response.data.data,
           columns: [ 
             { data: 'id'},
-            { data: null, render: function ( data, type, row ) { // https://editor.datatables.net/examples/api/triggerButton.html
-                return '<a href="'+baseUrl+'/admin-katkab/news/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.title+'</a>';
-              }
+            { data: null, render: function ( data, type, row ) {
+                return '<img src="'+data.img_main+'" alt="'+data.title+'" height="70px">';
+              }, className: "text-center" 
             },
-            { data: 'slug' },
-            { data: 'author' },
-            { data: 'status' },
+            { data: null, render: function ( data, type, row ) {
+                return '<a href="'+baseUrl+'/admin-katkab/training/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.name+'</a>';
+              } 
+            },
+            { data: 'level' },
+            { data: 'trainee_limit' },
+            { data: null, render: function ( data, type, row ) {
+                return (data.is_online?'<i class="fas fa-wifi text-blue" title="Online"></i>':
+                '<i class="fas fa-map-marker-alt text-danger" title="Offline"></i>')+
+                '<span class="span-icon-content">'+data.address+'</span>';
+              }, className: "w300" 
+            },
+            { data: 'event_start' },
+            { data: 'event_end' },
+            { data: 'contact_phone' },
+            { data: 'contact_email' },
             { data: null, render: function ( data, type, row ) { 
                 return '<a onclick="doDelete('+data.id+',`'+data.name+'`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>';
               } 
@@ -82,7 +96,7 @@ function getData(){
           ],
         });
 
-        
+          
         table.on('order.dt search.dt', function () {
             var i = 1;
 

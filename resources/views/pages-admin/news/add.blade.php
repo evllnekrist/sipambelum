@@ -32,8 +32,9 @@
                 <input name="title" class="form-control form-control-sm" required>
               </div>
               <div class="form-group">
-                <label>Slug <code>*</code></label>
-                <input name="slug" class="form-control form-control-sm nospace lowercase" required>
+                <label>Slug <code>*</code></label> <footer class="label_subtitle label_squeeze">Menjadi alamat untuk laman ini (contoh <i>/<b>visi-misi</b></i>). Bersifat unik, tidak boleh sama</footer>
+                <input type="text" name="slug" class="form-control form-control-border border-width-2 nospace lowercase slug" required>
+                <div id="slug-info"></div>
               </div>
               <div class="form-group">
                 <label>Upload: Gambar <code>*</code></label><br>

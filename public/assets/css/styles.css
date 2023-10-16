@@ -123,7 +123,10 @@ a.white-link {
   color: #ffffff; }
   a.white-link:hover, a.white-link:focus {
     color: #263238; }
-
+.text-blue-b {
+    color:#2EA5E4 !important;
+    font-weight: 600;
+}
 .img-responsive {
   width: 100%;
   height: auto;
@@ -184,6 +187,9 @@ p {
 }
 .no-ul-list li{
 	list-style:none;
+}
+.no-ul-list-inline li{
+    display: inline;
 }
 .progress {
     margin-bottom: 1.5em;
@@ -15352,4 +15358,10 @@ ul.foot_social li a {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
+}
+.w300{
+    width: 300px;
+}
+.span-icon-content{
+    margin-left:10px;font-size:0.7rem;line-height:2em;
 }

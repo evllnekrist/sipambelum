@@ -86,7 +86,7 @@ class TrainingController extends Controller
   {
       $validator = Validator::make($request->all(), [
         'img_main'  => 'required',
-        'title'      => 'required',
+        'name'      => 'required',
       ]); 
       if ($validator->fails()) {
         // return redirect()->back()->withInput();
@@ -128,7 +128,7 @@ class TrainingController extends Controller
   {
       $validator = Validator::make($request->all(), [
         // 'img_main'  => 'required',
-        'title'      => 'required',
+        'name'      => 'required',
       ]); 
       if ($validator->fails()) {
         // return redirect()->back()->withInput();

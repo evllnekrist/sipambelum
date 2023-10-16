@@ -1,4 +1,4 @@
-console.log('BANNER CU')
+console.log('training CU')
 
 $(function(){
   $("#input-file").fileinput();
@@ -14,7 +14,7 @@ $(function(){
       // for (const [key, value] of formData) {
       //   console.log('»', key, value)
       // }
-      axios.post(baseUrl+'/api/banner/post-add', formData, apiHeaders)
+      axios.post(baseUrl+'/api/training/post-add', formData, apiHeaders)
       .then(function (response) {
         console.log('response..',response);
         if(response.status == 200 && response.data.status) {
@@ -25,7 +25,7 @@ $(function(){
             // html: "...",
             confirmButtonText: 'Ya, terima kasih',
           });
-          window.location = baseUrl+'/admin-katkab/banner';
+          window.location = baseUrl+'/admin-katkab/training';
         }else{
           Swal.fire({
             icon: 'warning',
@@ -63,7 +63,7 @@ $(function(){
       // for (const [key, value] of formData) {
       //   console.log('»', key, value)
       // }
-      axios.post(baseUrl+'/api/banner/post-edit', formData, apiHeaders)
+      axios.post(baseUrl+'/api/training/post-edit', formData, apiHeaders)
       .then(function (response) {
         console.log('response..',response);
         if(response.status == 200 && response.data.status) {
@@ -74,7 +74,7 @@ $(function(){
             // html: "...",
             confirmButtonText: 'Ya, terima kasih',
           });
-          // window.location = baseUrl+'/admin-katkab/banner';
+          // window.location = baseUrl+'/admin-katkab/training';
         }else{
           Swal.fire({
             icon: 'warning',

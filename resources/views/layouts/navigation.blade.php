@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('homepage') }}">
                         <img src="{{ asset('assets\img\logo-light-cms.png') }}" style="height:40px">
                     </a>
                 </div>

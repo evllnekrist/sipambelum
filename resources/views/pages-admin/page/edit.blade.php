@@ -6,75 +6,71 @@
 <div class="content-wrapper">
   @include('includes.loading')
   <form method="post" action="#" id="form">
-    <section class="content-header">
-      <div class="container-fluid">
-        <input type="text" name="check_validity" value="1" class="form-control form-control-border border-width-2" hidden>
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h5 class="text-muted2">Ubah</h5>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}" target="_blank">Dashboard</a></li>
-              <li class="breadcrumb-item"><a href="{{route('admin.page')}}" target="_blank">Halaman Web</a></li>
-              <li class="breadcrumb-item active">Ubah</li>
-            </ol>
-          </div>
+    <div class="container-fluid">
+      <input type="text" name="check_validity" value="1" class="form-control form-control-border border-width-2" hidden>
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h5 class="text-muted2">Ubah</h5>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-    <section class="content">
-      <div class="container-fluid">
-        <input type="text" name="id" value="{{@$selected->id}}" class="form-control form-control-border border-width-2" hidden>
-        <div class="row">
-          <!-- left column -->
-          <div class="col-md-8">
-            <div class="card card-primary">
-              <div class="card-header">
-                <h6 class="card-title text-muted2">Konten</h6>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <!-- <div class="form-group">
-                  <label>Kode <code>*</code></label> <footer class="label_subtitle label_squeeze">Untuk diaplikasikan ke web, beritahukan kode ini ke developer. Bersifat unik, tidak boleh sama</footer>
-                  <input type="text" name="code" class="form-control form-control-border border-width-2 nospace lowercase" required>
-                </div> -->
-                <div class="form-group">
-                  <label>Slug <code>*</code></label> <footer class="label_subtitle label_squeeze">Menjadi alamat untuk laman ini (contoh <i>/<b>visi-misi</b></i>). Bersifat unik, tidak boleh sama</footer>
-                  <input type="text" name="slug" value="{{@$selected->slug}}" 
-                  class="form-control form-control-border border-width-2 nospace lowercase slug" required>
-                  <div id="slug-info"></div>
-                </div>
-                <div class="form-group">
-                  <label>Gambar Utama <code>*</code></label>
-                  @if($selected->img_main)
-                    <br><img src="{{asset($selected->img_main)}}" id="input-file-prev" style="max-width:30vw;max-height:40vh">
-                    <br><u><a onclick="display('input-file-wrap','input-file-prev')" id="input-file-wrap-action-text" class="text-primary">Ganti Gambar</a></u>
-                  @endif
-                  <div id="input-file-wrap" data-display="hide" {{$selected->img_main?'style=display:none':''}}>
-                    <input id="input-file" name="img_main" type="file" class="file" data-browse-on-zone-click="true">
-                  </div>
-                <div class="form-group">
-                  <label>Judul <code>*</code></label>
-                  <input type="text" name="title" value="{{@$selected->title}}" 
-                  class="form-control form-control-border border-width-2" required>
-                </div>
-                <div class="form-group">
-                  <label>Konten <code>*</code></label>
-                  <textarea id="summernote" name="body">{{@$selected->body}}</textarea>
-                </div>
-              </div>
-              <!-- /.card-body -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}" target="_blank">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{route('admin.page')}}" target="_blank">Halaman Web</a></li>
+            <li class="breadcrumb-item active">Ubah</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <input type="text" name="id" value="{{@$selected->id}}" class="form-control form-control-border border-width-2" hidden>
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h6 class="card-title text-muted2">Konten</h6>
             </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <!-- <div class="form-group">
+                <label>Kode <code>*</code></label> <footer class="label_subtitle label_squeeze">Untuk diaplikasikan ke web, beritahukan kode ini ke developer. Bersifat unik, tidak boleh sama</footer>
+                <input type="text" name="code" class="form-control form-control-border border-width-2 nospace lowercase" required>
+              </div> -->
+              <div class="form-group">
+                <label>Slug <code>*</code></label> <footer class="label_subtitle label_squeeze">Menjadi alamat untuk laman ini (contoh <i>/<b>visi-misi</b></i>). Bersifat unik, tidak boleh sama</footer>
+                <input type="text" name="slug" value="{{@$selected->slug}}" 
+                class="form-control form-control-border border-width-2 nospace lowercase slug" required>
+                <div id="slug-info"></div>
+              </div>
+              <div class="form-group">
+                <label>Gambar Utama <code>*</code></label>
+                @if($selected->img_main)
+                  <br><img src="{{asset($selected->img_main)}}" id="input-file-prev" style="max-width:30vw;max-height:40vh">
+                  <br><u><a onclick="display('input-file-wrap','input-file-prev')" id="input-file-wrap-action-text" class="text-primary">Ganti Gambar</a></u>
+                @endif
+                <div id="input-file-wrap" data-display="hide" {{$selected->img_main?'style=display:none':''}}>
+                  <input id="input-file" name="img_main" type="file" class="file" data-browse-on-zone-click="true">
+                </div>
+              <div class="form-group">
+                <label>Judul <code>*</code></label>
+                <input type="text" name="title" value="{{@$selected->title}}" 
+                class="form-control form-control-border border-width-2 slug-referencer" required>
+              </div>
+              <div class="form-group">
+                <label>Konten <code>*</code></label>
+                <textarea id="summernote" name="body">{{@$selected->body}}</textarea>
+              </div>
+            </div>
+            <!-- /.card-body -->
           </div>
-          <!--/.col (left) -->
-          <!-- right column -->
-          <div class="col-md-4"></div>
-          <!--/.col (right) -->
         </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-4"></div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div>
     <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-submit-edit">Simpan</button>
   </form>
 </div>
