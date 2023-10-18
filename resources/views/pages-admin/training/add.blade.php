@@ -33,12 +33,12 @@
                 <input type="text" name="name" class="form-control form-control-border border-width-2" required>
               </div>
               <div class="form-group">
-                <label>Gambar Pelatihan <code>*</code></label>
+                <label>Upload: Gambar <code>*</code></label>
                 <input id="input-file" name="img_main" type="file" class="file" data-browse-on-zone-click="true">
               </div>
               <div class="form-group">
                 <label>Deskripsi </label>
-                <textarea id="summernote" name="content"></textarea>
+                <textarea id="summernote" name="desc"></textarea>
               </div>
             </div>
             <!-- /.card-body -->
@@ -57,11 +57,11 @@
                 <label>Metode <code>*</code></label>
                 <ul class="no-ul-list no-ul-list-inline">
                   <li>
-                    <input id="io" class="form-check-input" name="is_online" value="1" type="radio" required>
+                    <input id="io" class="form-check-input" name="is_online" value="0" type="radio" required>
                     <label for="io" class="form-check-label">Offline&nbsp;&nbsp;</label>
                   </li>
                   <li>
-                    <input id="io2" class="form-check-input" name="is_online" value="0" type="radio">
+                    <input id="io2" class="form-check-input" name="is_online" value="1" type="radio">
                     <label for="io2" class="form-check-label">Online</label>
                   </li>
                 </ul>
@@ -71,11 +71,11 @@
                 <textarea name="address" class="form-control h-120" required></textarea>
               </div>
               <div class="form-group">
-                <label>Kontak Telepon</label>
+                <label>Kontak Telepon</label> <footer class="label_subtitle label_squeeze">Jika lebih dari 1, pisahkan dengan comma (,)</footer>
                 <input type="text" name="contact_phone" placeholder="08** **** ****" class="form-control form-control-border border-width-2 no-space">
               </div>
               <div class="form-group">
-                <label>Kontak Email</label>
+                <label>Kontak Email</label> <footer class="label_subtitle label_squeeze">Jika lebih dari 1, pisahkan dengan comma (,)</footer>
                 <input type="email" name="contact_email" placeholder="____@____.com" class="form-control form-control-border border-width-2">
               </div>
               <hr style="margin: 30px 0px 30px 0px !important">
@@ -97,7 +97,6 @@
         </div>
         <!--/.col (right) -->
       </div>
-      <!-- /.row -->
     </div>
     <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-submit-add">Simpan</button>
   </form>

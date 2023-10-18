@@ -29,17 +29,19 @@
             <div class="card-header">
               <h6 class="card-title text-muted2">Konten</h6>
             </div>
-            <!-- /.card-header -->
+
             <div class="card-body">
               <div class="form-group">
                 <label>Nama Pelatihan <code>*</code></label>
-                <input type="text" name="name" value="{{@$selected->name}}"
-                class="form-control form-control-border border-width-2" required>
+                <input type="text" name="name" value="{{$selected->name}}" class="form-control form-control-border border-width-2" required>
               </div>
               <div class="form-group">
-                <label>Gambar Pelatihan <code>*</code></label>
+                <label>Upload: Gambar <code>*</code></label>
                 @if($selected->img_main)
-                  <br><img src="{{asset($selected->img_main)}}" id="input-file-prev" style="max-width:30vw;max-height:40vh">
+                  <br>
+                  <div class="text-center">
+                    <img src="{{asset($selected->img_main)}}" id="input-file-prev" style="max-width:30vw;max-height:40vh;">
+                  </div>
                   <br><u><a onclick="display('input-file-wrap','input-file-prev')" id="input-file-wrap-action-text" class="text-primary">Ganti Gambar</a></u>
                 @endif
                 <div id="input-file-wrap" data-display="hide" {{$selected->img_main?'style=display:none':''}}>
@@ -47,29 +49,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <label>Redirect Link</label> <footer class="label_subtitle label_squeeze">jika diisi, menjadi arah ketika training di klik</footer>
-                <input type="text" name="url_link" value="{{@$selected->url_link}}"
-                class="form-control form-control-border border-width-2">
-              </div>
-              <div class="form-group">
-                <label>Judul</label> <footer class="label_subtitle label_squeeze">jika diisi, akan tampil sebagai tulisan besar di dalam training</footer>
-                <input type="text" name="title" value="{{@$selected->title}}"
-                class="form-control form-control-border border-width-2">
-              </div>
-              <div class="form-group">
-                <label>Sub-Judul</label> <footer class="label_subtitle label_squeeze">jika diisi, akan tampil sebagai tulisan kecil di dalam training</footer>
-                <input type="text" name="subtitle" value="{{@$selected->subtitle}}"
-                class="form-control form-control-border border-width-2">
-              </div>
-              <div class="form-group">
-                <label>Tombol Text</label> <footer class="label_subtitle label_squeeze">jika diisi, tombol akan muncul dengan text ini</footer>
-                <input type="text" name="button_title" value="{{@$selected->button_title}}"
-                class="form-control form-control-border border-width-2">
-              </div>
-              <div class="form-group">
-                <label>Tombol Link</label> <footer class="label_subtitle label_squeeze">jika diisi, menjadi arah ketika tombol di klik</footer>
-                <input type="text" name="button_link" value="{{@$selected->button_link}}"
-                class="form-control form-control-border border-width-2">
+                <label>Deskripsi </label>
+                <textarea id="summernote" name="desc">{{$selected->desc}}</textarea>
               </div>
             </div>
             <!-- /.card-body -->
@@ -85,28 +66,42 @@
             <!-- /.card-header -->
             <div class="card-body">
               <div class="form-group">
-                <label>Urutan <code>*</code></label>
-                <select class="custom-select" name="sequence">
-                  <option value="">Pilih salah satu:</option>
-                  @for($i = 1; $i <= 50; $i++)
-                    <option value="{{$i}}" {{$i==@$selected->sequence?'selected':''}}>Ke-{{$i}}</option>
-                  @endfor
-                </select>
+                <label>Metode <code>*</code></label>
+                <ul class="no-ul-list no-ul-list-inline">
+                  <li>
+                    <input id="io" class="form-check-input" name="is_online" value="0" type="radio" {{!$selected->is_online?'checked':''}} required>
+                    <label for="io" class="form-check-label">Offline&nbsp;&nbsp;</label>
+                  </li>
+                  <li>
+                    <input id="io2" class="form-check-input" name="is_online" value="1" type="radio" {{$selected->is_online?'checked':''}}>
+                    <label for="io2" class="form-check-label">Online</label>
+                  </li>
+                </ul>
               </div>
               <div class="form-group">
-                <label>Terbitkan Dari <code>*</code></label>
-                <input type="datetime-local" name="publish_start" class="form-control" 
-                  value="{{$selected->publish_start?date('Y-m-d\TH:i:s', strtotime($selected->publish_start)):''}}">
+                <label>Alamat <code>*</code></label>
+                <textarea name="address" class="form-control h-120" required>{{$selected->address}}</textarea>
               </div>
               <div class="form-group">
-                <label>Terbitkan Hingga</label> <footer class="label_subtitle label_squeeze">kosongkan, jika training tidak memiliki <i>expired</i></footer>
-                <div class="input-group date" id="publishdatetime2" data-target-input="nearest">
-                  <input type="text" name="publish_end" value="{{$selected->publish_end?date('m/d/Y H::i::s', strtotime($selected->publish_end)):''}}"
-                  class="form-control datetimepicker-input" data-target="#publishdatetime2"/>
-                  <div class="input-group-append" data-target="#publishdatetime2" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                  </div>
-                </div>
+                <label>Kontak Telepon</label> <footer class="label_subtitle label_squeeze">Jika lebih dari 1, pisahkan dengan comma (,)</footer>
+                <input type="text" name="contact_phone" value="{{$selected->contact_phone}}" placeholder="08** **** ****" class="form-control form-control-border border-width-2 no-space">
+              </div>
+              <div class="form-group">
+                <label>Kontak Email</label> <footer class="label_subtitle label_squeeze">Jika lebih dari 1, pisahkan dengan comma (,)</footer>
+                <input type="email" name="contact_email" value="{{$selected->contact_email}}" placeholder="____@____.com" class="form-control form-control-border border-width-2">
+              </div>
+              <hr style="margin: 30px 0px 30px 0px !important">
+              <div class="form-group">
+                <label>Limit Peserta <code>*</code></label> <footer class="label_subtitle label_squeeze">Biarkan 0 untuk jumlah peserta tak terbatas</footer>
+                <input type="number" name="trainee_limit" value="{{$selected->trainee_limit}}" class="form-control form-control-border border-width-2" required>
+              </div>
+              <div class="form-group">
+                <label>Acara Berlangsung Dari <code>*</code></label>
+                <input type="datetime-local" name="event_start" value="{{$selected->event_start}}" class="form-control" required/>
+              </div>
+              <div class="form-group">
+                <label>Acara Berlangsung Hingga</label> <code>*</code></footer>
+                <input type="datetime-local" name="event_end" value="{{$selected->event_end}}" class="form-control" required/>
               </div>
             </div>
             <!-- /.card-body -->
@@ -114,7 +109,6 @@
         </div>
         <!--/.col (right) -->
       </div>
-      <!-- /.row -->
     </div>
     <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-submit-edit">Simpan</button>
   </form>
@@ -143,17 +137,26 @@
 <!-- script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.2/themes/fas/theme.min.js"></script -->
 <!-- optionally if you need translation for your language then include the locale file as mentioned below (replace LANG.js with your language locale) -->
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.2/js/locales/LANG.js"></script>
-<!-- FILE INPUT ** end   -->
-<!-- DATE INPUT ** start -->
-<!-- date-range-picker -->
-<script src="{{ asset('assets/plugins/moment/moment.min.js').'?v='.date('YmdH') }}"></script>
-<script src="{{ asset('assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js').'?v='.date('YmdH') }}"></script>
+<script src="{{ asset('assets/plugins/summernote/summernote-bs4.min.js').'?v='.date('YmdH') }}"></script>
 <!-- DATE INPUT ** end   -->
 <script src="{{ asset('assets/js/page.js').'?v='.date('YmdH').'2' }}"></script>
-<script src="{{ asset('assets/js/admin/training_cu.js').'?v='.date('YmdH') }}?ver=23051701"></script>
+<script src="{{ asset('assets/js/admin/training_cu.js').'?v='.date('YmdH') }}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+    $('#summernote').summernote({
+      placeholder: 'Tulis sesuatu disini....',
+      tabsize: 2,
+      height: 200
+    })
+  });
+</script>
 @endsection
 
 @section('addition_css')
 <!-- the fileinput plugin styling CSS file -->
 <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.2/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
 @endsection

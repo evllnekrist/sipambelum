@@ -26,7 +26,7 @@ class Option extends Model
         'updated_by',
     ];
 
-    public function legal_product_statistics(){
-      return $this->where('type','LEGAL_PRODUCT_TYPE')->hasMany(LegalProductStatistics::class, 'value', 'legal_product_type');
-    }
+    // public function legal_product_statistics(){
+    //   return $this->where('type','LEGAL_PRODUCT_TYPE')->hasMany(LegalProductStatistics::class, 'value', 'legal_product_type');
+    // }
 }

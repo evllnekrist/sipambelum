@@ -282,12 +282,31 @@ function copyToClipboard(copyText) {
   }
 
   function getTrainingList(page=1,page_size=3,withPagination=false){
+    let payload = {};
     let appendTo = '#trainingItemPreview';
-    $(appendTo).html(loadingElementImg);
-    let payload = {page:page, page_size:page_size};
+    $(appendTo).html(loadingElement);
+    if(withPagination){
+      let level   = $('.level:checkbox:checked').map(function() {return this.value;}).get();
+      $('#filter_info').html(``);
+      $('[name="_page"]').val(page)
+      payload = {
+        _page     : page, 
+        _limit    : 10,
+        _title    : $('[name="_title"]').val(),
+        _status   : $('[name="_status"]').val(),
+        _year     : $('[name="_year"]').val(),
+        _level    : level,
+        _sort_by  : $('[name="_sort_by"]').val(),
+      };
+    }else{
+      payload = {
+        _limit    : 4,
+      };
+    }
+    
     axios.post(baseUrl+'/api/get-training-list', payload, apiHeaders)
     .then(function (response) {
-      // console.log('[TRAINING] response..',response);
+      console.log('[TRAINING] response..',response);
       let template = '';
       if(response.data.status) {
         // i::data pagination----------------------------------------------------------------------------START
@@ -324,9 +343,9 @@ function copyToClipboard(copyText) {
         // i::data pagination------------------------------------------------------------------------------END
         // i::data display-------------------------------------------------------------------------------START
           template = '';
-          if(response.data.data && response.data.data.length > 0) {
+          if(response.data.data.products && response.data.data.products.length > 0) {
             // let i = 0;
-            (response.data.data).forEach((item) => {
+            (response.data.data.products).forEach((item) => {
               let imgToDisplay = baseUrl+'/assets/img/no-image-clean.png'
               let img = new Image();
               img.src = item.img_main+"?_="+(new Date().getTime());
