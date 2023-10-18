@@ -8345,7 +8345,7 @@ ul.inline_social li a.tw{
     padding: 10px;
     border: none;
     box-shadow: none;
-    height: 380px;
+    height: 300px;
     border-radius: 6px;
 	margin:0;
 }
@@ -13298,13 +13298,24 @@ table.property-table-wrap .dashboard_propert_wrapper .title .table-property-pric
     margin-bottom: 3px;
     display: inline-flex;
 }
-._leads_status .expire {
+._leads_status .red {
     padding: 3px 15px;
     background: rgba(233, 30, 58,0.1);
     border-radius: 50px;
     font-size: 12px;
     color: #e91e3a;
     border: 1px solid rgba(233, 30, 58,0.2);
+    font-weight: 600;
+    margin-bottom: 3px;
+    display: inline-flex;
+}
+._leads_status .blue {
+    padding: 3px 15px;
+    background: rgba(2, 190, 201,0.1);
+    border-radius: 50px;
+    font-size: 12px;
+    color: #02bec9;
+    border: 1px solid rgba(2, 190, 201,0.2);
     font-weight: 600;
     margin-bottom: 3px;
     display: inline-flex;
@@ -15364,4 +15375,7 @@ ul.foot_social li a {
 }
 .span-icon-content{
     margin-left:10px;font-size:0.7rem;line-height:2em;
+}
+.icon-span-content{
+    margin-top: 3px;padding-right: 10px;
 }

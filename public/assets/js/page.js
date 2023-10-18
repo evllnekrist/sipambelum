@@ -238,6 +238,7 @@ function copyToClipboard(copyText) {
                 $('#news_'+item.id+'_img').attr("src",imgToDisplay)
               }
               // console.log(item.img_author==null,profileToDisplay)
+              
               template +=`<div class="col-lg-3 col-md-4">
                             <div class="grid_blog_box">
                               
@@ -281,10 +282,11 @@ function copyToClipboard(copyText) {
     });
   }
 
-  function getTrainingList(page=1,page_size=3,withPagination=false){
+  function getTrainingList(page=1,withPagination=false){
     let payload = {};
     let appendTo = '#trainingItemPreview';
     $(appendTo).html(loadingElement);
+    console.log('whithPagination',withPagination)
     if(withPagination){
       let level   = $('.level:checkbox:checked').map(function() {return this.value;}).get();
       $('#filter_info').html(``);
@@ -308,104 +310,116 @@ function copyToClipboard(copyText) {
     .then(function (response) {
       console.log('[TRAINING] response..',response);
       let template = '';
+      let template_card_class = 'col-xl-3 col-lg-3 col-md-6 col-sm-6'
       if(response.data.status) {
-        // i::data pagination----------------------------------------------------------------------------START
-          if(withPagination){
-            let max_page = Math.ceil(response.data.data_count_total/page_size);
-            if(page >= 1){
-              template += `
-              <li class="page-item">
-                <a class="page-link" onclick="getTrainingList(1,`+page_size+`,`+withPagination+`)" aria-label="Pertama">
-                <span class="ti-arrow-left"></span>
-                <span class="sr-only">Pertama</span>
-                </a>
-              </li>`;
+        if(withPagination){
+          // i::data statistics----------------------------------------------------------------------------START
+            $('#products_count_start').html(response.data.data.products_count_start);
+            $('#products_count_end').html(response.data.data.products_count_end);
+            $('#products_count_total').html(response.data.data.products_count_total);
+            template = `Menampilkan hasil pencarian <u>Pelatihan</u> yang diadakan tahun <b>`+(response.data.data.filter._year).replace(';',' sd ')+`</b>`;
+            if(response.data.data.filter._lpt_info){
+              template += ` bertipe <strong class="theme-cl">(`+lpt.join(', ')+`)</strong>`;
             }
-            if(page-1 >= 1){
-              template += `<li class="page-item"><a class="page-link" onclick="getTrainingList(`+(page-1)+`,`+page_size+`,`+withPagination+`)">`+(page-1)+`</a></li>`;
+            if(response.data.data.filter._title){
+              template += ` dengan judul mengandung kata/kalimat <b><i>"`+response.data.data.filter._title+`"</i></b>`;
             }
-            template += `<li class="page-item active"><a class="page-link" onclick="getTrainingList(`+(page)+`,`+page_size+`,`+withPagination+`)">`+(page)+`</a></li>`;
-            if(page+1 <=  max_page){
-              template += `<li class="page-item"><a class="page-link" onclick="getTrainingList(`+(page+1)+`,`+page_size+`,`+withPagination+`)">`+(page+1)+`</a></li>`;
+            if(response.data.data.filter._status){
+              template += ` dan berstatus <b><i>"`+response.data.data.filter._status+`"</i></b>`;
             }
-            if(page < max_page){
-              template += `
-              <li class="page-item">
-                <a class="page-link" onclick="getTrainingList(`+(max_page)+`,`+page_size+`,`+withPagination+`)" aria-label="Terakhir">
-                <span class="ti-arrow-right"></span>
-                <span class="sr-only">Terakhir</span>
-                </a>
-              </li>`;
+            if(response.data.data.filter._sort_by){
+              template += ` diurutkan berdasarkan <u>`+product_sorted_by[response.data.data.filter._sort_by]+`</u>`;
             }
-            $(appendTo+'_pagination').html(template);
-            $(appendTo+'_filterInfo').html(`Menampilkan `+response.data.data_count_start+`-`+response.data.data_count_end+` dari `+response.data.data_count_total+` data`);
-          }
-        // i::data pagination------------------------------------------------------------------------------END
+            template += `.`; 
+            $('#filter_info').html(template);
+          // i::data statistics------------------------------------------------------------------------------END
+          // i::data pagination----------------------------------------------------------------------------START
+            template = '';
+            let max_page = Math.ceil(response.data.data.products_count_total/response.data.data.filter._limit);
+            if(response.data.data.filter._page > 1){
+              template += `<li><a onclick="getTrainingList(1,true)"><i class="fa fa-caret-left" aria-hidden="true"></i></a></li>`;
+            }
+            if(response.data.data.filter._page-1 >= 1){
+              template += `<li><a onclick="getTrainingList(`+(response.data.data.filter._page-1)+`,true)">`+(response.data.data.filter._page-1)+`</a></li>`;
+            }
+            if(response.data.data.filter._page-2 >= 1){
+              template += `<li><a onclick="getTrainingList(`+(response.data.data.filter._page-2)+`,true)">`+(response.data.data.filter._page-2)+`</a></li>`;
+            }
+            template += `<li><a onclick="getTrainingList(`+response.data.data.filter._page+`,true)" class="active">`+response.data.data.filter._page+`</a></li>`;
+            if(response.data.data.filter._page+1 <=  max_page){
+              template += `<li><a onclick="getTrainingList(`+(response.data.data.filter._page+1)+`,true)">`+(response.data.data.filter._page+1)+`</a></li>`;
+            }
+            if(response.data.data.filter._page+2 <=  max_page){
+              template += `<li><a onclick="getTrainingList(`+(response.data.data.filter._page+2)+`,true)">`+(response.data.data.filter._page+2)+`</a></li>`;
+            }
+            if(response.data.data.filter._page < max_page){
+              template += `<li><a onclick="getTrainingList(`+max_page+`)",true><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>`;
+            }
+            // console.log('template', template);
+            $('#plp_pagination').html(template);
+          // i::data pagination------------------------------------------------------------------------------END
+            template_card_class = 'col-xl-4 col-lg-4 col-md-6 col-sm-12'
+        }
         // i::data display-------------------------------------------------------------------------------START
-          template = '';
-          if(response.data.data.products && response.data.data.products.length > 0) {
-            // let i = 0;
-            (response.data.data.products).forEach((item) => {
-              let imgToDisplay = baseUrl+'/assets/img/no-image-clean.png'
-              let img = new Image();
-              img.src = item.img_main+"?_="+(new Date().getTime());
-              img.onload = function () {
-                imgToDisplay = item.img_main
-                $('#training_'+item.id+'_img').attr("src",imgToDisplay)
-              }
-              // console.log(item.img_author==null,profileToDisplay)
-              template +=`<div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                            <div class="grid_agents style-2">
+        template = ''
+        if(response.data.data.products && response.data.data.products.length > 0) {
+          (response.data.data.products).forEach((item) => {
+            let imgToDisplay = baseUrl+'/assets/img/no-image-clean.png'
+            let img = new Image();
+            img.src = item.img_main+"?_="+(new Date().getTime());
+            img.onload = function () {
+              imgToDisplay = item.img_main
+              $('#training_'+item.id+'_img').attr("src",imgToDisplay)
+            }
+            // console.log(item.img_author==null,profileToDisplay)
+            template +=`<div class="`+template_card_class+`">
+                          <div class="grid_agents style-2">
 
-                              <div class="grid_agents-wrap">
-                                <div class="fr-grid-thumb">
-                                  <a href="agent-page.html">
-                                    <img id="training_`+item.id+`_img" src="`+imgToDisplay+`" class="img-fluid mx-auto my-auto" alt="">
-                                  </a>
-                                  <ul class="inline_social">
-                                    <li>
-                                      <a href="#"><i class="fa fa-info" aria-hidden="true"></i></a>
-                                    </li>
-                                    <li>
-                                      <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Alamat:</em><br>`+item.address+`">
-                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Email:</em><br>`+item.contact_email+`">
-                                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                                      </a>
-                                    </li>
-                                    <li>
-                                      <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Telepon/WA:</em><br>`+item.contact_phone+`">
-                                        <i class="fa fa-phone" aria-hidden="true"></i>
-                                      </a>
-                                    </li>
-                                  </ul>
-                                </div>
-                                
-                                <div class="fr-grid-deatil">
-                                  <div class="mb-2">
-                                  `+(item.is_online?
-                                    `<b class="badge badge-warning">Online</b>`:
-                                    `<b class="badge badge-success">Offline</b>`)
-                                  +`
-                                  </div>
-                                  <h5 class="fr-can-name"><a href="`+baseUrl+`/training/`+item.slug+`">`+item.name+`</a></h5>
-                                  <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small>
-                                </div>
+                            <div class="grid_agents-wrap">
+                              <div class="fr-grid-thumb">
+                                <a href="agent-page.html">
+                                  <img id="training_`+item.id+`_img" src="`+imgToDisplay+`" class="img-fluid mx-auto my-auto" alt="">
+                                </a>
+                                <ul class="inline_social">
+                                  <li>
+                                    <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Alamat:</em><br>`+item.address+`">
+                                      <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Email:</em><br>`+item.contact_email+`">
+                                      <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a class="trainingItemPreviewTooltips" data-toggle="tooltip" data-html="true" title="<em>Telepon/WA:</em><br>`+item.contact_phone+`">
+                                      <i class="fa fa-phone" aria-hidden="true"></i>
+                                    </a>
+                                  </li>
+                                </ul>
                               </div>
-
+                              
+                              <div class="fr-grid-deatil">
+                                <div class="mb-2">
+                                `+(item.is_online?
+                                  `<b class="badge badge-warning">Online</b>`:
+                                  `<b class="badge badge-success">Offline</b>`)
+                                +`
+                                </div>
+                                <h5 class="fr-can-name"><a href="`+baseUrl+`/training/`+item.slug+`">`+item.name+`</a></h5>
+                                <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small>
+                              </div>
                             </div>
-                          </div>`;
-              // i++;
-            });
-            $(appendTo).html(template);
-            $('.trainingItemPreviewTooltips').tooltip();
-          }else{
-            $(appendTo).html(`<center><b class="text-warning">tidak ada data</b></center>`);
-          }
-        // i::data display-------------------------------------------------------------------------------START
+
+                          </div>
+                        </div>`;
+          });
+          $(appendTo).html(template);
+          $('.trainingItemPreviewTooltips').tooltip();
+        }else{
+          $(appendTo).html(`<center><b class="text-warning">tidak ada data</b></center>`);
+        }
+        // i::data display-------------------------------------------------------------------------------END
       }else{
         // swallalert here
         $(appendTo).html(`<center><b class="text-warning">Gagal mendapatkan data (C1)</b></center>`);

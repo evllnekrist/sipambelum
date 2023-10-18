@@ -28,6 +28,6 @@ $(function(){
   // enable for dynamic banner ------ end
   getStatistics_traineeOfTraining()
   getNewsList(1,4)
-  getTrainingList(1,4)
+  getTrainingList()
   getSelectionList('#collaboratorPreview','COLLABORATOR')
 });

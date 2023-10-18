@@ -9,7 +9,7 @@
             // echo "<pre>";
             // print_r($_GET);
             // echo "</pre>";
-            $get_level = @$_GET['level']?explode(',',strtoupper($_GET['level'])):array();
+            $get_level = @$_GET['level']?exgetTrainingode(',',strtoupper($_GET['level'])):array();
           ?>
           <div class="row m-0">
             <div class="short_wraping">
@@ -25,7 +25,7 @@
                       <input name="_page" value="1" hidden>
                     </div>
                     <div class="shorting_pagination_right">
-                      <ul id="plp_pagination">
+                      <ul id="_pagination">
                       </ul>
                     </div>
                   </div>
@@ -34,7 +34,7 @@
                 <div class="col-lg-6 col-md-5 col-sm-12 order-lg-3 order-md-2 col-sm-6">
                   <div class="shorting-right">
                     <label>Urut Berdasarkan :</label>
-                    <select name="_sort_by" class="ml-3" onchange="getLPList()">
+                    <select name="_sort_by" class="ml-3" onchange="getTrainingList(1,true)">
                       @foreach(@$data_sorted_by as $key => $item)
                         <option value="{{$key}}">{{$item}}</option>
                       @endforeach
@@ -101,7 +101,7 @@
                         <button onclick="resetFilter()" class="btn full-width" title="reset filter"><i class="fa fa-retweet text-warning"></i></button>
                       </div>
                       <div class="col-8 pt-4">
-                        <button onclick="getLPList()" class="btn theme-bg rounded full-width">Cari</button>
+                        <button onclick="getTrainingList(1,true)" class="btn theme-bg rounded full-width">Cari</button>
                       </div>
                     </div>
                   
@@ -125,6 +125,6 @@
 		</div>
 @endsection
 @section('addition_script')
-    <script src="{{ asset('assets/js/page.js')}}"></script>
+    <script src="{{ asset('assets/js/page.js').'?v=231018001'}}"></script>
     <script src="{{ asset('assets/js/user/training.js')}}"></script>
 @endsection

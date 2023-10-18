@@ -239,6 +239,6 @@
     </div>
 @endsection
 @section('addition_script')
-    <script src="{{ asset('assets/js/page.js').'?v=230924001' }}"></script>
+    <script src="{{ asset('assets/js/page.js') }}"></script>
     <script src="{{ asset('assets/js/user/home.js') }}"></script>
 @endsection

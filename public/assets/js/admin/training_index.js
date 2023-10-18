@@ -49,7 +49,7 @@ function doDelete(id,name){
 
 function getData(){
   $('#page-loading').html(loadingElement);
-  let url = baseUrl+'/api/get-training-list'
+  let url = baseUrl+'/api/get-training-listfull'
   let page = 1, pageSize = 10
   let payload = {page: page, page_size: pageSize}
   console.log('tryin to retrieve data....',url)

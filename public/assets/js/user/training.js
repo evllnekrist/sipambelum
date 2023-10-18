@@ -6,11 +6,11 @@ function resetFilter(){
     $('[name="_year"]').val('1945;'+new Date().getFullYear());
     $('.level:checkbox').prop('checked', true);
     $('[name="_sort_by"]').val('latest');
-    getTrainingList(); // auto page 1
+    getTrainingList(1,true); // auto page 1
 }
 
 $(function(){
     console.log('get Listing');
-    getTrainingList();
+    getTrainingList(1,true);
 });
   

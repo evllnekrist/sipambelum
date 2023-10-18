@@ -80,7 +80,7 @@ class TrainingController extends Controller
         $data['filter']['_limit']       = $limit;
         $data['filter']['_level_info']  = null;
         if($request->get('_title')){
-          $data['products'] = $data['products']->whereRaw('LOWER(title) LIKE "%'.strtolower($request->get('_title')).'%"');
+          $data['products'] = $data['products']->whereRaw('LOWER(name) LIKE "%'.strtolower($request->get('_title')).'%"');
         }
         // if($request->get('_status')){
         //   $data['products'] = $data['products']->where('status','=',$request->get('_status'));
@@ -103,10 +103,10 @@ class TrainingController extends Controller
               $data['products'] = $data['products']->orderBy('created_at','DESC');
               break;
             case 'abc':
-              $data['products'] = $data['products']->orderBy('title','ASC');
+              $data['products'] = $data['products']->orderBy('name','ASC');
               break;
             case 'abc-reverse':
-              $data['products'] = $data['products']->orderBy('title','DESC');
+              $data['products'] = $data['products']->orderBy('name','DESC');
               break;
             // case 'most_viewed':
             //   $data['products'] = $data['products']->orderBy('view_count','DESC');
@@ -123,7 +123,7 @@ class TrainingController extends Controller
       }else{
         $data['products']               = $data['products']->orderBy('created_at','DESC')->limit($limit);
       }
-      // $data['products_raw_sql']       = $data['products']->toSql();
+      $data['products_raw_sql']       = $data['products']->toSql();
       $data['products']               = $data['products']->get();
       return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
     } catch (Exception $e) {
