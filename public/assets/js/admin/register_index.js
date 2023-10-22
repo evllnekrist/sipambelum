@@ -1,4 +1,4 @@
-console.log('REGISTER IDX')
+// console.log('REGISTER IDX')
 
 function doDelete(id,name){
   if(confirm("Apakah Anda yakin menghapus user '"+name+"'? Aksi ini tidak dapat dibatalkan.")){
@@ -62,15 +62,15 @@ $(function () {
   //   "responsive": true,
   // });
 
-  let noDeleteItems = ['ev.attoff@gmail.com','superuser@mail.com'];
+  let noDeleteItems = ['ev.attoff@gmail.com','admin7@sipambelum.com'];
   function getData(){
-    let url = baseUrl+'/api/get-user-list'
+    let url = baseUrl+'/api/get-user-listfull'
     let page = 1, pageSize = 10
     let payload = {page: page, page_size: pageSize}
     console.log('tryin to retrieve data....',url)
     axios.post(url, payload, apiHeaders)
     .then(function (response) {
-      //console.log('[DATA] response..',response.data.data);
+      console.log('[DATA] response..',response.data.data);
       if(response.data.status) {
           $('#data-list').DataTable({ // https://datatables.net/manual/data/
             language: {

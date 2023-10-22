@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use Auth;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Trainee_Training;
 
 class Training extends Model
 {
@@ -26,4 +28,10 @@ class Training extends Model
         'event_start',
         'event_end',
     ];
+
+    
+    public function trainees(): HasMany
+    {
+        return $this->hasMany(Trainee_Training::class,'id_training','id');
+    }
 }

@@ -127,6 +127,10 @@ a.white-link {
     color:#2EA5E4 !important;
     font-weight: 600;
 }
+.text-yellow-b {
+    color:#ff9b20 !important;
+    font-weight: 600;
+}
 .img-responsive {
   width: 100%;
   height: auto;

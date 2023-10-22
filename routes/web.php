@@ -25,7 +25,6 @@ use App\Http\Controllers\SubdistrictController;
 Route::group(['prefix' => 'api'], function () {
     Route::post('/get-statistics-trainee-of-training', [PageController::class, 'get_statistics_trainee_of_training']);
     Route::post('/get-selection-list', [PageController::class, 'get_options']);
-    Route::post('/get-user-list', [PageController::class, 'get_list']);
     Route::post('/get-page-list', [PageController::class, 'get_list']);
     Route::post('/get-business-list', [BusinessController::class, 'get_list']);
     Route::post('/get-business-listful', [BusinessController::class, 'get_list']);
@@ -104,7 +103,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('admin.dashboard');
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'admin-katkab'], function () {
-        Route::get('/users', [ProfileController::class, 'admin_index'])->name('admin.user');
+        // Route::get('/users', [ProfileController::class, 'admin_index'])->name('admin.user');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -124,6 +123,7 @@ Route::middleware('auth')->group(function () {
         Route::get('training', [TrainingController::class, 'admin_index'])->name('admin.training');
         Route::get('training/add', [TrainingController::class, 'form_add'])->name('admin.training.add');
         Route::get('training/edit/{id}', [TrainingController::class, 'form_edit'])->name('admin.training.edit');
+        Route::get('training/trainees/{id}', [TrainingController::class, 'form_edit_trainees'])->name('admin.training.edit-trainees');
 
         Route::get('trainee', [TraineeController::class, 'admin_index'])->name('admin.trainee');
         Route::get('trainee/add', [TraineeController::class, 'form_add'])->name('admin.trainee.add');

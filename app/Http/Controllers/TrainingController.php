@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Option;
 use App\Models\Training;
+use App\Models\Trainee_Training;
+use App\Models\Subdistrict;
 use DB;
 
 class TrainingController extends Controller
@@ -59,6 +61,18 @@ class TrainingController extends Controller
     $data['selected'] = Training::find($id);
     if($data['selected']){
       return view('pages-admin.training.edit', $data);
+    }else{
+      return $this->show_error_admin('Berita');
+    }
+  }
+
+  public function form_edit_trainees($id)
+  {
+    $data['selected'] = Training::find($id);
+    $data['subdistrict'] = Subdistrict::get();
+    $data['trainees'] = Trainee_Training::with('trainee')->where('id_training',$id)->get();
+    if($data['selected']){
+      return view('pages-admin.training.edit-trainees', $data);
     }else{
       return $this->show_error_admin('Berita');
     }
@@ -133,7 +147,7 @@ class TrainingController extends Controller
   public function get_listfull(Request $request)
   {
     try {
-      $data = Training::orderBy('created_at', 'DESC')->get();
+      $data = Training::with('trainees')->orderBy('created_at', 'DESC')->get();
       return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
     } catch (Exception $e) {
       return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));

@@ -1,6 +1,6 @@
 <div class="property_dashboard_navbar">
     <div class="dash_user_avater">
-        <img src="https://via.placeholder.com/400x400" class="img-fluid avater" alt="">
+        <img src="{{asset('/assets/img/profile/'.Auth::user()->img_profile_id.'.png')}}" class="img-fluid avater" alt="">
         <h6>{{Auth::user()->name}}</h6>
         <span>{{Auth::user()->role}}</span>
     </div>
@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('admin.user')}}">
+                <a href="{{route('register-list')}}">
                 <i class="fas fa-users"></i>Pengguna
                 </a>
             </li>

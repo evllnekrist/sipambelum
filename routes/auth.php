@@ -12,10 +12,9 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');
-
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    // Route::get('register', [RegisteredUserController::class, 'create'])
+    //             ->name('register');
+    // Route::post('register', [RegisteredUserController::class, 'store']);
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
@@ -36,6 +35,28 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::group(['prefix' => 'admin-katkab'], function () {
+        Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+        Route::post('register', [RegisteredUserController::class, 'store']);
+        Route::get('user', [RegisteredUserController::class, 'index'])->name('register-list');
+        Route::get('user/{id}', [RegisteredUserController::class, 'edit'])->name('register-edit');
+        Route::post('user/{id}', [RegisteredUserController::class, 'update']);
+        Route::post('api/user/post-delete/{id}', [RegisteredUserController::class, 'post_delete']);
+    
+        Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+        Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+        Route::put('password/{id}', [PasswordController::class, 'update'])->name('password.update');
+        
+        Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    });
+
+    // Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
+    //             ->name('password.confirm');
+    // Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    // Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
+                ->name('logout2');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 
@@ -47,13 +68,6 @@ Route::middleware('auth')->group(function () {
                 ->middleware('throttle:6,1')
                 ->name('verification.send');
 
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->name('password.confirm');
+    Route::post('api/get-user-listfull', [RegisteredUserController::class, 'get_listfull']);
 
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
 });

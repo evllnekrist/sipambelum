@@ -80,6 +80,16 @@ function getData(){
             { data: 'level' },
             { data: 'trainee_limit' },
             { data: null, render: function ( data, type, row ) {
+                let template = data.trainees.length;
+                if(data.name,new Date(data.event_start) > new Date(new Date().getTime())){
+                  template+='<a href="'+baseUrl+'/admin-katkab/training/trainees/'+data.id+'" target="_blank" class="text-blue-b">&nbsp;&nbsp;&nbsp;&nbsp;<i class="nav-icon fas fa-user-edit"></i></a>';
+                }else{
+                  template+='<a href="#" class="text-yellow-b">&nbsp;&nbsp;&nbsp;&nbsp;<i class="nav-icon fas fa-user-lock"></i></a>';
+                }
+                return template;
+              }  
+            },
+            { data: null, render: function ( data, type, row ) {
                 return (data.is_online?'<i class="fas fa-wifi text-blue" title="Online"></i>':
                 '<i class="fas fa-map-marker-alt text-danger" title="Offline"></i>')+
                 '<span class="span-icon-content">'+data.address+'</span>';
