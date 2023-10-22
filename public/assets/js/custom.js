@@ -462,15 +462,15 @@ $(function() {
 		allowClear: true
 	});
 	
-	// Select Property Types
+	// Select Semua Level
 	$('#ptypes').select2({
-		placeholder: "Property Types",
+		placeholder: "Semua Level",
 		allowClear: true
 	});
 	
-	// Select Property Types
+	// Select Semua Level
 	$('#ptype').select2({
-		placeholder: "Property Types",
+		placeholder: "Semua Level",
 		allowClear: true
 	});
 	
@@ -518,7 +518,7 @@ $(function() {
 	
 	// Select Town
 	$('#location').select2({
-		placeholder: "Location",
+		placeholder: "Semua Kecamatan",
 		allowClear: true
 	});
 	
@@ -552,25 +552,25 @@ $(function() {
 		allowClear: true
 	});
 	
-	// Select Tab Location
+	// Select Tab Semua Kecamatan
 	$('#lot-1').select2({
-		placeholder: "Choose Location",
+		placeholder: "Choose Semua Kecamatan",
 		allowClear: true
 	});
 	
-	// Select Tab Location
+	// Select Tab Semua Kecamatan
 	$('#lot-2').select2({
-		placeholder: "Location",
+		placeholder: "Semua Kecamatan",
 		allowClear: true
 	});
 	
-	// Select Tab  Property Types
+	// Select Tab  Semua Level
 	$('#ptype-1').select2({
 		placeholder: "Properties Types",
 		allowClear: true
 	});
 	
-	// Select Tab Property Types
+	// Select Tab Semua Level
 	$('#ptype-2').select2({
 		placeholder: "Properties Types",
 		allowClear: true

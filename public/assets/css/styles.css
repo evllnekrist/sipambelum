@@ -131,6 +131,9 @@ a.white-link {
     color:#ff9b20 !important;
     font-weight: 600;
 }
+.text-smaller{
+    font-size: xx-small !important;
+}
 .img-responsive {
   width: 100%;
   height: auto;
@@ -4723,6 +4726,9 @@ li.login-attri .account-drop a {
     justify-content: center;
     align-items: center;
 }
+.hero_banner-top {
+    align-items: self-start !important;
+}
 .hero_search-flex {
     width: 100%;
     display: flex;
@@ -5520,6 +5526,13 @@ h1.italian-header-capt {
     text-align: center;
 }
 h1.big-header-capt {
+	font-weight:700;
+    margin: 0 auto;
+    margin-bottom:0.4em;
+    text-align: center;
+	text-transform:capitalize;
+}
+.notsobig-header-capt {
 	font-weight:700;
     margin: 0 auto;
     margin-bottom:0.4em;

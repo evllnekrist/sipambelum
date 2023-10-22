@@ -6,7 +6,7 @@
 <div class="content-wrapper">
   @include('includes.loading')
   <form method="post" action="#" id="form">
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
           <h5 class="text-muted2">Kelola Peserta</h5>
@@ -19,29 +19,98 @@
           </ol>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="container-fluid">
       <input type="text" name="id" value="{{@$selected->id}}" class="form-control form-control-border border-width-2" hidden>
-      <div class="row">
-        <!-- left column -->
-        <div class="col-md-12">
-          <div class="card card-primary">
-            <div class="card-header">
-              <h6 class="card-title text-muted2">Konten</h6>
-            </div>
+      
+      
+			<div class="image-cover hero_banner hero_banner-top" style="background:url(https://via.placeholder.com/2200x1100) no-repeat;" data-overlay="5">
+				<div class="container">
+					
+					<h3 class="notsobig-header-capt mb-0">Cari Peserta</h3>
+					<p class="text-center text-smaller mb-4">Find new & featured property located in your local city.</p>
+					<div class="row justify-content-center">
+						<div class="col-xl-10 col-lg-12 col-md-12">
+							<div class="full_search_box nexio_search lightanic_search hero_search-radius modern">
+								<div class="search_hero_wrapping">
+							
+									<div class="row">
+										<div class="col-md-4 col-sm-12">
+											<div class="form-group">
+												<label class="text-smaller">Kecamatan</label>
+												<div class="input-with-icon">
+													<select id="location" class="form-control">
+														<option value="">&nbsp;</option>
+                                                        @foreach($subdistricts as $item)
+														<option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-md-3 col-sm-12">
+											<div class="form-group">
+												<label class="text-smaller">Level Peserta</label>
+												<div class="input-with-icon">
+													<select id="ptypes" class="form-control">
+														<option value="">&nbsp;</option>
+                                                        @foreach($grade_levels as $item)
+														<option value="{{$item->value}}">{{$item->label}}</option>
+                                                        @endforeach
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-md-4 col-sm-12 d-md-none d-lg-block">
+											<div class="form-group">
+												<label class="text-smaller">Nama/NIK</label>
+                                                <input type="text" class="form-control search_input border-0" placeholder="ex. Nama Anda" />
+											</div>
+										</div>
+										
+										<div class="col-md-1 col-sm-12 small-padd">
+											<div class="form-group none">
+												<button type="button" class="btn theme-bg full-width" id="btn-trainees-search"><i class="fa fa-search"></i></button>
+											</div>
+										</div>
+									</div>
+                                    <!-- Collapse: Search -->
+                                    <div id="advance-search" aria-expanded="false" style="display:none">
+                                        <!-- row -->
+                                        <div class="row">
+                                        
+                                            <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                <h6 class="text-dark">Pilih dari hasil pencarian berikut :</h6>
+                                                <ul class="no-ul-list third-row">
+                                                    <li>
+                                                        <input id="a-1" class="form-check-input" name="a-1" type="checkbox">
+                                                        <label for="a-1" class="form-check-label">Air Condition</label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            
+                                        </div>
+                                        <!-- /row -->
+                                        <!-- row -->
+                                        <div class="row">
+                                            <button type="button" class="btn theme-bg btn-md btn-block" id="btn-trainees-add">Tambahkan</button>
+                                        </div>
+                                        <!-- /row -->
+                                    </div>
+									
+								</div>
+							</div>
+							
+						</div>
+					</div>
+                    
+				</div>
+			</div>
 
-            <div class="card-body">
-                
-            </div>
-            <!-- /.card-body -->
-          </div>
-        </div>
-        <!--/.col (left) -->
-        <!-- right column -->
-        <!--/.col (right) -->
-      </div>
     </div>
-    <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-submit-edit">Simpan</button>
+    <button type="button" class="btn btn-primary btn-lg btn-block mt-5" id="btn-submit-edit">Simpan</button>
   </form>
 </div>
 @endsection
