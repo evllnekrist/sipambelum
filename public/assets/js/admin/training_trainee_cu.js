@@ -35,48 +35,51 @@ $(function(){
       // console.log('==',subdistrict_ids.includes(sd))
       if(subdistrict_ids.includes(sd)){      
         $("#subdistrict-"+sd+"-wrap").show();
-        template = `
-        <tr>
-          <td>
-              <b>`+item.name+`</b><br>
-              <span>`+item.nik+`</span><br>
-              <span>`+item.aktif+`</span>
-          </td>
-          <td>
-              <div class="_leads_status"><span class="active">`+item.level+`</span></div>
-              <span>Update terakhir ...</span>
-          </td>
-          <td>
-              <div class="prt_leads"><span>27 till now</span></div>
-              <div class="prt_leads_list">
-                  <ul>
-                      <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                      <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                      <li><a href="#" class="_leads_name style-1">K</a></li>
-                      <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                      <li><a href="#" class="leades_more">10+</a></li>
-                  </ul>
-              </div>
-          </td>
-          <td>
-              <div class="prt_leads"><span>27 till now</span></div>
-              <div class="prt_leads_list">
-                  <ul>
-                      <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                      <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                      <li><a href="#" class="_leads_name style-1">K</a></li>
-                      <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                      <li><a href="#" class="leades_more">10+</a></li>
-                  </ul>
-              </div>
-          </td>
-          <td>
-              <div class="_leads_action">
-                  <a href="#" class="delete"><i class="ti-close"></i></a>
-                  <a href="#"><i class="ti-check"></i></a>
-              </div>
-          </td>
-        </tr>`;
+        if(document.getElementById("subdistrict-"+item.id+"-user")){
+        }else{
+          template = `
+          <tr id="subdistrict-`+item.id+`-user">
+            <td>
+                <b>`+item.name+`</b><br>
+                <span>`+item.nik+`</span><br>
+                <span>`+item.aktif+`</span>
+            </td>
+            <td>
+                <div class="_leads_status"><span class="active">`+item.level+`</span></div>
+                <span>Update terakhir ...</span>
+            </td>
+            <td>
+                <div class="prt_leads"><span>27 till now</span></div>
+                <div class="prt_leads_list">
+                    <ul>
+                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
+                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
+                        <li><a href="#" class="_leads_name style-1">K</a></li>
+                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
+                        <li><a href="#" class="leades_more">10+</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <div class="prt_leads"><span>27 till now</span></div>
+                <div class="prt_leads_list">
+                    <ul>
+                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
+                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
+                        <li><a href="#" class="_leads_name style-1">K</a></li>
+                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
+                        <li><a href="#" class="leades_more">10+</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <div class="_leads_action">
+                    <a href="#" class="delete"><i class="ti-close"></i></a>
+                    <a href="#"><i class="ti-check"></i></a>
+                </div>
+            </td>
+          </tr>`;
+        }
         $("#subdistrict-"+sd+"-tbody").append(template);
       }else{
         Swal.fire({
