@@ -111,7 +111,6 @@ public function getBasicList(Request $request)
         return response()->json(['status' => $trainee ? true : false]);
     }
 
-
     public function form_edit($id)
     {
         $data['selected'] = Trainee::find($id);
@@ -129,16 +128,38 @@ public function getBasicList(Request $request)
 
     // -------------------------------------- CALLED BY AJAX ---------------------------- start
     public function get_list(Request $request)
-{
-    try {
-        // Mengambil data trainee dan menggabungkannya dengan data subdistrict
-        $data = Trainee::with('subdistrict')->get();
+    {
+        try {
+            // Mengambil data trainee dan menggabungkannya dengan data subdistrict
+            $data = Trainee::with('subdistrict')->get();
 
-        return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
-    } catch (\Exception $e) {
-        return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+            return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
+        } catch (\Exception $e) {
+            return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+        }
     }
-}
+    public function get_list_adv(Request $request)
+    {
+        try {
+            $data['products'] = Trainee::with('subdistrict');
+            if($request->get('_search')){
+                $data['products'] = $data['products']->where(function($q) use ($request) {
+                    $q->where('name','like','%'.$request->get('_search').'%')
+                        ->orWhere('nik','like','%'.$request->get('_search').'%');
+                });
+            }
+            if($request->get('_subdistrict')){
+                $data['products'] = $data['products']->where('subdistrict_of_residence',$request->get('_subdistrict'));
+            }
+            if($request->get('_level')){
+                $data['products'] = $data['products']->where('level',$request->get('_level'));
+            }
+            $data['products'] = $data['products']->get();
+            return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
+        } catch (\Exception $e) {
+            return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+        }
+    }
     public function subdistrict()
     {
         return $this->belongsTo(Subdistrict::class);

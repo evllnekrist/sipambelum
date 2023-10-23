@@ -35,8 +35,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-news-list', [NewsController::class, 'get_list']);
     Route::post('/get-training-listfull', [TrainingController::class, 'get_listfull']);
     Route::post('/get-training-list', [TrainingController::class, 'get_list']);
-    Route::post('/get-trainee-listfull', [TraineeController::class, 'get_listfull']);
+    // Route::post('/get-trainee-listfull', [TraineeController::class, 'get_listfull']);
     Route::post('/get-trainee-list', [TraineeController::class, 'get_list']);
+    Route::post('/get-trainee-list-adv', [TraineeController::class, 'get_list_adv']);
     Route::post('/get-subdistrict-list', [SubdistrictController::class, 'get_list']);
     Route::post('/get-subdistrict-listful', [SubdistrictController::class, 'get_list']);
     Route::get('/subdistricts/{subdistrictId}', [SubdistrictController::class, 'getSubdistrictName']);
