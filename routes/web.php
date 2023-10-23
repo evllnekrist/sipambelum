@@ -95,6 +95,7 @@ Route::get('training/{id}', [TrainingController::class, 'user_detail'])->name('u
 Route::get('trainee', [TraineeController::class, 'user_index'])->name('user.trainee');
 Route::get('trainee/{id}', [TraineeController::class, 'user_detail'])->name('user.trainee_detail');
 Route::get('getTrainingHistory', [TraineeController::class, 'getTrainingHistory'])->name('get.training.history');
+Route::get('getBusinessHistory', [TraineeController::class, 'getBusinessHistory'])->name('get.business.history');
 Route::get('news', [NewsController::class, 'user_index'])->name('user.news');
 Route::get('news/{id}', [NewsController::class, 'user_detail'])->name('user.news_detail');
 

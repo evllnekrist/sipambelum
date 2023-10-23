@@ -68,7 +68,10 @@ function getData() {
         columns: [
           { data: 'id' },
           // Sesuaikan kolom-kolom berikut dengan atribut-atribut local potential dari respons API
-          { data: 'name' },
+          { data: null, render: function ( data, type, row ) {
+            return '<a href="'+baseUrl+'/admin-katkab/local-potential/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.name+'</a>';
+          } 
+        },
           { data: 'desc' },
           {
             data: 'img_main',
@@ -86,8 +89,7 @@ function getData() {
           // Kolom aksi untuk menghapus local potential
           {
             data: null, render: function (data, type, row) {
-              return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>' +
-                ' <a href="' + baseUrl + '/admin-katkab/local-potential/edit/' + data.id + '" class="text-primary"><i class="nav-icon fas fa-edit"></i></a>';
+              return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>' ;
             }
           },
         ],

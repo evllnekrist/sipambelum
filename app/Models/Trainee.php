@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Trainee_Training;
-
+use App\Models\Trainee_Business;
 // use Auth;
 
 class Trainee extends Model
@@ -40,6 +40,11 @@ class Trainee extends Model
             ->join('tr_training', 'map_trainee_training.id_training', '=', 'tr_training.id')
             ->select('tr_training.name as training_name', 'map_trainee_training.active', 'map_trainee_training.is_passed');
     }
-    
+    public function businessHistory()
+    {
+        return $this->hasMany(Trainee_Business::class, 'id_trainee', 'id')
+            ->leftJoin('ms_business', 'map_trainee_business.id_business', '=', 'ms_business.id')
+            ->select('ms_business.name as business_name', 'map_trainee_business.job_title', 'map_trainee_business.active');
+    }
     
 }

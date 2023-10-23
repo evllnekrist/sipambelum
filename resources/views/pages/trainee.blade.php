@@ -104,7 +104,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Detail Pelatihan</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Detail Riwayat Pelatihan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -123,6 +123,19 @@
                         <!-- Data pelatihan akan dimasukkan dinamis melalui JavaScript -->
                     </tbody>
                 </table>
+                <h6>Riwayat Terkait Bisnis:</h6>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nama Bisnis</th>
+                            <th>Jabatan</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="businessHistoryBody">
+                        <!-- Data riwayat terkait bisnis akan dimasukkan dinamis melalui JavaScript -->
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -135,37 +148,62 @@
 
 <!-- Inside your Blade file -->
 <script>
-    // Use event delegation to handle click events for dynamically added elements
-    $(document).on('click', '.view-details-btn', function() {
-        var traineeId = $(this).data('trainee-id');
-        var modalBody = $('#myModal .modal-body tbody');
-        modalBody.html('<tr><td colspan="3">Memuat...</td></tr>'); // Tambahkan pesan "Memuat..."
+  // Use event delegation to handle click events for dynamically added elements
+$(document).on('click', '.view-details-btn', function() {
+    var traineeId = $(this).data('trainee-id');
+    var trainingHistoryBody = $('#trainingHistoryBody');
+    var businessHistoryBody = $('#businessHistoryBody');
 
-        $.ajax({
-            url: '{{ route("get.training.history") }}',
-            type: 'GET',
-            data: { id_trainee: traineeId },
-            success: function(data) {
-                modalBody.empty(); // Hapus pesan "Memuat..." setelah mendapatkan respons dari server
+    // Load training history data
+    $.ajax({
+        url: '{{ route("get.training.history") }}',
+        type: 'GET',
+        data: { id_trainee: traineeId },
+        success: function(trainingData) {
+            trainingHistoryBody.empty(); // Clear existing training history data
 
-                data.forEach(function(history) {
-                    var status = history.active == 1 ? 'Aktif' : 'Tidak Aktif';
-                    var result = history.is_passed == 1 ? 'Lulus' : 'Tidak Lulus';
+            trainingData.forEach(function(trainingHistory) {
+                var status = trainingHistory.active == 1 ? 'Aktif' : 'Tidak Aktif';
+                var result = trainingHistory.is_passed == 1 ? 'Lulus' : 'Tidak Lulus';
 
-                    var row = '<tr>' +
-                        '<td>' + history.training_name + '</td>' +
-                        '<td>' + status + '</td>' +
-                        '<td>' + result + '</td>' +
-                        '</tr>';
+                var row = '<tr>' +
+                    '<td>' + trainingHistory.training_name + '</td>' +
+                    '<td>' + status + '</td>' +
+                    '<td>' + result + '</td>' +
+                    '</tr>';
 
-                    modalBody.append(row);
-                });
-            },
-            error: function() {
-                modalBody.html('<tr><td colspan="3">Gagal memuat data. Silakan coba lagi nanti.</td></tr>'); // Tampilkan pesan kesalahan jika permintaan AJAX gagal
-            }
-        });
+                trainingHistoryBody.append(row);
+            });
+        },
+        error: function() {
+            trainingHistoryBody.html('<tr><td colspan="3">Gagal memuat data. Silakan coba lagi nanti.</td></tr>'); // Handle error for training history AJAX request
+        }
     });
+
+    // Load business history data
+    $.ajax({
+        url: '{{ route("get.business.history") }}',
+        type: 'GET',
+        data: { id_trainee: traineeId },
+        success: function(businessData) {
+            businessHistoryBody.empty(); // Clear existing business history data
+
+            businessData.forEach(function(businessHistory) {
+                var businessRow = '<tr>' +
+                    '<td>' + businessHistory.business_name + '</td>' +
+                    '<td>' + businessHistory.job_title + '</td>' +
+                    '<td>' + (businessHistory.active ? 'Aktif' : 'Tidak Aktif') + '</td>' +
+                    '</tr>';
+
+                businessHistoryBody.append(businessRow);
+            });
+        },
+        error: function() {
+            businessHistoryBody.html('<tr><td colspan="3">Gagal memuat data. Silakan coba lagi nanti.</td></tr>'); // Handle error for business history AJAX request
+        }
+    });
+});
+
     function resetFilterCCH() {
         // Reset nilai input NIK ke kosong
         $('input[name="nik"]').val('');
@@ -175,7 +213,7 @@
         $('#courtCaseHandlingItemPreview').empty();
 
         // Semua trainees akan dimuat kembali dengan menghapus parameter nik dari URL
-        window.location.href = '{{ route("user.trainee") }}';
+        // window.location.href = '{{ route("user.trainee") }}';
     }
 </script>
 

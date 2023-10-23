@@ -57,7 +57,18 @@ public function getTrainingHistory(Request $request)
 
     return response()->json($trainingHistory);
 }
+public function getBusinessHistory(Request $request)
+{
+    $idTrainee = $request->input('id_trainee');
 
+    $businessHistory = DB::table('map_trainee_business')
+        ->leftJoin('ms_business', 'map_trainee_business.id_business', '=', 'ms_business.id')
+        ->select('ms_business.name as business_name', 'map_trainee_business.job_title', 'map_trainee_business.active')
+        ->where('map_trainee_business.id_trainee', $idTrainee)
+        ->get();
+
+    return response()->json($businessHistory);
+}
     
 
     public function getSubdistrictList()
