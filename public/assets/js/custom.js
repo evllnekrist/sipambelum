@@ -463,7 +463,7 @@ $(function() {
 	});
 	
 	// Select Semua Level
-	$('#ptypes').select2({
+	$('#level').select2({
 		placeholder: "Semua Level",
 		allowClear: true
 	});
@@ -517,7 +517,7 @@ $(function() {
 	});
 	
 	// Select Town
-	$('#location').select2({
+	$('#subdistrict').select2({
 		placeholder: "Semua Kecamatan",
 		allowClear: true
 	});

@@ -28,11 +28,10 @@ class Trainee extends Model
         'subdistrict_of_residence',
     ];
 
-// Trainee.php
-        public function subdistrict()
-        {
-            return $this->belongsTo(Subdistrict::class, 'subdistrict_of_residence', 'id');
-        }
+    public function subdistrict()
+    {
+        return $this->belongsTo(Subdistrict::class, 'subdistrict_of_residence', 'id');
+    }
 
     public function trainingHistory()
     {

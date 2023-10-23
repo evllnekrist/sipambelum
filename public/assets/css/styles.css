@@ -123,6 +123,18 @@ a.white-link {
   color: #ffffff; }
   a.white-link:hover, a.white-link:focus {
     color: #263238; }
+.text-level-new {
+    color:#263238 !important;
+}
+.text-level-beginner {
+    color:#e9e519 !important;
+}
+.text-level-mid {
+    color:#ff9b20 !important;
+}
+.text-level-adv {
+    color:#27b737 !important;
+}
 .text-blue-b {
     color:#2EA5E4 !important;
     font-weight: 600;
@@ -1695,6 +1707,16 @@ ul.simple-list li:before {
 table.table tr th {
     font-weight: 600;
 }
+
+.table-muted {
+    color: black;
+    background-color: #8d97ad  !important; 
+}
+.table-muted2 {
+    color: black;
+    background-color: #b9c2d6  !important; 
+}
+
 .table-dark {
     color: #fff;
     background-color: #212529;
@@ -4728,6 +4750,9 @@ li.login-attri .account-drop a {
 }
 .hero_banner-top {
     align-items: self-start !important;
+}
+.hero_banner-minheight {
+    min-height: 35% !important;
 }
 .hero_search-flex {
     width: 100%;
