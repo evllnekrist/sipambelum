@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use Auth;
+use App\Models\Trainee;
 
 class Trainee_Training extends Model
 {
@@ -19,4 +20,9 @@ class Trainee_Training extends Model
         'is_passed',
         'mark',
     ];
+
+    public function trainee()
+    {
+        return $this->belongsTo(Trainee::class,'id_trainee','id');
+    }
 }

@@ -84,7 +84,7 @@ function getData(){
                 if(data.name,new Date(data.event_start) > new Date(new Date().getTime())){
                   template+='<a href="'+baseUrl+'/admin-katkab/training/trainees/'+data.id+'" target="_blank" class="text-blue-b">&nbsp;&nbsp;&nbsp;&nbsp;<i class="nav-icon fas fa-user-edit"></i></a>';
                 }else{
-                  template+='<a href="#" class="text-yellow-b">&nbsp;&nbsp;&nbsp;&nbsp;<i class="nav-icon fas fa-user-lock"></i></a>';
+                  template+='<a href="'+baseUrl+'/admin-katkab/training/trainees/'+data.id+'" target="_blank" class="text-yellow-b">&nbsp;&nbsp;&nbsp;&nbsp;<i class="nav-icon fas fa-user-lock"></i></a>';
                 }
                 return template;
               }  

@@ -51,11 +51,5 @@ class Trainee extends Model
                 'ms_business.id as business_id','ms_business.name','ms_business.phone','ms_business.email','ms_business.address','ms_business.subdistrict'
             );
     }
-    public function businessHistory()
-    {
-        return $this->hasMany(Trainee_Business::class, 'id_trainee', 'id')
-            ->leftJoin('ms_business', 'map_trainee_business.id_business', '=', 'ms_business.id')
-            ->select('ms_business.name as business_name', 'map_trainee_business.job_title', 'map_trainee_business.active');
-    }
     
 }

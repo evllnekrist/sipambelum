@@ -24,7 +24,7 @@
       <input type="text" name="id" value="{{@$selected->id}}" class="form-control form-control-border border-width-2" hidden>
         <?php
             echo "<pre>";
-            dump($selected);
+            dump($trainees);
             echo "</pre>";
         ?>
       
@@ -32,7 +32,7 @@
             <div class="container">
                 
                 <h3 class="notsobig-header-capt mb-0">Cari Peserta</h3>
-                <p class="text-center text-smaller mb-4">Tambahkan peserta untuk pelatihan: {{$selected->name}}</p>
+                <p class="text-center text-smaller mb-4">Tambahkan peserta untuk pelatihan: <b class="text-blue-b">{{$selected->name}}</b></p>
                 <div class="row justify-content-center">
                     <div class="col-xl-10 col-lg-12 col-md-12">
                         <div class="full_search_box nexio_search lightanic_search hero_search-radius modern">
@@ -130,11 +130,22 @@
                         <ol>
                         @foreach($subdistricts as $item)
                         @php
+                            $trainees_subdistrict = [];
                             array_push($subdistrict_ids,$item->id);
+                            if($trainees){
+                                foreach($trainees as $key_trainee => $item_trainee){
+                                    if(@$item_trainee->trainee->subdistrict_of_residence == $item->id){
+                                        array_push($trainees_subdistrict, $item_trainee->trainee);
+                                        unset($trainees[$key_trainee]);
+                                    }
+                                }
+                            }
+
+                            
                         @endphp
                         <li>
                             <h6 class="text-muted">{{$item->name}}</h6>
-                            <div class="table-responsive subdistrict-table" id="subdistrict-{{$item->id}}-wrap" style="display:none">
+                            <div class="table-responsive subdistrict-table" id="subdistrict-{{$item->id}}-wrap" style="{{$trainees_subdistrict?'':'display:none'}}">
                                 <table class="table table-sm text-smaller">
                                     <thead class="table-muted2">
                                         <tr>
@@ -146,49 +157,32 @@
                                         </tr>
                                     </thead>
                                     <tbody id="subdistrict-{{$item->id}}-tbody">
-                                        <!-- 
-                                        <tr>
+                                        @foreach($trainees_subdistrict as $key_ts => $item_ts)
+                                        <tr id="subdistrict-{{$item->id}}-trainee">
                                             <td>
-                                                <b>Ratna Christina</b><br>
-                                                <span>4444444444444444</span><br>
-                                                <span>Aktif</span>
+                                                <b>{{$item_ts->name}}</b><br>
+                                                <span>{{$item_ts->nik}}</span><br>
                                             </td>
                                             <td>
-                                                <div class="_leads_status"><span class="active">Beginner</span></div>
-                                                <span>Update terakhir ...</span>
+                                                <div class="_leads_status"><span class="active">{{$item_ts->level}}</span></div>
+                                                <span>Update terakhir {{ date($item_ts->created_at) }}</span>
                                             </td>
                                             <td>
-                                                <div class="prt_leads"><span>27 till now</span></div>
-                                                <div class="prt_leads_list">
-                                                    <ul>
-                                                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                                                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                                                        <li><a href="#" class="_leads_name style-1">K</a></li>
-                                                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                                                        <li><a href="#" class="leades_more">10+</a></li>
-                                                    </ul>
+                                            <a onclick="displayBusiness({{$item_ts->id}})" class="text-blue-b">lihat</a>
+                                            </td>
+                                            <td>
+                                            <a onclick="displayClass({{$item_ts->id}})" href="" class="text-blue-b">lihat</a>
+                                            </td>
+                                            <td>
+                                                <div class="_leads_action" data-complete="{{(string)($item_ts)}}">
+                                                    <a class="trainee-delete"><i class="ti-close"></i></a>
+                                                    <a class="trainee-approve"><i class="ti-check"></i></a>
+                                                    <button type="button" class="btn btn-outline-warning btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
+                                                    <button type="button" class="btn btn-outline-success btn-lg trainee-passed" style="margin-top:-5px">Lulus</button>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="prt_leads"><span>27 till now</span></div>
-                                                <div class="prt_leads_list">
-                                                    <ul>
-                                                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                                                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                                                        <li><a href="#" class="_leads_name style-1">K</a></li>
-                                                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                                                        <li><a href="#" class="leades_more">10+</a></li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="_leads_action">
-                                                    <a href="#" class="delete"><i class="ti-close"></i></a>
-                                                    <a href="#"><i class="ti-check"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr> 
-                                        -->
+                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

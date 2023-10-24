@@ -49,28 +49,10 @@ $(function(){
                 <span>Update terakhir `+(new Date(item.created_at)).toLocaleString('id-ID')+`</span>
             </td>
             <td>
-                <div class="prt_leads"><span>27 till now</span></div>
-                <div class="prt_leads_list">
-                    <ul>
-                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                        <li><a href="#" class="_leads_name style-1">K</a></li>
-                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                        <li><a href="#" class="leades_more">10+</a></li>
-                    </ul>
-                </div>
+              <a onclick="displayBusiness(`+item.id+`)" class="text-blue-b">lihat</a>
             </td>
             <td>
-                <div class="prt_leads"><span>27 till now</span></div>
-                <div class="prt_leads_list">
-                    <ul>
-                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                        <li><a href="#" class="_leads_name style-1">K</a></li>
-                        <li><a href="#"><img src="https://via.placeholder.com/400x400" class="img-fluid circle" alt="" /></a></li>
-                        <li><a href="#" class="leades_more">10+</a></li>
-                    </ul>
-                </div>
+              <a onclick="displayClass(`+item.id+`)" href="" class="text-blue-b">lihat</a>
             </td>
             <td>
                 <div class="_leads_action" data-complete="'`+JSON.stringify(item)+`'">
