@@ -68,7 +68,7 @@ class TrainingController extends Controller
 
   public function form_edit_trainees($id)
   {
-    $data['selected']     = Training::find($id);
+    $data['selected']     = Training::with('trainees')->find($id);
     $data['subdistricts'] = Subdistrict::get();
     $data['grade_levels'] = Option::where('type', 'GRADE_LEVEL')->get();
     $data['trainees']     = Trainee_Training::with('trainee')->where('id_training',$id)->get();

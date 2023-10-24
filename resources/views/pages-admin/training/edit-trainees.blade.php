@@ -22,13 +22,17 @@
     </div> -->
     <div class="container-fluid">
       <input type="text" name="id" value="{{@$selected->id}}" class="form-control form-control-border border-width-2" hidden>
-      
+        <?php
+            echo "<pre>";
+            dump($selected);
+            echo "</pre>";
+        ?>
       
         <div class="image-cover hero_banner hero_banner-top hero_banner-minheight" style="background:url(https://via.placeholder.com/2200x550) no-repeat;" data-overlay="5">
             <div class="container">
                 
                 <h3 class="notsobig-header-capt mb-0">Cari Peserta</h3>
-                <p class="text-center text-smaller mb-4">Find new & featured property located in your local city.</p>
+                <p class="text-center text-smaller mb-4">Tambahkan peserta untuk pelatihan: {{$selected->name}}</p>
                 <div class="row justify-content-center">
                     <div class="col-xl-10 col-lg-12 col-md-12">
                         <div class="full_search_box nexio_search lightanic_search hero_search-radius modern">

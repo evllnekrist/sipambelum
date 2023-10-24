@@ -1,4 +1,5 @@
 console.log('training trainee CU')
+console.log('datetime',(new Date).toLocaleString('id-ID'))
 
 $(function(){
   // $("#input-file").fileinput();
@@ -35,18 +36,17 @@ $(function(){
       // console.log('==',subdistrict_ids.includes(sd))
       if(subdistrict_ids.includes(sd)){      
         $("#subdistrict-"+sd+"-wrap").show();
-        if(document.getElementById("subdistrict-"+item.id+"-user")){
+        if(document.getElementById("subdistrict-"+item.id+"-trainee")){
         }else{
           template = `
-          <tr id="subdistrict-`+item.id+`-user">
+          <tr id="subdistrict-`+item.id+`-trainee">
             <td>
                 <b>`+item.name+`</b><br>
                 <span>`+item.nik+`</span><br>
-                <span>`+item.aktif+`</span>
             </td>
             <td>
                 <div class="_leads_status"><span class="active">`+item.level+`</span></div>
-                <span>Update terakhir ...</span>
+                <span>Update terakhir `+(new Date(item.created_at)).toLocaleString('id-ID')+`</span>
             </td>
             <td>
                 <div class="prt_leads"><span>27 till now</span></div>
@@ -73,9 +73,11 @@ $(function(){
                 </div>
             </td>
             <td>
-                <div class="_leads_action">
-                    <a href="#" class="delete"><i class="ti-close"></i></a>
-                    <a href="#"><i class="ti-check"></i></a>
+                <div class="_leads_action" data-complete="'`+JSON.stringify(item)+`'">
+                    <a class="trainee-delete"><i class="ti-close"></i></a>
+                    <a class="trainee-approve"><i class="ti-check"></i></a>
+                    <button type="button" class="btn btn-outline-warning btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
+                    <button type="button" class="btn btn-outline-success btn-lg trainee-passed" style="margin-top:-5px">Lulus</button>
                 </div>
             </td>
           </tr>`;
@@ -150,6 +152,20 @@ $(function(){
       $(appendTo+'-loading').hide();
       $(appendTo+'-info-content').html(`<center><b class="text-warning">Gagal mendapatkan data (C2)</b><br><small>`+error.message+`</small>`);
     });
+  });
+
+  
+  $(".trainee-delete").click(function(e){
+    console.log('trainee delete')
+  });
+  $(".trainee-approve").click(function(e){
+    console.log('trainee approve')
+  });
+  $(".trainee-passed").click(function(e){
+    console.log('trainee passed ')
+  });
+  $(".trainee-passed-not").click(function(e){
+    console.log('trainee passed not')
   });
 
   $("#btn-submit-edit").click(function(e){

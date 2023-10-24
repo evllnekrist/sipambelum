@@ -130,7 +130,7 @@ public function getBasicList(Request $request)
     public function get_list_adv(Request $request)
     {
         try {
-            $data['products'] = Trainee::with('subdistrict');
+            $data['products'] = Trainee::with('subdistrict')->with('businessHistory')->with('trainingHistory');
             if($request->get('_search')){
                 $data['products'] = $data['products']->where(function($q) use ($request) {
                     $q->where('name','like','%'.$request->get('_search').'%')
