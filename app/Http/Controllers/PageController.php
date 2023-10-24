@@ -33,19 +33,23 @@ class PageController extends Controller
         return view('pages.index',$data);
       }
       public function user_index($slug)
-      {
-        $data['selected'] = Page::where('slug',$slug)->first();
-        if($data['selected']){
-          $data['title'] = $data['selected']->title;
-          return view('pages.page', $data);
-        }else{
-          $error_details = array(
-            'title' => 'Oops!', 
-            'desc' => 'Page dengan ID yang Anda cari tidak ditemukan.'
-          );
-          return view('pages-admin.error.404', $error_details);
-        }
-      }
+{
+    $page = Page::where('slug', $slug)->first();
+
+    if ($page) {
+        $data['title'] = $page->title;
+        $data['page'] = $page; 
+        return view('pages.page', $data);
+    } else {
+        // Handle jika halaman dengan slug yang diminta tidak ditemukan
+        $error_details = [
+            'title' => 'Oops!',
+            'desc' => 'Halaman yang Anda cari tidak ditemukan.'
+        ];
+        return view('pages-admin.error.404', $error_details);
+    }
+}
+
       public function admin_index()
       {
         return view('pages-admin.page.index');

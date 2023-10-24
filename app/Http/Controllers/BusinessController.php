@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Business;
 use App\Models\Trainee;
+use App\Models\Subdistrict;
 use App\Models\MapTraineeBusiness;
 use DB;
 
@@ -111,6 +112,23 @@ public function mapToBusiness(Request $request)
             return $this->show_error_admin('Business');
         }
     }
+    public function form_edit_trainees($id)
+{
+    $data['selected'] = MapTraineeBusiness::with('trainee')->find($id);
+    $data['subdistricts'] = Subdistrict::get();
+    $data['trainees'] = MapTraineeBusiness::with('trainee')
+                          ->select('map_trainee_business.*', 'map_trainee_business.job_title') // Menyertakan kolom job_title
+                          ->where('id_business', $id)
+                          ->get();
+
+    if ($data['selected']) {
+        return view('pages-admin.business.edit-trainee', $data);
+    } else {
+        return $this->show_error_admin('Trainee');
+    }
+}
+
+
     // -------------------------------------- VIEW -------------------------------------- end
 
     // -------------------------------------- CALLED BY AJAX ---------------------------- start

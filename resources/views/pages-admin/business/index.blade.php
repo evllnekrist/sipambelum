@@ -28,6 +28,7 @@
                     <th>No</th>
                     <th>NIB</th>
                     <th>Nama</th>
+                    <th>Karyawan</th>
                     <th>Nomor Telepon</th>
                     <th>Email</th>
                     <th>Alamat</th>

@@ -52,6 +52,11 @@
                 <i class="fas fa-users"></i>Pengguna
                 </a>
             </li>
+            <li>
+                <a href="">
+                <i class="fas fa-wrench"></i>Konfigurasi
+                </a>
+            </li>
         </ul>
     </div>
     

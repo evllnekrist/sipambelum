@@ -28,20 +28,13 @@
                     <li><a href="{{route('user.news')}}">Berita<span class="submenu-indicator"></span></a>
                     <li><a href="">Produk Unggulan<span class="submenu-indicator"></span></a>
                     <li><a>Tentang Kami<span class="submenu-indicator"></span></a>
-                        <ul class="nav-dropdown nav-submenu">
-                            <li><a href="{{route('user.page','sop')}}">SOP Pengolahan Sipambelum<span class="submenu-indicator"></span></a>
-                            </li>
-
-                            <li><a href="{{route('user.page','struktur-org')}}">Struktur Organisasi<span class="submenu-indicator"></span></a>
-                            </li>
-
-                            <li><a href="{{route('user.page','visi-misi')}}">Visi Misi<span class="submenu-indicator"></span></a>
-                            </li>
-
-                            <li><a href="{{route('user.page','hubungi-kami')}}">Hubungi Kami<span class="submenu-indicator"></span></a>
-                            </li>
-                        </ul>
-                    </li>
+                    <ul class="nav-dropdown nav-submenu">
+                        @foreach($pages as $page)
+                            <li><a href="{{ route('user.page', $page->slug) }}">{{ $page->title }}<span class="submenu-indicator"></span></a></li>
+                        @endforeach
+                        <li><a href="{{route('user.page','hubungi-kami')}}">Hubungi Kami<span class="submenu-indicator"></span></a>
+                    </ul>
+                </li>
                 </ul>
                 
                 <ul class="nav-menu nav-menu-social align-to-right">

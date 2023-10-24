@@ -134,6 +134,7 @@ Route::middleware('auth')->group(function () {
         Route::get('business', [BusinessController::class, 'admin_index'])->name('admin.business');
         Route::get('business/add', [BusinessController::class, 'form_add'])->name('admin.business.add');
         Route::get('business/edit/{id}', [BusinessController::class, 'form_edit'])->name('admin.business.edit');
+        Route::get('business/trainees/{id}', [BusinessController::class, 'form_edit_trainees'])->name('admin.business.edit-trainees');
 
         Route::get('subdisctrict', [SubdistrictController::class, 'admin_index'])->name('admin.subdistrict');
         Route::get('subdistrict/add', [SubdistrictController::class, 'form_add'])->name('admin.subdistrict.add');

@@ -107,6 +107,9 @@ function getData() {
             { data: 'id' },
             { data: 'nib' },
             { data: 'name' },
+            { data: null, render: function(data, type, row) {
+              return '<a href="' + baseUrl + '/admin-katkab/business/trainees/' + row.id + '" target="_blank" class="btn btn-warning btn-sm rounded text-blue-b">+ &nbsp;<i class="nav-icon fas fa-user-edit"></i></a>';
+          } },
             { data: 'phone' },
             { data: 'email' },
             { data: 'address' },

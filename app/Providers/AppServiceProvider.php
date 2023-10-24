@@ -17,8 +17,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot()
     {
-        //
+        // Menggunakan view composer untuk menyediakan data ke includes.nav-public
+        view()->composer('includes.nav-public', function ($view) {
+            $pages = \App\Models\Page::all(); // Ambil data halaman dari database
+            $view->with('pages', $pages);
+        });
     }
 }
