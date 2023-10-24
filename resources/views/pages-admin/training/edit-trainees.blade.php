@@ -23,9 +23,9 @@
     <div class="container-fluid">
       <input type="text" name="id" value="{{@$selected->id}}" class="form-control form-control-border border-width-2" hidden>
         <?php
-            echo "<pre>";
-            dump($trainees);
-            echo "</pre>";
+            // echo "<pre>";
+            // dump($trainees);
+            // echo "</pre>";
         ?>
       
         <div class="image-cover hero_banner hero_banner-top hero_banner-minheight" style="background:url(https://via.placeholder.com/2200x550) no-repeat;" data-overlay="5">
@@ -123,6 +123,13 @@
             <div class="col-12">
                 <div class="card card-primary">
                     <div class="card-body">
+                        <div style="text-align:end">
+                            <div class="_leads_action">
+                                Aksi Massal: 
+                                <a class="bg-danger text-white trainee-delete"><i class="ti-close"></i></a>
+                                <a class="bg-success text-white trainee-approve"><i class="ti-check"></i></a>
+                            </div>
+                        </div>
                         @php
                             $subdistrict_ids = [];
                         @endphp
@@ -149,6 +156,7 @@
                                 <table class="table table-sm text-smaller">
                                     <thead class="table-muted2">
                                         <tr>
+                                            <th scope="col"><input type="checkbox" class="check-all" data-group="{{$item->id}}"></th>
                                             <th scope="col">Nama/NIK</th>
                                             <th scope="col">Level</th>
                                             <th scope="col">Terkait UMKM</th>
@@ -158,7 +166,10 @@
                                     </thead>
                                     <tbody id="subdistrict-{{$item->id}}-tbody">
                                         @foreach($trainees_subdistrict as $key_ts => $item_ts)
-                                        <tr id="subdistrict-{{$item->id}}-trainee">
+                                        <tr id="subdistrict-{{$item_ts->id}}-trainee">
+                                            <td>
+                                                <input type="checkbox" class="check-all-group-{{$item->id}} checkbox-trainee" data-id="{{$item_ts->id}}">
+                                            </td>
                                             <td>
                                                 <b>{{$item_ts->name}}</b><br>
                                                 <span>{{$item_ts->nik}}</span><br>
@@ -175,8 +186,6 @@
                                             </td>
                                             <td>
                                                 <div class="_leads_action" data-complete="{{(string)($item_ts)}}">
-                                                    <a class="trainee-delete"><i class="ti-close"></i></a>
-                                                    <a class="trainee-approve"><i class="ti-check"></i></a>
                                                     <button type="button" class="btn btn-outline-warning btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
                                                     <button type="button" class="btn btn-outline-success btn-lg trainee-passed" style="margin-top:-5px">Lulus</button>
                                                 </div>

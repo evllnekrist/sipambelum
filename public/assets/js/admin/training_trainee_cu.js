@@ -4,13 +4,26 @@ console.log('datetime',(new Date).toLocaleString('id-ID'))
 $(function(){
   // $("#input-file").fileinput();
   const subdistrict_ids = ($("[name='subdistrict_ids']").val()).split(",");
-  // console.log('subdistrict_ids',subdistrict_ids)
+  let trainees_to_delete = [];
+  let trainees_to_confirm = [];
+  let trainees_to_confirm_not = [];
+  let trainees_is_passed = [];
+  let trainees_is_passed_not = [];
 
   function searchTrainee_closeResult(){
-    $('.search_trainee_input:checked').each(function() {
+    $('.search-trainee-input:checked').each(function() {
       $(this).prop('checked',false)
     });
     $("#advance-search").hide();
+  }
+
+  function valuateDisplay(){
+    let el 
+    subdistrict_ids.forEach(id => {
+      if(!document.getElementById("subdistrict-"+id+"-tbody").childElementCount){
+        $("#subdistrict-"+id+"-wrap").hide() // undisplay empty trainees
+      }
+    });
   }
 
   $("#btn-trainees-add-cancel").click(function(e){
@@ -20,7 +33,7 @@ $(function(){
   $("#btn-trainees-add").click(function(e){
     // let search_trainee = [];
     let search_trainee_data = {};
-    $('.search_trainee_input:checked').each(function() {
+    $('.search-trainee-input:checked').each(function() {
       // search_trainee.push($(this).val());
       search_trainee_data[$(this).val()] = $(this).data('complete');
     });
@@ -36,6 +49,11 @@ $(function(){
       // console.log('==',subdistrict_ids.includes(sd))
       if(subdistrict_ids.includes(sd)){      
         $("#subdistrict-"+sd+"-wrap").show();
+        // console.log('trainees_to_delete_1 ',trainees_to_delete)
+        if(trainees_to_delete.includes(item.id)){ // if add after been delete before
+          trainees_to_delete.splice(trainees_to_delete.indexOf(item.id), 1); // undo to delete
+        }
+        // console.log('trainees_to_delete_2 ',trainees_to_delete)
         if(document.getElementById("subdistrict-"+item.id+"-trainee")){
         }else{
           template = `
@@ -104,7 +122,7 @@ $(function(){
           (response.data.data.products).forEach((item) => {
             i++;
             template +=`<li>
-                            <input id="search_trainee_`+i+`" class="form-check-input search_trainee_input" value="`+item.id+`" data-complete='`+JSON.stringify(item)+`' type="checkbox">
+                            <input id="search_trainee_`+i+`" class="form-check-input search-trainee-input" value="`+item.id+`" data-complete='`+JSON.stringify(item)+`' type="checkbox">
                             <label for="search_trainee_`+i+`" class="form-check-label">`+item.name+` (<b class="text-level-`+item.level+`">`+item.level+`</b>)
                             <table class="text-smaller">
                               <tr>
@@ -138,16 +156,52 @@ $(function(){
 
   
   $(".trainee-delete").click(function(e){
-    console.log('trainee delete')
+    let to_delete = []
+    $('.checkbox-trainee:checked').each(function() {
+      to_delete.push($(this).data('id'))
+    });
+    Swal.fire({
+      // title: 'Are you sure?',
+      text: "Yakin menghapus "+to_delete.length+" peserta pelatihan tersebut?",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, lanjutkan!',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Batalkan',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        to_delete.forEach(id => {
+          $("#subdistrict-"+id+"-trainee").remove()
+          trainees_to_delete.includes(id)?'':trainees_to_delete.push(id)
+        });
+        // console.log('trainees_to_delete',trainees_to_delete)
+        valuateDisplay()
+        Swal.fire({
+          title: 'Terhapus',
+          html: 'Peserta dihapus dari tampilan ini, tekan simpan untuk menyimpan perubahan',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    })
   });
+
   $(".trainee-approve").click(function(e){
     console.log('trainee approve')
   });
+
   $(".trainee-passed").click(function(e){
     console.log('trainee passed ')
   });
+
   $(".trainee-passed-not").click(function(e){
     console.log('trainee passed not')
+  });
+
+  $(".check-all").click(function(e){
+    let group = $(this).data('group')
+    $(".check-all-group-"+group).prop('checked',$(this).is(":checked"))
   });
 
   $("#btn-submit-edit").click(function(e){
