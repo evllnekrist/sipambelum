@@ -67,9 +67,16 @@ function getData() {
         columns: [
           { data: 'id' },
           { data: 'nik' },
-          { data: 'name' },
+          { data: null, render: function ( data, type, row ) {
+            return '<a href="'+baseUrl+'/admin-katkab/trainee/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.name+'</a>';
+          } 
+        },
           { data: 'level' },
-          { data: 'sex' },
+          {
+            data: 'sex', render: function (data, type, row) {
+                return data === 'm' ? 'Laki-Laki' : 'Perempuan';
+            }
+        },
           { data: 'religion' },
           { data: 'place_of_birth' },
           { data: 'date_of_birth' },
@@ -83,8 +90,7 @@ function getData() {
           },
           {
             data: null, render: function (data, type, row) {
-              return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>' +
-                ' <a href="' + baseUrl + '/admin-katkab/trainee/edit/' + data.id + '" class="text-primary"><i class="nav-icon fas fa-edit"></i></a>';
+              return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>';
             }
           },
         ],

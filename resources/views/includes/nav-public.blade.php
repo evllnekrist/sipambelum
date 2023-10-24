@@ -26,6 +26,7 @@
                         </ul>
                     </li>
                     <li><a href="{{route('user.news')}}">Berita<span class="submenu-indicator"></span></a>
+                    <li><a href="">Produk Unggulan<span class="submenu-indicator"></span></a>
                     <li><a>Tentang Kami<span class="submenu-indicator"></span></a>
                         <ul class="nav-dropdown nav-submenu">
                             <li><a href="{{route('user.page','sop')}}">SOP Pengolahan Sipambelum<span class="submenu-indicator"></span></a>
