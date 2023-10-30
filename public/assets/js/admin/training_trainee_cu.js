@@ -1,30 +1,108 @@
-console.log('training trainee CU')
-console.log('datetime',(new Date).toLocaleString('id-ID'))
+console.log('training trainee CU 231030')
+// console.log('datetime',(new Date).toLocaleString('id-ID'))
 
-$(function(){
-  // $("#input-file").fileinput();
-  const subdistrict_ids = ($("[name='subdistrict_ids']").val()).split(",");
-  let trainees_to_delete = [];
-  let trainees_to_confirm = [];
-  let trainees_to_confirm_not = [];
-  let trainees_is_passed = [];
-  let trainees_is_passed_not = [];
+const subdistrict_ids     = ($("[name='subdistrict_ids']").val()).split(",");
+let trainees_approved     = $("[name='trainees_approved']").val()?($("[name='trainees_approved']").val()).split(","):[];
+let trainees_passed       = $("[name='trainees_approved']").val()?($("[name='trainees_passed']").val()).split(","):[];
+let trainees_to_delete    = [];
+let trainees_approved_not = [];
+let trainees_passed_not   = [];
 
-  function searchTrainee_closeResult(){
-    $('.search-trainee-input:checked').each(function() {
-      $(this).prop('checked',false)
+function searchTrainee_closeResult(){
+  $('.search-trainee-input:checked').each(function() {
+    $(this).prop('checked',false)
+  });
+  $("#advance-search").hide();
+}
+
+function qualifiedToMark(id){
+  // console.log('get element of trainee-'+id+'-approved',$("#trainee-"+id+"-approved"))
+  if(!document.getElementById("trainee-"+id+"-approved")){
+    Swal.fire({
+      position: 'top-end',
+      html: '<b>Penilaian tidak bisa dilakukan</b><br><small>Peserta belum/tidak disetujui Admin</small>',
+      showConfirmButton: false,
     });
-    $("#advance-search").hide();
+    return false
   }
+  return true
+}
 
-  function valuateDisplay(){
-    let el 
+function valuateDisplay(valueateSD=true){
+  if(valueateSD){
     subdistrict_ids.forEach(id => {
       if(!document.getElementById("subdistrict-"+id+"-tbody").childElementCount){
         $("#subdistrict-"+id+"-wrap").hide() // undisplay empty trainees
       }
     });
   }
+  let total_trainee = $(".trainee-wrap").length
+  $("#summary-count-trainees-displayed").html(total_trainee)
+  $("#summary-count-trainees-approved").html(trainees_approved.length)
+  $("#summary-count-trainees-approved-not").html(total_trainee-trainees_approved.length)
+  $("#summary-count-trainees-passed").html(trainees_passed.length)
+  $("#summary-count-trainees-passed-not").html(trainees_passed_not.length)
+  console.log('%c\n______summaries::start', 'background: #222; color: #bada55')
+  console.log('trainees_approved : ',trainees_approved)
+  console.log('trainees_approved_not : ',trainees_approved_not)
+  console.log('trainees_passed : ',trainees_passed)
+  console.log('trainees_passed_not : ',trainees_passed_not)
+  console.log('%c______summaries::end\n', 'background: #222; color: #bada55')
+}
+
+function trainee_passed(el){
+  let id = $(el).closest('._leads_action').data('id')
+  id = id.toString()
+  console.log('try____ trainee passed', id)
+  if(qualifiedToMark(id)){
+    id = id.toString()
+    if(trainees_passed.includes(id)){
+      // as is
+    }else{
+      trainees_passed.push(id)
+      $(el).removeClass('bg-muted text-muted2')
+      $(el).addClass('bg-success')
+
+      if(trainees_passed_not.includes(id)){
+        trainees_passed_not.splice(trainees_passed_not.indexOf(id), 1);
+      }
+      $(el).siblings('button').addClass('bg-muted text-muted2')
+      $(el).siblings('button').removeClass('bg-danger')
+
+    }
+    valuateDisplay(false)
+  }
+}
+
+function trainee_passed_not(el){
+  let id = $(el).closest('._leads_action').data('id')
+  id = id.toString()
+  console.log('try____ trainee passed not', id)
+  if(qualifiedToMark(id)){
+    if(trainees_passed_not.includes(id)){
+      // as is
+    }else{
+      trainees_passed_not.push(id)
+      $(el).removeClass('bg-muted text-muted2')
+      $(el).addClass('bg-danger')
+      
+      if(trainees_passed.includes(id)){
+        trainees_passed.splice(trainees_passed.indexOf(id), 1);
+      }
+      $(el).siblings('button').addClass('bg-muted text-muted2')
+      $(el).siblings('button').removeClass('bg-success')
+    }
+    valuateDisplay(false)
+  }
+}
+
+function uncheck_all(){
+  $("*[class^='check-all']").prop('checked',false)
+}
+
+$(function(){
+
+  valuateDisplay(false)
 
   $("#btn-trainees-add-cancel").click(function(e){
     searchTrainee_closeResult();
@@ -57,10 +135,17 @@ $(function(){
         if(document.getElementById("subdistrict-"+item.id+"-trainee")){
         }else{
           template = `
-          <tr id="subdistrict-`+item.id+`-trainee">
+          <tr class="trainee-wrap" id="subdistrict-`+item.id+`-trainee">
             <td>
-                <b>`+item.name+`</b><br>
-                <span>`+item.nik+`</span><br>
+                <input type="checkbox" class="check-all-group-`+sd+` checkbox-trainee" data-id="`+item.id+`">
+            </td>
+            <td class="row">
+                <div class="col-3" id="trainee-`+item.id+`-approved-wrap">
+                </div>
+                <div class="col-9">
+                    <b>`+item.name+`</b><br>
+                    <span>`+item.nik+`</span><br>
+                </div>
             </td>
             <td>
                 <div class="_leads_status"><span class="active">`+item.level+`</span></div>
@@ -73,11 +158,9 @@ $(function(){
               <a onclick="displayClass(`+item.id+`)" href="" class="text-blue-b">lihat</a>
             </td>
             <td>
-                <div class="_leads_action" data-complete="'`+JSON.stringify(item)+`'">
-                    <a class="trainee-delete"><i class="ti-close"></i></a>
-                    <a class="trainee-approve"><i class="ti-check"></i></a>
-                    <button type="button" class="btn btn-outline-warning btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
-                    <button type="button" class="btn btn-outline-success btn-lg trainee-passed" style="margin-top:-5px">Lulus</button>
+                <div class="_leads_action" data-id="`+item.id+`">
+                    <button type="button" class="btn bg-muted text-muted2 btn-lg" onclick="trainee_passed_not(this)" style="margin-top:-5px">Tidak</button>
+                    <button type="button" class="btn bg-muted text-muted2 btn-lg" onclick="trainee_passed(this)" style="margin-top:-5px">Lulus</button>
                 </div>
             </td>
           </tr>`;
@@ -156,13 +239,13 @@ $(function(){
 
   
   $(".trainee-delete").click(function(e){
-    let to_delete = []
+    let to_bulk = []
     $('.checkbox-trainee:checked').each(function() {
-      to_delete.push($(this).data('id'))
+      to_bulk.push($(this).data('id'))
     });
     Swal.fire({
       // title: 'Are you sure?',
-      text: "Yakin menghapus "+to_delete.length+" peserta pelatihan tersebut?",
+      text: "Yakin menghapus "+to_bulk.length+" peserta pelatihan tersebut?",
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       confirmButtonText: 'Ya, lanjutkan!',
@@ -170,12 +253,16 @@ $(function(){
       cancelButtonText: 'Batalkan',
     }).then((result) => {
       if (result.isConfirmed) {
-        to_delete.forEach(id => {
+        to_bulk.forEach(id => {
           $("#subdistrict-"+id+"-trainee").remove()
           trainees_to_delete.includes(id)?'':trainees_to_delete.push(id)
+          trainees_approved.includes(id)?trainees_approved.splice(trainees_approved.indexOf(id), 1):''
+          trainees_approved_not.includes(id)?trainees_approved_not.splice(trainees_approved_not.indexOf(id), 1):''
+          trainees_passed.includes(id)?trainees_passed.splice(trainees_passed.indexOf(id), 1):''
+          trainees_passed_not.includes(id)?trainees_passed_not.splice(trainees_passed_not.indexOf(id), 1):''
         });
-        // console.log('trainees_to_delete',trainees_to_delete)
         valuateDisplay()
+        // console.log('trainees_to_delete',trainees_to_delete)
         Swal.fire({
           title: 'Terhapus',
           html: 'Peserta dihapus dari tampilan ini, tekan simpan untuk menyimpan perubahan',
@@ -189,14 +276,40 @@ $(function(){
 
   $(".trainee-approve").click(function(e){
     console.log('trainee approve')
+    let to_bulk = []
+    $('.checkbox-trainee:checked').each(function() {
+      to_bulk.push($(this).data('id'))
+    });
+    to_bulk.forEach(id => {
+      $("#trainee-"+id+"-approved-wrap").html(`<i class="fas fa-check fa-lg text-blue-b trainee-approved" id="trainee-`+id+`-approved"></i>`)
+      trainees_approved.includes(id)?'':trainees_approved.push(id)
+      trainees_approved_not.includes(id)?trainees_approved_not.splice(trainees_approved_not.indexOf(id), 1):''
+    })
+    valuateDisplay()
+    uncheck_all()
+  });
+
+  $(".trainee-approve-not").click(function(e){
+    console.log('trainee approve not')
+    let to_bulk = []
+    $('.checkbox-trainee:checked').each(function() {
+      to_bulk.push($(this).data('id'))
+    });
+    to_bulk.forEach(id => {
+      $("#trainee-"+id+"-approved-wrap").html(``)
+      trainees_approved.includes(id)?trainees_approved.splice(trainees_approved.indexOf(id), 1):''
+      trainees_approved_not.includes(id)?'':trainees_approved_not.push(id)
+    })
+    valuateDisplay()
+    uncheck_all()
   });
 
   $(".trainee-passed").click(function(e){
-    console.log('trainee passed ')
+    trainee_passed(this)
   });
 
   $(".trainee-passed-not").click(function(e){
-    console.log('trainee passed not')
+    trainee_passed_not(this)
   });
 
   $(".check-all").click(function(e){
@@ -205,52 +318,52 @@ $(function(){
   });
 
   $("#btn-submit-edit").click(function(e){
-    const form = document.getElementById('form');
-    form.reportValidity()
-    if (!form.checkValidity()) {
-    } else {
-      $('#loading').show();
-      $('#form').hide();
-      const formData = new FormData(form);
-      // for (const [key, value] of formData) {
-      //   console.log('»', key, value)
-      // }
-      axios.post(baseUrl+'/api/training/post-edit', formData, apiHeaders)
-      .then(function (response) {
-        console.log('response..',response);
-        if(response.status == 200 && response.data.status) {
-          Swal.fire({
-            icon: 'success',
-            width: 600,
-            title: "Berhasil",
-            // html: "...",
-            confirmButtonText: 'Ya, terima kasih',
-          });
-          // window.location = baseUrl+'/admin-katkab/training';
-        }else{
-          Swal.fire({
-            icon: 'warning',
-            width: 600,
-            title: "Gagal",
-            html: response.data.message,
-            confirmButtonText: 'Ya',
-          });
-        }
-        $('#loading').hide();
-        $('#form').show();
-      })
-      .catch(function (error) {
+    
+    $('#loading').show();
+    $('#form').hide();
+    let payload = {
+      trainees_to_delete: trainees_to_delete,
+      trainees_approved: trainees_approved,
+      trainees_passed: trainees_passed,
+      trainees_approved_not: trainees_approved_not,
+      trainees_passed_not: trainees_passed_not
+    }
+    axios.post(baseUrl+'/api/training/post-edit', payload, apiHeaders)
+    .then(function (response) {
+      console.log('response..',response);
+      if(response.status == 200 && response.data.status) {
         Swal.fire({
-          icon: 'error',
+          icon: 'success',
           width: 600,
-          title: "Error",
-          html: error,
+          title: "Berhasil",
+          // html: "...",
+          confirmButtonText: 'Ya, terima kasih',
+        });
+        // window.location = baseUrl+'/admin-katkab/training';
+      }else{
+        Swal.fire({
+          icon: 'warning',
+          width: 600,
+          title: "Gagal",
+          html: response.data.message,
           confirmButtonText: 'Ya',
         });
-        $('#loading').hide();
-        $('#form').show();
+      }
+      $('#loading').hide();
+      $('#form').show();
+    })
+    .catch(function (error) {
+      Swal.fire({
+        icon: 'error',
+        width: 600,
+        title: "Error",
+        html: error,
+        confirmButtonText: 'Ya',
       });
-    }
+      $('#loading').hide();
+      $('#form').show();
+    });
+      
   });
 
 });

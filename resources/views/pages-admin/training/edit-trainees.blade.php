@@ -123,15 +123,49 @@
             <div class="col-12">
                 <div class="card card-primary">
                     <div class="card-body">
-                        <div style="text-align:end">
-                            <div class="_leads_action">
-                                Aksi Massal: 
-                                <a class="bg-danger text-white trainee-delete"><i class="ti-close"></i></a>
-                                <a class="bg-success text-white trainee-approve"><i class="ti-check"></i></a>
+                        <div class="row text-smaller mb-5">
+                            <div class="col-6">
+                                <table>
+                                    <tr>
+                                        <td>Total tampil</td>
+                                        <td>:</td>
+                                        <td id="summary-count-trainees-displayed"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Disetujui</td>
+                                        <td>:</td>
+                                        <td id="summary-count-trainees-approved"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tidak Disetujui</td>
+                                        <td>:</td>
+                                        <td id="summary-count-trainees-approved-not"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lulus</td>
+                                        <td>:</td>
+                                        <td id="summary-count-trainees-passed"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tidak Lulus</td>
+                                        <td>:</td>
+                                        <td id="summary-count-trainees-passed-not"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6" style="text-align:end">
+                                <div class="_leads_action">
+                                    Aksi Massal: 
+                                    <a class="bg-danger text-white trainee-delete" title="hapus"><i class="ti-close"></i></a>
+                                    <a class="theme-bg text-white trainee-approve" title="setujui"><i class="ti-check"></i></a>
+                                    <a class="text-white trainee-approve-not" style="background-color:grey" title="batal setujui"><i class="ti-layout-width-full"></i></a>
+                                </div>
                             </div>
                         </div>
                         @php
-                            $subdistrict_ids = [];
+                            $subdistrict_ids    = [];
+                            $trainees_approved  = [];
+                            $trainees_passed    = [];
                         @endphp
                         <!-- subdistrict::start -->
                         <ol>
@@ -142,13 +176,11 @@
                             if($trainees){
                                 foreach($trainees as $key_trainee => $item_trainee){
                                     if(@$item_trainee->trainee->subdistrict_of_residence == $item->id){
-                                        array_push($trainees_subdistrict, $item_trainee->trainee);
+                                        array_push($trainees_subdistrict, $item_trainee);
                                         unset($trainees[$key_trainee]);
                                     }
                                 }
                             }
-
-                            
                         @endphp
                         <li>
                             <h6 class="text-muted">{{$item->name}}</h6>
@@ -166,28 +198,46 @@
                                     </thead>
                                     <tbody id="subdistrict-{{$item->id}}-tbody">
                                         @foreach($trainees_subdistrict as $key_ts => $item_ts)
-                                        <tr id="subdistrict-{{$item_ts->id}}-trainee">
+                                        <?php
+                                            // echo "<pre>";
+                                            // dump($item_ts);
+                                            // echo "</pre>";
+                                            if($item_ts->active){
+                                                array_push($trainees_approved,$item_ts->trainee->id);
+                                            }
+                                            if($item_ts->is_passed){
+                                                array_push($trainees_passed,$item_ts->trainee->id);
+                                            }
+                                        ?>
+                                        <tr class="trainee-wrap" id="subdistrict-{{$item_ts->trainee->id}}-trainee">
                                             <td>
-                                                <input type="checkbox" class="check-all-group-{{$item->id}} checkbox-trainee" data-id="{{$item_ts->id}}">
+                                                <input type="checkbox" class="check-all-group-{{$item->id}} checkbox-trainee" data-id="{{$item_ts->trainee->id}}">
+                                            </td>
+                                            <td class="row">
+                                                <div class="col-3" id="trainee-{{$item_ts->trainee->id}}-approved-wrap">
+                                                    @if($item_ts->active)
+                                                        <i class="fas fa-check fa-lg text-blue-b trainee-approved" id="trainee-{{$item_ts->trainee->id}}-approved"></i>
+                                                    @endif
+                                                </div>
+                                                <div class="col-9">
+                                                    <b>{{$item_ts->trainee->name}}</b><br>
+                                                    <span>{{$item_ts->trainee->nik}}</span><br>
+                                                </div>
                                             </td>
                                             <td>
-                                                <b>{{$item_ts->name}}</b><br>
-                                                <span>{{$item_ts->nik}}</span><br>
+                                                <div class="_leads_status"><span class="active">{{$item_ts->trainee->level}}</span></div>
+                                                <span>Update terakhir {{ date($item_ts->trainee->created_at) }}</span>
                                             </td>
                                             <td>
-                                                <div class="_leads_status"><span class="active">{{$item_ts->level}}</span></div>
-                                                <span>Update terakhir {{ date($item_ts->created_at) }}</span>
+                                            <a onclick="displayBusiness({{$item_ts->trainee->id}})" class="text-blue-b">lihat</a>
                                             </td>
                                             <td>
-                                            <a onclick="displayBusiness({{$item_ts->id}})" class="text-blue-b">lihat</a>
+                                            <a onclick="displayClass({{$item_ts->trainee->id}})" href="" class="text-blue-b">lihat</a>
                                             </td>
                                             <td>
-                                            <a onclick="displayClass({{$item_ts->id}})" href="" class="text-blue-b">lihat</a>
-                                            </td>
-                                            <td>
-                                                <div class="_leads_action" data-complete="{{(string)($item_ts)}}">
-                                                    <button type="button" class="btn btn-outline-warning btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
-                                                    <button type="button" class="btn btn-outline-success btn-lg trainee-passed" style="margin-top:-5px">Lulus</button>
+                                                <div class="_leads_action" data-id="{{$item_ts->trainee->id}}">
+                                                    <button type="button" class="btn {{$item_ts->is_passed || $item_ts->is_passed == null?'bg-muted text-muted2':'bg-danger'}} btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
+                                                    <button type="button" class="btn {{$item_ts->is_passed?'bg-success':'bg-muted text-muted2'}} btn-lg trainee-passed" style="margin-top:-5px">Lulus</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -200,6 +250,8 @@
                         </ol>
                         <!-- subdistrict::end -->
                         <input type="text" name="subdistrict_ids" value="{{implode(',',@$subdistrict_ids)}}" class="form-control form-control-border border-width-2" hidden>
+                        <input type="text" name="trainees_approved" value="{{implode(',',@$trainees_approved)}}" class="form-control form-control-border border-width-2" hidden>
+                        <input type="text" name="trainees_passed" value="{{implode(',',@$trainees_passed)}}" class="form-control form-control-border border-width-2" hidden>
                     </div>
                 </div>
             </div>
@@ -236,7 +288,7 @@
 <script src="{{ asset('assets/plugins/summernote/summernote-bs4.min.js').'?v='.date('YmdH') }}"></script>
 <!-- DATE INPUT ** end   -->
 <script src="{{ asset('assets/js/page.js').'?v='.date('YmdH').'2' }}"></script>
-<script src="{{ asset('assets/js/admin/training_trainee_cu.js').'?v='.date('YmdH') }}"></script>
+<script src="{{ asset('assets/js/admin/training_trainee_cu.js') }}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     $('.select2bs4').select2({
