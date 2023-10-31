@@ -62,6 +62,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::get('/training/post-act/{id}/{act}', [TrainingController::class, 'post_act']);
         Route::post('/training/post-add', [TrainingController::class, 'post_add']);
         Route::post('/training/post-edit', [TrainingController::class, 'post_edit']);
+        Route::post('/training/post-edit-trainee/{id}', [TrainingController::class, 'post_edit_trainee']);
         Route::post('/training/post-delete/{id}', [TrainingController::class, 'post_delete']);
         
         Route::get('/trainee/post-act/{id}/{act}', [TraineeController::class, 'post_act']);

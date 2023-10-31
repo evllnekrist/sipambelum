@@ -132,14 +132,20 @@
                                         <td id="summary-count-trainees-displayed"></td>
                                     </tr>
                                     <tr>
+                                        <td colspan="3"><hr></td>
+                                    </tr>
+                                    <tr>
                                         <td>Disetujui</td>
                                         <td>:</td>
                                         <td id="summary-count-trainees-approved"></td>
                                     </tr>
                                     <tr>
-                                        <td>Tidak Disetujui</td>
+                                        <td>Belum Disetujui</td>
                                         <td>:</td>
                                         <td id="summary-count-trainees-approved-not"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><hr></td>
                                     </tr>
                                     <tr>
                                         <td>Lulus</td>
@@ -163,9 +169,10 @@
                             </div>
                         </div>
                         @php
-                            $subdistrict_ids    = [];
-                            $trainees_approved  = [];
-                            $trainees_passed    = [];
+                            $subdistrict_ids        = [];
+                            $trainees_approved      = [];
+                            $trainees_passed        = [];
+                            $trainees_passed_not    = [];
                         @endphp
                         <!-- subdistrict::start -->
                         <ol>
@@ -207,6 +214,8 @@
                                             }
                                             if($item_ts->is_passed){
                                                 array_push($trainees_passed,$item_ts->trainee->id);
+                                            }elseif($item_ts->is_passed===0){
+                                                array_push($trainees_passed_not,$item_ts->trainee->id);
                                             }
                                         ?>
                                         <tr class="trainee-wrap" id="subdistrict-{{$item_ts->trainee->id}}-trainee">
@@ -236,7 +245,7 @@
                                             </td>
                                             <td>
                                                 <div class="_leads_action" data-id="{{$item_ts->trainee->id}}">
-                                                    <button type="button" class="btn {{$item_ts->is_passed || $item_ts->is_passed == null?'bg-muted text-muted2':'bg-danger'}} btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
+                                                    <button type="button" class="btn {{$item_ts->is_passed===0?'bg-danger':'bg-muted text-muted2'}} btn-lg trainee-passed-not" style="margin-top:-5px">Tidak</button>
                                                     <button type="button" class="btn {{$item_ts->is_passed?'bg-success':'bg-muted text-muted2'}} btn-lg trainee-passed" style="margin-top:-5px">Lulus</button>
                                                 </div>
                                             </td>
@@ -252,6 +261,7 @@
                         <input type="text" name="subdistrict_ids" value="{{implode(',',@$subdistrict_ids)}}" class="form-control form-control-border border-width-2" hidden>
                         <input type="text" name="trainees_approved" value="{{implode(',',@$trainees_approved)}}" class="form-control form-control-border border-width-2" hidden>
                         <input type="text" name="trainees_passed" value="{{implode(',',@$trainees_passed)}}" class="form-control form-control-border border-width-2" hidden>
+                        <input type="text" name="trainees_passed_not" value="{{implode(',',@$trainees_passed_not)}}" class="form-control form-control-border border-width-2" hidden>
                     </div>
                 </div>
             </div>

@@ -2,11 +2,12 @@ console.log('training trainee CU 231030')
 // console.log('datetime',(new Date).toLocaleString('id-ID'))
 
 const subdistrict_ids     = ($("[name='subdistrict_ids']").val()).split(",");
-let trainees_approved     = $("[name='trainees_approved']").val()?($("[name='trainees_approved']").val()).split(","):[];
-let trainees_passed       = $("[name='trainees_approved']").val()?($("[name='trainees_passed']").val()).split(","):[];
+let trainees_new          = [];
 let trainees_to_delete    = [];
 let trainees_approved_not = [];
-let trainees_passed_not   = [];
+let trainees_approved     = $("[name='trainees_approved']").val()?($("[name='trainees_approved']").val()).split(","):[];
+let trainees_passed_not   = $("[name='trainees_passed_not']").val()?($("[name='trainees_passed_not']").val()).split(","):[];
+let trainees_passed       = $("[name='trainees_passed']").val()?($("[name='trainees_passed']").val()).split(","):[];
 
 function searchTrainee_closeResult(){
   $('.search-trainee-input:checked').each(function() {
@@ -113,6 +114,7 @@ $(function(){
     let search_trainee_data = {};
     $('.search-trainee-input:checked').each(function() {
       // search_trainee.push($(this).val());
+      trainees_new.push($(this).val())
       search_trainee_data[$(this).val()] = $(this).data('complete');
     });
     searchTrainee_closeResult();
@@ -256,6 +258,7 @@ $(function(){
         to_bulk.forEach(id => {
           $("#subdistrict-"+id+"-trainee").remove()
           trainees_to_delete.includes(id)?'':trainees_to_delete.push(id)
+          trainees_new.includes(id)?trainees_new.splice(trainees_new.indexOf(id), 1):''
           trainees_approved.includes(id)?trainees_approved.splice(trainees_approved.indexOf(id), 1):''
           trainees_approved_not.includes(id)?trainees_approved_not.splice(trainees_approved_not.indexOf(id), 1):''
           trainees_passed.includes(id)?trainees_passed.splice(trainees_passed.indexOf(id), 1):''
@@ -321,14 +324,16 @@ $(function(){
     
     $('#loading').show();
     $('#form').hide();
+    let id = $("[name='id']").val()
     let payload = {
+      trainees_new: trainees_new,
       trainees_to_delete: trainees_to_delete,
       trainees_approved: trainees_approved,
       trainees_passed: trainees_passed,
       trainees_approved_not: trainees_approved_not,
       trainees_passed_not: trainees_passed_not
     }
-    axios.post(baseUrl+'/api/training/post-edit', payload, apiHeaders)
+    axios.post(baseUrl+'/api/training/post-edit-trainee/'+id, payload, apiHeaders)
     .then(function (response) {
       console.log('response..',response);
       if(response.status == 200 && response.data.status) {

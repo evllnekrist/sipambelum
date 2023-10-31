@@ -240,6 +240,72 @@ class TrainingController extends Controller
         return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
       }
   }
+  public function post_edit_trainee($id, Request $request)
+  {
+      // dump($id);
+      // dump($request->all());
+      // die;
+
+      $validator = Validator::make($request->all(), []); 
+      if ($validator->fails()) {
+        // return redirect()->back()->withInput();
+        return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
+      }
+      
+      DB::beginTransaction();
+      try {
+        $output = [];
+        $data = $request->all();
+
+        // 1__create or not if exist 
+        if($data['trainees_new']){
+          $data['trainees'] = array_diff($data['trainees_new'],$data['trainees_to_delete']);
+          $output['trainees'] = [];
+          foreach ($data['trainees'] as $key => $value) {
+            $output['trainees'][$value] = Trainee_Training::firstOrCreate(
+              ['id_training'=>$id, 'id_trainee'=>$value]
+            );
+          }
+        }
+        // 2__delete
+        if($data['trainees_to_delete']){
+          $output['trainees_to_delete'] = [];
+          foreach ($data['trainees_to_delete'] as $key => $value) {
+            $output['trainees_to_delete'][$value] = Trainee_Training::where('id_training', $id)->where('id_trainee', $value)->delete();
+          }
+        } 
+        // 3__update
+        if($data['trainees_approved']){
+          $output['trainees_approved'] = [];
+          foreach ($data['trainees_approved'] as $key => $value) {
+            $output['trainees_approved'][$value] = Trainee_Training::where('id_training', $id)->where('id_trainee', $value)->update(['active'=>true]);
+          }
+        } 
+        if($data['trainees_approved_not']){
+          $output['trainees_approved_not'] = [];
+          foreach ($data['trainees_approved_not'] as $key => $value) {
+            $output['trainees_approved_not'][$value] = Trainee_Training::where('id_training', $id)->where('id_trainee', $value)->update(['active'=>false]);
+          }
+        } 
+        if($data['trainees_passed']){
+          $output['trainees_passed'] = [];
+          foreach ($data['trainees_passed'] as $key => $value) {
+            $output['trainees_passed'][$value] = Trainee_Training::where('id_training', $id)->where('id_trainee', $value)->update(['is_passed'=>true]);
+          }
+        } 
+        if($data['trainees_passed_not']){
+          $output['trainees_passed_not'] = [];
+          foreach ($data['trainees_passed_not'] as $key => $value) {
+            $output['trainees_passed_not'][$value] = Trainee_Training::where('id_training', $id)->where('id_trainee', $value)->update(['is_passed'=>false]);
+          }
+        } 
+        DB::commit();
+        return json_encode(array('status'=>true, 'message'=>'Berhasil menrubah data', 'data'=>$output));
+      } catch (Exception $e) {
+        DB::rollback();
+        return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+      }
+  }
   public function post_delete($id)
   {
       $validator = Validator::make(['id' => $id], [
