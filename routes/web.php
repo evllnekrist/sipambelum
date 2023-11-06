@@ -107,9 +107,9 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'admin-katkab'], function () {
         // Route::get('/users', [ProfileController::class, 'admin_index'])->name('admin.user');
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/profile/{id}', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile/{id}', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         Route::get('page', [PageController::class, 'admin_index'])->name('admin.page');
         Route::get('page/add', [PageController::class, 'form_add'])->name('admin.page.add');

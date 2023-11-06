@@ -2,9 +2,21 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- Role -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="role" :value="__('Peran')" />
+            <select class="form-control block mt-1 w-full" name="role" :value="old('role')" required autofocus autocomplete="role">
+              <option disabled>------ pilih salah satu ------</option>
+              @foreach(@$roles as $role)
+                <option value="{{$role->value}}">{{$role->label}}</option>
+              @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+        </div>
+
+        <!-- Name -->
+        <div class="mt-4">
+            <x-input-label for="name" :value="__('Nama')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
@@ -30,7 +42,7 @@
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="__('Konfirmasi Password')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"
@@ -39,9 +51,42 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- PP -->
+        <div class="mt-4">
+            <x-input-label for="pp" :value="__('Gambar Profil')" />
+            <div class="form-group">
+              <table>
+                <tbody>
+                  @for($i = 1; $i <= sizeof($pp_ids); $i++)
+                    @if(($i-1)%4==0 || $i == sizeof($pp_ids)+1)
+                    </tr>
+                    @endif
+                    @if($i == 1 || (($i-1)%4==0))
+                    <tr>
+                    @endif
+                    <td>
+                      <div class="custom-control custom-radio">
+                        <input id="customRadioPP-{{$i}}"
+                          class="custom-control-input custom-control-input-danger" 
+                          name="pp" 
+                          value="{{$pp_ids[$i-1]}}" 
+                          type="radio" 
+                          {{$i == 1?'checked':''}}>
+                        <label for="customRadioPP-{{$i}}" class="custom-control-label">
+                          <img src="{{asset('/assets/img/profile/'.strval($pp_ids[$i-1]).'.png')}}" style="width:12vh">
+                        </label>
+                      </div>
+                    </td>
+                  @endfor
+                </tbody>
+              </table>
+            </div>
+            <x-input-error :messages="$errors->get('pp')" class="mt-2" />
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+                {{ __('Sudah terdaftar?') }}
             </a>
 
             <x-primary-button class="ml-4">

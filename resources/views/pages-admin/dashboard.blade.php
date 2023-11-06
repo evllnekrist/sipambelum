@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Admin')
 @section('content')	
-    <video width="100%" controls="controls" preload="none" autoplay="autoplay" muted loop="true" src="{{ asset('assets/video/bg-admin.mp4') }}" type="video/mp4">
+    <video width="100%" style="position: sticky;top: 10px;" controls="controls" preload="none" autoplay="autoplay" muted loop="true" src="{{ asset('assets/video/bg-admin.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 @endsection

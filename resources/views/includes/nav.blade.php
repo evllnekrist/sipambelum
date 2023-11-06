@@ -4,7 +4,6 @@
         <h6>{{Auth::user()->name}}</h6>
         <span>{{Auth::user()->role}}</span>
     </div>
-    
     <div class="dash_user_menues">
         <ul>
             <li>
@@ -63,7 +62,7 @@
     <div class="dash_user_footer">
         <ul>
             <li title="logout?"><a href="{{route('logout')}}"><i class="fa fa-power-off"></i></a></li>
-            <li><a href="{{route('profile.edit')}}"><i class="fa fa-cog"></i></a></li>
+            <li><a href="{{route('profile.edit',Auth::user()->id)}}"><i class="fa fa-cog"></i></a></li>
         </ul>
     </div>
 </div>
