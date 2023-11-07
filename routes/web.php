@@ -27,7 +27,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-selection-list', [PageController::class, 'get_options']);
     Route::post('/get-page-list', [PageController::class, 'get_list']);
     Route::post('/get-business-list', [BusinessController::class, 'get_list']);
-    Route::post('/get-business-listful', [BusinessController::class, 'get_list']);
+    Route::post('/get-business-listfull', [BusinessController::class, 'get_listfull']);
     Route::get('/get-list-basic', [TraineeController::class, 'getBasicList']); 
     Route::post('/map-to-business', [BusinessController::class, 'mapToBusiness']);
     Route::post('/get-banner-list', [BannerController::class, 'get_list']);
@@ -38,6 +38,7 @@ Route::group(['prefix' => 'api'], function () {
     // Route::post('/get-trainee-listfull', [TraineeController::class, 'get_listfull']);
     Route::post('/get-trainee-list', [TraineeController::class, 'get_list']);
     Route::post('/get-trainee-list-adv', [TraineeController::class, 'get_list_adv']);
+    Route::post('/get-trainee-list-tb', [TraineeController::class, 'get_list_tb']);
     Route::post('/get-subdistrict-list', [SubdistrictController::class, 'get_list']);
     Route::post('/get-subdistrict-listful', [SubdistrictController::class, 'get_list']);
     Route::get('/subdistricts/{subdistrictId}', [SubdistrictController::class, 'getSubdistrictName']);
@@ -75,6 +76,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::get('/business/{id}', [BusinessController::class, 'getBusinessById']);
         Route::post('/business/post-add', [BusinessController::class, 'post_add']);
         Route::post('/business/post-edit', [BusinessController::class, 'post_edit']);
+        Route::post('/business/post-edit-trainee/{id}', [BusinessController::class, 'post_edit_trainee']);
         Route::post('/business/post-delete/{id}', [BusinessController::class, 'post_delete']);  
         
         Route::get('/subdistrict/post-act/{id}/{act}', [SubdistrictController::class, 'post_act']);

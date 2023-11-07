@@ -86,7 +86,7 @@ function showDetail(id) {
   
 function getData() {
   $('#page-loading').html(loadingElement);
-  let url = baseUrl+'/api/get-business-list';
+  let url = baseUrl+'/api/get-business-listfull';
   let page = 1, pageSize = 10;
   let payload = { page: page, page_size: pageSize };
   console.log('tryin to retrieve data....', url);
@@ -107,9 +107,15 @@ function getData() {
             { data: 'id' },
             { data: 'nib' },
             { data: 'name' },
-            { data: null, render: function(data, type, row) {
-              return '<a href="' + baseUrl + '/admin-katkab/business/trainees/' + row.id + '" target="_blank" class="btn btn-warning btn-sm rounded text-blue-b">+ &nbsp;<i class="nav-icon fas fa-user-edit"></i></a>';
-          } },
+
+            {
+              data: null,
+              render: function(data, type, row) {
+                let traineesCount = row.trainees.length; // Assuming trainees is the name of the relationship
+                return '<a href="' + baseUrl + '/admin-katkab/business/trainees/' + row.id + '" target="_blank" class="btn btn-warning btn-sm rounded text-blue-b">+ &nbsp;<i class="nav-icon fas fa-user-edit"></i></a>' +
+                       '<span class="ml-2">' + traineesCount + ' Karyawan</span>';
+              }
+            },
             { data: 'phone' },
             { data: 'email' },
             { data: 'address' },

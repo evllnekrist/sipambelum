@@ -18,4 +18,17 @@ class Trainee_Business extends Model
         'active',
         'job_title',
     ];
+    public function trainee()
+    {
+        return $this->belongsTo(Trainee::class,'id_trainee','id');
+    }
+    public function mapTraineeBusiness()
+    {
+        return $this->hasMany(MapTraineeBusiness::class, 'id_trainee', 'id');
+    }
+    public function deleteCascade()
+    {
+        // Hapus semua karyawan yang terkait dengan id_business ini
+        $this->delete();
+    }
 }

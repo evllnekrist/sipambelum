@@ -38,7 +38,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td id="page-loading" colspan="19"></td></tr>
+                <tr><td id="page-loading" colspan="7"></td></tr>
                 </tbody>
               </table>
             </div>

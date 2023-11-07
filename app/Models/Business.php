@@ -36,4 +36,15 @@ class Business extends Model
     {
         return $this->belongsTo(Subdistrict::class, 'subdistrict', 'id');
     }
+    public function trainees()
+    {
+        return $this->hasMany(Trainee_Business::class,'id_business','id');
+    }
+    protected static function booted()
+    {
+        static::deleting(function ($business) {
+            $business->trainees()->deleteCascade();
+        });
+    }
+
 }

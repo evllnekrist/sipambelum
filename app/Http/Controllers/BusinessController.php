@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Business;
 use App\Models\Trainee;
+use App\Models\Option;
 use App\Models\Subdistrict;
 use App\Models\MapTraineeBusiness;
 use DB;
@@ -153,15 +154,17 @@ public function mapToBusiness(Request $request)
 }
 
 
-    public function get_listfull(Request $request)
-    {
-        try {
-            $data = Business::orderBy('created_at', 'desc')->get();
-            return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
-        } catch (\Exception $e) {
-            return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
-        }
+public function get_listfull(Request $request)
+{
+    try {
+        $data = Business::with('subdistrict', 'trainees')->orderBy('created_at', 'DESC')->get();
+        return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
+    } catch (Exception $e) {
+        return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
     }
+}
+
+
 
     public function post_add(Request $request)
     {
@@ -240,7 +243,76 @@ public function mapToBusiness(Request $request)
             return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
         }
     }
-
+    public function post_edit_trainee($id, Request $request)
+    {
+        // dump($id);
+        // dump($request->all());
+        // die;
+  
+        // $validator = Validator::make($request->all(), []); 
+        $validator = Validator::make($request->all(), [
+            'trainees_new' => 'array', // sesuaikan dengan format data yang diterima
+            'trainees_to_delete' => 'array',
+            'trainees_approved' => 'array',
+            'trainees_approved_not' => 'array',
+            'trainees_job_titles' => 'array',
+        ]);
+        if ($validator->fails()) {
+          // return redirect()->back()->withInput();
+        //   return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
+        return response()->json(['status' => false, 'message' => $validator->messages()->first(), 'data' => null], 400);
+        }
+        
+        DB::beginTransaction();
+        try {
+          $output = [];
+          $data = $request->all();
+  
+          // 1__create or not if exist 
+          if($data['trainees_new']){
+            $data['trainees'] = array_diff($data['trainees_new'],$data['trainees_to_delete']);
+            $output['trainees'] = [];
+            foreach ($data['trainees'] as $key => $value) {
+              $output['trainees'][$value] = MapTraineeBusiness::firstOrCreate(
+                ['id_business'=>$id, 'id_trainee'=>$value]
+              );
+            }
+          }
+          // 2__delete
+          if($data['trainees_to_delete']){
+            $output['trainees_to_delete'] = [];
+            foreach ($data['trainees_to_delete'] as $key => $value) {
+              $output['trainees_to_delete'][$value] = MapTraineeBusiness::where('id_business', $id)->where('id_trainee', $value)->delete();
+            }
+          } 
+          // 3__update
+          if($data['trainees_approved']){
+            $output['trainees_approved'] = [];
+            foreach ($data['trainees_approved'] as $key => $value) {
+              $output['trainees_approved'][$value] = MapTraineeBusiness::where('id_business', $id)->where('id_trainee', $value)->update(['active'=>true]);
+            }
+          } 
+          if($data['trainees_approved_not']){
+            $output['trainees_approved_not'] = [];
+            foreach ($data['trainees_approved_not'] as $key => $value) {
+              $output['trainees_approved_not'][$value] = MapTraineeBusiness::where('id_business', $id)->where('id_trainee', $value)->update(['active'=>false]);
+            }
+          } 
+          if ($data['trainees_job_titles']) {
+            $output['trainees_job_titles'] = [];
+            foreach ($data['trainees_job_titles'] as $traineeId => $jobTitle) {
+                $output['trainees_job_titles'][$traineeId] = MapTraineeBusiness::where('id_business', $id)
+                    ->where('id_trainee', $traineeId)
+                    ->update(['job_title' => $jobTitle]);
+            }
+        }
+          DB::commit();
+          return response()->json(['status' => true, 'message' => 'Berhasil merubah data', 'data' => $output], 200);
+        } catch (Exception $e) {
+          DB::rollback();
+          return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+        }
+    }
     public function post_delete($id)
     {
         $validator = Validator::make(['id' => $id], [
