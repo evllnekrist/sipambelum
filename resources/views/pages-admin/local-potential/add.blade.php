@@ -59,7 +59,15 @@
             <option value="0">Tidak Aktif</option>
           </select>
         </div>
-
+        <div class="form-group">
+        <label>Kecamatan <code>*</code></label>
+        <select class="form-control form-control-border border-width-2" name="subdistrict" required>
+          <option value="">Pilih Kecamatan</option>
+          @foreach($subdistricts as $subdistrict)
+            <option value="{{ $subdistrict->id }}">{{ $subdistrict->name }}</option>
+          @endforeach
+        </select>
+      </div>
         <!-- Tombol Simpan -->
         <div class="form-group">
           <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-submit-add">Simpan</button>

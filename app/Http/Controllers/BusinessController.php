@@ -97,16 +97,18 @@ public function mapToBusiness(Request $request)
             return $this->show_error_admin('Business');
         }
     }
-
+ 
     public function form_add()
     {
         $data = array();
-        return view('pages-admin.business.add', $data);
+        $subdistricts = Subdistrict::all();
+        return view('pages-admin.business.add',compact('subdistricts'), $data);
     }
 
     public function form_edit($id)
     {
         $data['selected'] = Business::find($id);
+        $data['subdistricts'] = Subdistrict::all();
         if ($data['selected']) {
             return view('pages-admin.business.edit', $data);
         } else {

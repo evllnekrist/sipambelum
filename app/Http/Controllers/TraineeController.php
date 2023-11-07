@@ -95,7 +95,8 @@ public function getBasicList(Request $request)
 
     public function form_add()
     {
-        return view('pages-admin.trainee.add');
+        $subdistricts = Subdistrict::all();
+        return view('pages-admin.trainee.add', compact('subdistricts'));
     }
 
     public function checkNik(Request $request)
@@ -114,6 +115,7 @@ public function getBasicList(Request $request)
     public function form_edit($id)
     {
         $data['selected'] = Trainee::find($id);
+        $data['subdistricts'] = Subdistrict::all();
         if ($data['selected']) {
             return view('pages-admin.trainee.edit', $data);
         } else {

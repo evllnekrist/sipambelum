@@ -31,6 +31,7 @@
                     <th>Gambar Utama</th>
                     <th>URL Link</th>
                     <th>Aktif</th>
+                    <th>Kecamatan</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>

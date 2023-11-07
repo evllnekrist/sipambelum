@@ -88,6 +88,11 @@ function getData() {
           },
           // Kolom aksi untuk menghapus local potential
           {
+            data: 'subdistrict', render: function (data, type, row) {
+              return row.subdistrict ? row.subdistrict.name : ''; // Mengambil nama kecamatan dari objek subdistrict jika ada
+            }
+          },
+          {
             data: null, render: function (data, type, row) {
               return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>' ;
             }

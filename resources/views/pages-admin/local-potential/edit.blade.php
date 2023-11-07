@@ -64,6 +64,18 @@
                   <option value="0" {{ $selected->active == 0 ? 'selected' : '' }}>Tidak Aktif</option>
                 </select>
               </div>
+            <!-- Subdistrict -->
+            <div class="form-group">
+              <label>Kecamatan <code>*</code></label>
+              <select class="form-control form-control-border border-width-2" name="subdistrict" required>
+                <option value="">Pilih Kecamatan</option>
+                @foreach($subdistricts as $subdistrict)
+                  <option value="{{ $subdistrict->id }}" {{ $selected->subdistrict == $subdistrict->id ? 'selected' : '' }}>
+                    {{ $subdistrict->name }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
 
               <!-- Tombol Simpan -->
               <div class="form-group">

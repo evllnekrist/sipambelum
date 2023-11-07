@@ -96,10 +96,15 @@
       </div>
 
       <!-- Kecamatan Tempat Tinggal -->
-      <div class="form-group">
-        <label>Kecamatan Tempat Tinggal</label>
-        <input type="text" name="subdistrict_of_residence" class="form-control form-control-border border-width-2">
-      </div>
+       <div class="form-group">
+                <label>Kecamatan Tempat Tinggal<code>*</code></label>
+                <select class="form-control form-control-border border-width-2" name="subdistrict_of_residence" required>
+                  <option value="">Pilih Kecamatan</option>
+                  @foreach($subdistricts as $subdistrict)
+                    <option value="{{ $subdistrict->id }}">{{ $subdistrict->name }}</option>
+                  @endforeach
+                </select>
+              </div>
 
       <!-- Tombol Simpan -->
       <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-submit-add">Simpan</button>

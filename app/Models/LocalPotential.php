@@ -19,4 +19,8 @@ class LocalPotential extends Model
         'url_link',
         'active',
     ];
+    public function subdistrict()
+    {
+        return $this->belongsTo(Subdistrict::class, 'subdistrict', 'id');
+    }
 }

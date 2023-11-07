@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\LocalPotential;
+use App\Models\Subdistrict;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
@@ -23,36 +24,39 @@ class LocalPotentialController extends Controller
 
     public function form_add()
     {
-        return view('pages-admin.local-potential.add');
+        $subdistricts = Subdistrict::all();
+        return view('pages-admin.local-potential.add', compact('subdistricts'));
     }
 
     public function form_edit($id)
-    {
-        $data['selected'] = LocalPotential::find($id);
-        if ($data['selected']) {
-            return view('pages-admin.local-potential.edit', $data);
-        } else {
-            $error_details = array(
-                'title' => 'Oops!',
-                'desc' => 'Local Potential dengan ID yang Anda cari tidak ditemukan.'
-            );
-            return view('pages-admin.error.404', $error_details);
-        }
+{
+    $data['selected'] = LocalPotential::find($id);
+    $data['subdistricts'] = Subdistrict::all(); // Fetch all subdistricts
+
+    if ($data['selected']) {
+        return view('pages-admin.local-potential.edit', $data);
+    } else {
+        $error_details = array(
+            'title' => 'Oops!',
+            'desc' => 'Local Potential dengan ID yang Anda cari tidak ditemukan.'
+        );
+        return view('pages-admin.error.404', $error_details);
     }
+}
 
     // -------------------------------------- VIEW -------------------------------------- end
 
     // -------------------------------------- CALLED BY AJAX ---------------------------- start
 
     public function get_list(Request $request)
-    {
-        try {
-            $data = LocalPotential::all();
-            return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
-        } catch (\Exception $e) {
-            return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
-        }
+{
+    try {
+        $data = LocalPotential::with('subdistrict')->get();
+        return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
+    } catch (\Exception $e) {
+        return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
+}
 
     public function post_add(Request $request)
     {

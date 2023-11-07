@@ -59,9 +59,16 @@
 
               <!-- Kecamatan -->
               <div class="form-group">
-                <label>Kecamatan</label>
-                <input type="text" name="subdistrict" value="{{@$selected->subdistrict}}" class="form-control form-control-border border-width-2">
-              </div>
+              <label>Kecamatan <code>*</code></label>
+              <select class="form-control form-control-border border-width-2" name="subdistrict" required>
+                <option value="">Pilih Kecamatan</option>
+                @foreach($subdistricts as $subdistrict)
+                  <option value="{{ $subdistrict->id }}" {{ $selected->subdistrict == $subdistrict->id ? 'selected' : '' }}>
+                    {{ $subdistrict->name }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
 
           </div>
         </div>
