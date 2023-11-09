@@ -22,4 +22,9 @@ class Subdistrict extends Model
         $subdistrict = Subdistrict::find($id);
         return $subdistrict ? $subdistrict->name : null;
     }   
+    public function localPotentials()
+{
+    return $this->belongsToMany(LocalPotential::class, 'map_subdistrict_local_potential', 'id_subdistrict', 'id_local_potential');
+}
+
 }

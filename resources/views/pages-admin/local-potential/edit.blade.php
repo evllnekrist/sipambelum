@@ -4,6 +4,8 @@
 <div class="content-wrapper">
   @include('includes.loading')
   <form method="post" action="#" id="form" enctype="multipart/form-data">
+  @csrf
+
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
@@ -66,17 +68,16 @@
               </div>
             <!-- Subdistrict -->
             <div class="form-group">
-              <label>Kecamatan <code>*</code></label>
-              <select class="form-control form-control-border border-width-2" name="subdistrict" required>
+            <label>Kecamatan <code>*</code></label>
+            <select class="form-control form-control-border border-width-2" name="subdistrict[]" multiple required>
                 <option value="">Pilih Kecamatan</option>
                 @foreach($subdistricts as $subdistrict)
-                  <option value="{{ $subdistrict->id }}" {{ $selected->subdistrict == $subdistrict->id ? 'selected' : '' }}>
-                    {{ $subdistrict->name }}
-                  </option>
+                    <option value="{{ $subdistrict->id }}" {{ in_array($subdistrict->id, $selected->subdistricts->pluck('id')->toArray()) ? 'selected' : '' }}>
+                        {{ $subdistrict->name }}
+                    </option>
                 @endforeach
-              </select>
-            </div>
-
+            </select>
+        </div>
               <!-- Tombol Simpan -->
               <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-submit-edit">Simpan</button>

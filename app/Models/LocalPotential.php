@@ -23,4 +23,9 @@ class LocalPotential extends Model
     {
         return $this->belongsTo(Subdistrict::class, 'subdistrict', 'id');
     }
+    public function subdistricts()
+{
+    return $this->belongsToMany(Subdistrict::class, 'map_subdistrict_local_potential', 'id_local_potential', 'id_subdistrict');
+}
+
 }
