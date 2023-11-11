@@ -17,44 +17,47 @@ class LocalPotentialController extends Controller
 
     // -------------------------------------- VIEW -------------------------------------- start
     public function user_index(Request $request)
-    {
-        $subdistricts = Subdistrict::all();
-        $data['data_sorted_by'] = array(
-            'latest'            => 'Paling Baru',
-            'abc'               => 'Alfabet Judul A-Z',
-            'abc-reverse'       => 'Alfabet Judul Z-A',
-        );
+{
+    $subdistricts = Subdistrict::all();
+    $data['data_sorted_by'] = array(
+        'latest'            => 'Paling Baru',
+        'abc'               => 'Alfabet Judul A-Z',
+        'abc-reverse'       => 'Alfabet Judul Z-A',
+    );
 
-        $query = LocalPotential::query();
+    $query = LocalPotential::query();
 
-        // Filter by name
-        if ($request->has('_title') && !empty($request->_title)) {
-            $query->where('name', 'like', '%' . $request->_title . '%');
-        }
-
-        // Filter by subdistrict
-        if ($request->has('_subdistrict') && !empty($request->_subdistrict)) {
-            $subdistrictId = $request->_subdistrict;
-            $query->where('subdistrict', $subdistrictId);
-        }
-
-        // Count data
-        $totalItems = $query->count();
-
-        // Pagination
-        $page = $request->has('_page') ? $request->_page : 1;
-        $pageSize = 10;
-        $skip = ($page - 1) * $pageSize;
-        $localPotentials = $query->skip($skip)->take($pageSize)->get();
-
-        $data['local_potentials'] = $localPotentials;
-        $data['totalItems'] = $totalItems;
-        $data['subdistricts'] = $subdistricts;
-        $data['currentPage'] = $page;
-        $data['pageSize'] = $pageSize;
-
-        return view('pages.local_potential', $data);
+    // Filter by name
+    if ($request->has('_title') && !empty($request->_title)) {
+        $query->where('name', 'like', '%' . $request->_title . '%');
     }
+
+    // Filter by subdistrict
+    if ($request->has('_subdistrict') && !empty($request->_subdistrict)) {
+        $subdistrictId = $request->_subdistrict;
+        $query->whereHas('subdistricts', function($q) use ($subdistrictId) {
+            $q->where('id', $subdistrictId);
+        });
+    }
+
+    // Count data
+    $totalItems = $query->count();
+
+    // Pagination
+    $page = $request->has('_page') ? $request->_page : 1;
+    $pageSize = 10;
+    $skip = ($page - 1) * $pageSize;
+    $localPotentials = $query->with('subdistricts')->skip($skip)->take($pageSize)->get();
+
+    $data['local_potentials'] = $localPotentials;
+    $data['totalItems'] = $totalItems;
+    $data['subdistricts'] = $subdistricts;
+    $data['currentPage'] = $page;
+    $data['pageSize'] = $pageSize;
+
+    return view('pages.local_potential', $data);
+}
+
     public function admin_index()
     {
         return view('pages-admin.local-potential.index');
@@ -91,12 +94,13 @@ class LocalPotentialController extends Controller
     public function get_list(Request $request)
 {
     try {
-        $data = LocalPotential::with('subdistrict')->get();
-        return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
+        $localPotentials = LocalPotential::with('subdistricts')->get();
+        return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $localPotentials));
     } catch (\Exception $e) {
         return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
 }
+
 
     public function post_add(Request $request)
     {

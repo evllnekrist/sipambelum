@@ -98,7 +98,9 @@
                                         </div>
                                         <div class="fr-grid-deatil">
                                             <h5 class="fr-can-name"><a href="{{ $local_potential->url_link }}">{{ $local_potential->name }}</a></h5>
-                                            <small>{{ $local_potential->created_at }}</small>
+                                            <button type="button" class="btn btn-success btn-sm subdistrict-details-btn" data-toggle="modal" data-target="#subdistrictDetailModal" data-subdistrict="{{ $local_potential->subdistricts->pluck('name')->implode(',') }}">
+                                                Detail Kecamatan
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +109,27 @@
                         </div>
                     </div>
                 </div>
-            </div>    
+            </div>   
+            <!-- Modal for Subdistrict Details -->
+            <div class="modal fade" id="subdistrictDetailModal" tabindex="-1" role="dialog" aria-labelledby="subdistrictDetailModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="subdistrictDetailModalLabel">Detail Kecamatan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="subdistrictDetailBody">
+                            <!-- Subdistrict details will be inserted here dynamically -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
     </div>

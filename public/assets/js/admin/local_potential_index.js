@@ -45,6 +45,25 @@ function doDelete(id, name) {
     });
   }
 }
+// JavaScript code to handle the button click event for all subdistricts
+$(document).on('click', '.subdistrict-all-details', function() {
+  var subdistricts = $(this).data('subdistricts').split(',');
+  var subdistrictDetails = subdistricts.map(function(sub, index) {
+      var detailNumber = index + 1; // Start counting from 1
+      return '' + detailNumber + '. Kecamatan ' + sub;
+  }).join('<br>');
+
+  $('#subdistrictAllDetails').html(subdistrictDetails);
+
+  // Get the LocalPotential name from the clicked row in the DataTable
+  var localPotentialName = $(this).closest('tr').find('.fr-can-name a').text();
+
+  // Set the modal title for subdistrictModalAll with LocalPotential name
+  $('#subdistrictModalAllLabel').html('Detail Kecamatan');
+});
+
+
+
 
 function getData() {
   $('#page-loading').html(loadingElement);
@@ -64,13 +83,17 @@ function getData() {
           }
         },
         dom: 'Bfrtip',
-        data: response.data.data,
+        data: response.data.data.map(function(row) {
+            row.localPotentialName = row.subdistricts.length > 0 ? row.subdistricts[0].name : '';
+            return row;
+        }),
         columns: [
           { data: 'id' },
           // Sesuaikan kolom-kolom berikut dengan atribut-atribut local potential dari respons API
-          { data: null, render: function ( data, type, row ) {
-            return '<a href="'+baseUrl+'/admin-katkab/local-potential/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.name+'</a>';
-          } 
+          {
+            data: null, render: function (data, type, row) {
+                return '<a href="' + baseUrl + '/admin-katkab/local-potential/edit/' + data.id + '" target="_blank" class="text-blue-b">' + data.name + '</a>';
+            }
         },
           { data: 'desc' },
           {
@@ -88,10 +111,13 @@ function getData() {
           },
           // Kolom aksi untuk menghapus local potential
           {
-            data: 'subdistrict', render: function (data, type, row) {
-              return row.subdistrict ? row.subdistrict.name : ''; // Mengambil nama kecamatan dari objek subdistrict jika ada
+            data: null, render: function (data, type, row) {
+                var buttonAll = '<button type="button" class="btn btn-success btn-sm subdistrict-all-details" data-toggle="modal" data-target="#subdistrictModalAll" data-subdistricts="' + row.subdistricts.map(function (sub) { return sub.name; }).join(',') + '">Detail Kecamatan</button>';
+                return buttonAll;
             }
-          },
+        },
+        
+        
           {
             data: null, render: function (data, type, row) {
               return '<a onclick="doDelete(' + data.id + ',`' + data.name + '`)" class="text-danger"><i class="nav-icon fas fa-trash"></i></a>' ;
@@ -99,7 +125,11 @@ function getData() {
           },
         ],
       });
-
+    // Set modal label after DataTable is fully initialized
+    table.on('init.dt', function () {
+      var localPotentialName = table.row(0).data().localPotentialName;
+      $('#subdistrictModalAllLabel').html('Detail Kecamatan (' + localPotentialName + ')');
+    });
       table.on('order.dt search.dt', function () {
         var i = 1;
         table.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
