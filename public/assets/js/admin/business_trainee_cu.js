@@ -82,19 +82,23 @@ $(function(){
           let existingJobTitle = item.job_title || '';
           template = `
           <tr class="trainee-wrap" id="subdistrict-` + item.id + `-trainee">
-            <td>
-                <input type="checkbox" class="check-all-group-` + sd + ` checkbox-trainee" data-id="` + item.id + `">
-            </td>
-            <td class="row">
-                <div class="col-3" id="trainee-` + item.id + `-approved-wrap">
-                </div>
-                <div class="col-9">
-                    <b>` + item.name + `</b><br>
-                    <span>` + item.nik + `</span><br>
-                    Job Title: <input type="text" id="job_title_${item.id}" class="form-control" value="${existingJobTitle}">
-                </div>
-            </td>
-          </tr>`;
+    <td>
+        <input type="checkbox" class="check-all-group-` + sd + ` checkbox-trainee" data-id="` + item.id + `">
+    </td>
+    <td class="row">
+        <div class="col-3" id="trainee-` + item.id + `-approved-wrap">
+        </div>
+        <div class="col-9">
+            <b>` + item.name + `</b><br>
+            <span>` + item.nik + `</span><br>
+        </div>
+    </td>
+    <td>
+        <div class="_leads_action" data-id="${item.id}">
+            <input type="text" id="job_title_input_${item.id}" class="form-control" placeholder="Ketikan Jabatan" value="${existingJobTitle}">
+        </div>
+    </td>
+</tr>`;
         }
         if (!document.getElementById("subdistrict-" + item.id + "-trainee")) {
           $("#subdistrict-" + sd + "-tbody").append(template);

@@ -183,16 +183,16 @@
                                                 </div>
                                                 <div class="col-9">
                                                     <b>{{$item_ts->trainee->name}}</b><br>
-                                                    <span>{{$item_ts->trainee->nik}} - {{$item_ts->trainee->job_title}}</span><br>
+                                                    <span>{{$item_ts->trainee->nik}}</span><br>
                                                 </div>
                                             </td>
                                            
-                                            <td>
-                                                <div class="_leads_action" data-id="{{$item_ts->trainee->id}}">
-                                                <input type="text" class="form-control" placeholder="Job Title" name="job_title[]" value="{{$item_ts->trainee->job_title}}">
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                <td>
+                                                    <div class="_leads_action" data-id="{{$item_ts->trainee->id}}">
+                                                        <span>{{$item_ts->job_title}}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>

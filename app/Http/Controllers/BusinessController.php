@@ -116,20 +116,21 @@ public function mapToBusiness(Request $request)
         }
     }
     public function form_edit_trainees($id)
-{
-    $data['selected'] = MapTraineeBusiness::with('trainee')->find($id);
-    $data['subdistricts'] = Subdistrict::get();
-    $data['trainees'] = MapTraineeBusiness::with('trainee')
-                          ->select('map_trainee_business.*', 'map_trainee_business.job_title') // Menyertakan kolom job_title
-                          ->where('id_business', $id)
-                          ->get();
-
-    if ($data['selected']) {
-        return view('pages-admin.business.edit-trainee', $data);
-    } else {
-        return $this->show_error_admin('Trainee');
+    {
+        $data['selected'] = MapTraineeBusiness::with('trainee')->find($id);
+        $data['subdistricts'] = Subdistrict::get();
+        $data['trainees'] = MapTraineeBusiness::with('trainee')
+                              ->select('map_trainee_business.*', 'map_trainee_business.job_title') // Menyertakan kolom job_title
+                              ->where('id_business', $id)
+                              ->get();
+    
+        if ($data['selected']) {
+            return view('pages-admin.business.edit-trainee', $data);
+        } else {
+            return $this->show_error_admin('Trainee');
+        }
     }
-}
+    
 
 
     // -------------------------------------- VIEW -------------------------------------- end

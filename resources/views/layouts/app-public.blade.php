@@ -9,7 +9,21 @@
       <link rel="icon" type="image/x-icon" href="{{asset('logo-katingan.png')}}">
       <link rel="stylesheet" href="{{ asset('assets/css/styles.css').'?v='.date('YmdH')}}">
       <link rel="stylesheet" href="{{asset('assets/plugins/sweetalert2/sweetalert2.min.css')}}">
+<style>
+  .pagination a,
+.pagination span {
+    padding: 0.5rem; /* Adjust the padding as needed */
+    margin: 0.2rem; /* Adjust the margin as needed */
+    font-size: 0.875rem; /* Adjust the font size as needed */
+}
 
+.pagination .active {
+    font-weight: bold;
+    background-color: #f7fafc; /* Adjust the background color as needed */
+    border-color: #edf2f7; /* Adjust the border color as needed */
+}
+
+</style>
       @yield('addition_css')
     </head>
     <body class="yellow-skin @yield('body-class')">

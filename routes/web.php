@@ -96,6 +96,7 @@ Route::get('/', [PageController::class, 'homepage'])->name('homepage');
 Route::get('p/{id}', [PageController::class, 'user_index'])->name('user.page');
 Route::get('training', [TrainingController::class, 'user_index'])->name('user.training');
 Route::get('local-potential', [LocalPotentialController::class, 'user_index'])->name('user.localpotential');
+Route::get('local-potential/search', [LocalPotentialController::class, 'search'])->name('user.local_potential.search');
 Route::get('training/{id}', [TrainingController::class, 'user_detail'])->name('user.training_detail');
 Route::get('trainee', [TraineeController::class, 'user_index'])->name('user.trainee');
 Route::get('trainee/{id}', [TraineeController::class, 'user_detail'])->name('user.trainee_detail');

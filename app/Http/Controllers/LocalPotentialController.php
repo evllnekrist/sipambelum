@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\LocalPotential;
 use App\Models\Subdistrict;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Pagination\Paginator;
 use DB;
 
 class LocalPotentialController extends Controller
@@ -16,7 +17,47 @@ class LocalPotentialController extends Controller
     {}
 
     // -------------------------------------- VIEW -------------------------------------- start
+
+
     public function user_index(Request $request)
+    {
+        $subdistricts = Subdistrict::all();
+        $data['data_sorted_by'] = array(
+            'latest' => 'Paling Baru',
+            'abc' => 'Alfabet Judul A-Z',
+            'abc-reverse' => 'Alfabet Judul Z-A',
+        );
+    
+        $query = LocalPotential::query();
+    
+        // Filter by name
+        if ($request->has('_title') && !empty($request->_title)) {
+            $query->where('name', 'like', '%' . $request->_title . '%');
+        }
+    
+        // Filter by subdistrict
+        if ($request->has('_subdistrict') && !empty($request->_subdistrict)) {
+            $subdistrictId = $request->_subdistrict;
+            $query->whereHas('subdistricts', function ($q) use ($subdistrictId) {
+                $q->where('id', $subdistrictId);
+            });
+        }
+        $totalItems = $query->count(); 
+        // Paginate the results
+        $page = $request->has('_page') ? $request->_page : 1;
+        $pageSize = 9;
+        $localPotentials = $query->with('subdistricts')->paginate($pageSize);
+    
+        $data['local_potentials'] = $localPotentials;
+        $data['subdistricts'] = $subdistricts;
+        $data['totalItems'] = $totalItems;
+        $data['currentPage'] = $page;
+        $data['pageSize'] = $pageSize;
+    
+        return view('pages.local_potential', $data);
+    }
+    
+public function search(Request $request)
 {
     $subdistricts = Subdistrict::all();
     $data['data_sorted_by'] = array(
@@ -32,28 +73,18 @@ class LocalPotentialController extends Controller
         $query->where('name', 'like', '%' . $request->_title . '%');
     }
 
-    // Filter by subdistrict
-    if ($request->has('_subdistrict') && !empty($request->_subdistrict)) {
-        $subdistrictId = $request->_subdistrict;
-        $query->whereHas('subdistricts', function($q) use ($subdistrictId) {
-            $q->where('id', $subdistrictId);
-        });
-    }
-
     // Count data
-    $totalItems = $query->count();
-
-    // Pagination
-    $page = $request->has('_page') ? $request->_page : 1;
-    $pageSize = 10;
-    $skip = ($page - 1) * $pageSize;
-    $localPotentials = $query->with('subdistricts')->skip($skip)->take($pageSize)->get();
-
-    $data['local_potentials'] = $localPotentials;
-    $data['totalItems'] = $totalItems;
-    $data['subdistricts'] = $subdistricts;
-    $data['currentPage'] = $page;
-    $data['pageSize'] = $pageSize;
+    $totalItems = $query->count(); 
+        // Paginate the results
+        $page = $request->has('_page') ? $request->_page : 1;
+        $pageSize = 9;
+        $localPotentials = $query->with('subdistricts')->paginate($pageSize);
+    
+        $data['local_potentials'] = $localPotentials;
+        $data['subdistricts'] = $subdistricts;
+        $data['totalItems'] = $totalItems;
+        $data['currentPage'] = $page;
+        $data['pageSize'] = $pageSize;
 
     return view('pages.local_potential', $data);
 }

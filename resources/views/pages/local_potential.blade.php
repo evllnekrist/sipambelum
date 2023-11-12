@@ -13,21 +13,26 @@
             <div class="shorting_pagination">
                 <div class="shorting_pagination_laft">
                 <h5>
-                         Menampilkan <span id="products_count_start">{{ ($currentPage - 1) * $pageSize + 1 }}</span> - 
-                                        <span id="products_count_end">{{ min($currentPage * $pageSize, $totalItems) }}</span>
-                                        dari <span id="products_count_total">{{ $totalItems }}</span> data
-                                    </h5>
+                    Menampilkan 
+                    <span id="products_count_start">{{ ($currentPage - 1) * $pageSize + 1 }}</span> - 
+                    <span id="products_count_end">{{ min($currentPage * $pageSize, $totalItems) }}</span>
+                    dari <span id="products_count_total">{{ $totalItems }}</span> data
+                </h5>
                     <input name="_page" value="1" hidden>
                 </div>
                 <div class="shorting_pagination_right">
                 <ul id="_pagination" class="pagination">
-                                @for ($i = 1; $i <= ceil($totalItems / $pageSize); $i++)
-                                    <li class="page-item {{ $currentPage == $i ? 'active' : '' }}">
-                                        <a class="page-link" href="#" onclick="getLocalPotentialList({{ $i }}, true)">{{ $i }}</a>
-                                    </li>
-                                @endfor
-                            </ul>
-                </div>
+                    @for ($i = 1; $i <= ceil($totalItems / $pageSize); $i++)
+                        <li class="page-item {{ $currentPage == $i ? 'active' : '' }}">
+                            <a class="page-link" href="#" onclick="getLocalPotentialList({{ $i }}, true)">{{ $i }}</a>
+                        </li>
+                    @endfor
+                </ul>
+            </div>
+            <!-- <div class="shorting_pagination_right">
+                    {{ $local_potentials->links() }}
+                </div> -->
+
             </div>
         </div>
 
@@ -48,6 +53,8 @@
 <div class="row">
     <div class="col-lg-4 col-md-12 col-sm-12">
         <!-- Filter Sidebar -->
+        <form action="{{ route('user.local_potential.search') }}" method="GET"> <!-- Add form action for search -->
+            @csrf
         <div class="page-sidebar p-0">
             <a class="filter_links" data-toggle="collapse" href="#fltbox" role="button" aria-expanded="false" aria-controls="fltbox">Buka Filter<i class="fa fa-sliders-h ml-2"></i></a>
             <div class="collapse" id="fltbox">
@@ -59,15 +66,7 @@
                             <i class="ti-search"></i>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <small class="text-dark-bold-freesize">Kecamatan</small>
-                        <select name="_subdistrict" class="form-control input-sm">
-                            <option value="">Pilih Kecamatan</option>
-                            @foreach($subdistricts as $subdistrict)
-                                <option value="{{ $subdistrict->id }}">{{ $subdistrict->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                   
                     <div class="row">
                         <div class="col-4 pt-4">
                             <button onclick="resetFilter()" class="btn full-width" title="reset filter"><i class="fa fa-retweet text-warning"></i></button>
@@ -78,6 +77,7 @@
                     </div>
                 </div>
             </div>
+</form>
         </div>
     </div>
 
@@ -136,6 +136,8 @@
 @endsection
 
 @section('addition_script')
+
+</script>
     <script src="{{ asset('assets/js/page.js').'?v=231018001'}}"></script>
     <script src="{{ asset('assets/js/user/localpotential.js')}}"></script>
 @endsection
