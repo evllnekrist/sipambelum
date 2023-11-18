@@ -81,30 +81,30 @@ $(function(){
         if (!document.getElementById("subdistrict-" + item.id + "-trainee")) {
           let existingJobTitle = item.job_title || '';
           template = `
-          <tr class="trainee-wrap" id="subdistrict-` + item.id + `-trainee">
-    <td>
-        <input type="checkbox" class="check-all-group-` + sd + ` checkbox-trainee" data-id="` + item.id + `">
-    </td>
-    <td class="row">
-        <div class="col-3" id="trainee-` + item.id + `-approved-wrap">
-        </div>
-        <div class="col-9">
-            <b>` + item.name + `</b><br>
-            <span>` + item.nik + `</span><br>
-        </div>
-    </td>
-    <td>
-        <div class="_leads_action" data-id="${item.id}">
-            <input type="text" id="job_title_input_${item.id}" class="form-control" placeholder="Ketikan Jabatan" value="${existingJobTitle}">
-        </div>
-    </td>
-</tr>`;
+          <tr class="trainee-wrap" id="subdistrict-${item.id}-trainee">
+            <td>
+              <input type="checkbox" class="check-all-group-${sd} checkbox-trainee" data-id="${item.id}">
+            </td>
+            <td class="row">
+              <div class="col-3" id="trainee-${item.id}-approved-wrap">
+              </div>
+              <div class="col-9">
+                <b>${item.name}</b><br>
+                <span>${item.nik}</span><br>
+              </div>
+            </td>
+            <td>
+              <div class="_leads_action" data-id="${item.id}">
+                <input type="text" id="job_title_input_${item.id}" class="form-control" placeholder="Ketikan Jabatan" value="${existingJobTitle}">
+              </div>
+            </td>
+          </tr>`;
         }
         if (!document.getElementById("subdistrict-" + item.id + "-trainee")) {
           $("#subdistrict-" + sd + "-tbody").append(template);
       } else {
           // Jika sudah ada, perbarui nilai job_title
-          $(`#job_title_${item.id}`).val(existingJobTitle);
+          $(`#job_title_input_${item.id}`).val(existingJobTitle);
       }
       }else{
         Swal.fire({
@@ -260,13 +260,13 @@ $(function(){
       trainees_approved: trainees_approved,
       trainees_approved_not: trainees_approved_not,
       trainees_job_titles: {} // Objek untuk menyimpan job_title
-    };
+  };
 
-    $(".checkbox-trainee").each(function() {
+    $(".checkbox-trainee").each(function () {
       const traineeId = $(this).data('id');
-      const jobTitle = $(`#job_title_${traineeId}`).val();
+      const jobTitle = $(`#job_title_input_${traineeId}`).val();
       payload.trainees_job_titles[traineeId] = jobTitle;
-    });
+  });
     axios.post(baseUrl + '/api/business/post-edit-trainee/' + id, payload, apiHeaders)
       .then(function(response) {
         console.log('response..', response);

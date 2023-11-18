@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TraineeController;
@@ -28,6 +29,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-page-list', [PageController::class, 'get_list']);
     Route::post('/get-business-list', [BusinessController::class, 'get_list']);
     Route::post('/get-business-listfull', [BusinessController::class, 'get_listfull']);
+    Route::post('/get-config-listfull', [ConfigController::class, 'get_listfull']);
+    Route::post('/get-config-list', [ConfigController::class, 'get_list']);
     Route::get('/get-list-basic', [TraineeController::class, 'getBasicList']); 
     Route::post('/map-to-business', [BusinessController::class, 'mapToBusiness']);
     Route::post('/get-banner-list', [BannerController::class, 'get_list']);
@@ -55,7 +58,11 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('/banner/post-add', [BannerController::class, 'post_add']);
         Route::post('/banner/post-edit', [BannerController::class, 'post_edit']);
         Route::post('/banner/post-delete/{id}', [BannerController::class, 'post_delete']);
-    
+
+        Route::post('/config/post-add', [ConfigController::class, 'post_add']);
+        Route::post('/config/post-edit', [ConfigController::class, 'post_edit']);
+        Route::post('/config/post-delete/{code}', [ConfigController::class, 'post_delete']);
+
         Route::post('/news/post-add', [NewsController::class, 'post_add']);
         Route::post('/news/post-edit', [NewsController::class, 'post_edit']);
         Route::post('/news/post-delete/{id}', [NewsController::class, 'post_delete']);
@@ -117,11 +124,15 @@ Route::middleware('auth')->group(function () {
 
         Route::get('page', [PageController::class, 'admin_index'])->name('admin.page');
         Route::get('page/add', [PageController::class, 'form_add'])->name('admin.page.add');
-        Route::get('page/edit/{id}', [PageController::class, 'form_edit'])->name('admin.page.edit');
+        Route::get('page/edit/{code}', [PageController::class, 'form_edit'])->name('admin.page.edit');
 
         Route::get('banner', [BannerController::class, 'admin_index'])->name('admin.banner');
         Route::get('banner/add', [BannerController::class, 'form_add'])->name('admin.banner.add');
         Route::get('banner/edit/{id}', [BannerController::class, 'form_edit'])->name('admin.banner.edit');
+
+        Route::get('config', [ConfigController::class, 'admin_index'])->name('admin.config');
+        Route::get('config/add', [ConfigController::class, 'form_add'])->name('admin.config.add');
+        Route::get('config/edit/{id}', [ConfigController::class, 'form_edit'])->name('admin.config.edit');
 
         Route::get('news', [NewsController::class, 'admin_index'])->name('admin.news');
         Route::get('news/add', [NewsController::class, 'form_add'])->name('admin.news.add');

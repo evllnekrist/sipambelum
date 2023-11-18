@@ -12,6 +12,7 @@ class Config extends Model
     use SoftDeletes;
 
     protected $table = 'ms_config';
+     // Define the primary key
     protected $fillable = [
         'code',
         'value',
