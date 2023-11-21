@@ -167,24 +167,26 @@ public function getBasicList(Request $request)
     {
         try {
             $data['products'] = Trainee::with('subdistrict')->with('businessHistory');
-    
             // Mengecualikan trainee yang sudah di-mapping
             $mappedTraineeIds = MapTraineeBusiness::pluck('id_trainee');
             $data['products'] = $data['products']->whereNotIn('id', $mappedTraineeIds);
-    
-            if ($request->get('_search')) {
-                $data['products'] = $data['products']->where(function ($q) use ($request) {
-                    $q->where('name', 'like', '%' . $request->get('_search') . '%')
-                        ->orWhere('nik', 'like', '%' . $request->get('_search') . '%');
+            if($request->get('_search')){
+                $data['products'] = $data['products']->where(function($q) use ($request) {
+                    $q->where('name','like','%'.$request->get('_search').'%')
+                        ->orWhere('nik','like','%'.$request->get('_search').'%');
                 });
             }
+            if($request->get('_subdistrict')){
+                $data['products'] = $data['products']->where('subdistrict_of_residence',$request->get('_subdistrict'));
+            }
            
-    
             $data['products'] = $data['products']->get();
             return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
         } catch (\Exception $e) {
             return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
         }
+
+       
     }
     
     public function subdistrict()
@@ -205,7 +207,7 @@ public function getBasicList(Request $request)
             'latest_edu' => 'nullable|string|max:10',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:50',
-            'subdistrict_of_residence' => 'nullable|integer',
+            // 'subdistrict_of_residence' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -237,7 +239,7 @@ public function getBasicList(Request $request)
             'latest_edu' => 'nullable|string|max:10',
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:50',
-            'subdistrict_of_residence' => 'nullable|integer',
+            // 'subdistrict_of_residence' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {

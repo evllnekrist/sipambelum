@@ -33,7 +33,10 @@ class Trainee extends Model
     {
         return $this->belongsTo(Subdistrict::class, 'subdistrict_of_residence', 'id');
     }
-
+    public function mappings()
+    {
+        return $this->hasMany(MapTraineeBusiness::class, 'id_trainee', 'id');
+    }
     public function trainingHistory()
     {
         return $this->hasMany(Trainee_Training::class, 'id_trainee', 'id')

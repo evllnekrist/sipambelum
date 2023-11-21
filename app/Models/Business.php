@@ -14,6 +14,7 @@ class Business extends Model
     protected $table = 'ms_business';
     protected $fillable = [
         'nib',
+        'id_local_potential',
         'name',
         'phone',
         'email',
@@ -40,6 +41,15 @@ class Business extends Model
     {
         return $this->hasMany(Trainee_Business::class,'id_business','id');
     }
+    public function trainee()
+{
+    return $this->belongsTo(Trainee::class, 'id_trainee', 'id');
+}
+    public function localPotential()
+    {
+        return $this->belongsTo(LocalPotential::class, 'id_local_potential', 'id');
+    }
+
     protected static function booted()
     {
         static::deleting(function ($business) {

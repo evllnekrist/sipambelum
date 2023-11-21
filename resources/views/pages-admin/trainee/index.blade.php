@@ -36,7 +36,7 @@
                   <th>Pendidikan Terakhir</th>
                   <th>Nomor Telepon</th>
                   <th>Email</th>
-                  <th>Kecamatan Tempat Tinggal</th>
+                  <th>Kecamatan</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

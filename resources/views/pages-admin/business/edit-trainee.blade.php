@@ -1,6 +1,6 @@
 
 @extends('layouts.app')
-@section('title', 'Pelatihan')
+@section('title', 'Bisnis')
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -19,14 +19,14 @@
             <div class="container">
                 
                 <h3 class="notsobig-header-capt mb-0">Cari Peserta</h3>
-                <p class="text-center text-smaller mb-4">Tambahkan peserta untuk pelatihan: <b class="text-blue-b">{{$selected->name}}</b></p>
+                <p class="text-center text-smaller mb-4">Tambahkan peserta untuk Bisnis: <b class="text-blue-b">{{$selected->name}}</b></p>
                 <div class="row justify-content-center">
-                    <div class="col-xl-10 col-lg-12 col-md-12">
+                    <div class="col-xl-8 col-lg-12 col-md-12">
                         <div class="full_search_box nexio_search lightanic_search hero_search-radius modern">
                             <div class="search_hero_wrapping">
                         
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12">
+                                    <!-- <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label class="text-smaller">Kecamatan</label>
                                             <div class="input-with-icon">
@@ -38,9 +38,9 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
-                                    <div class="col-md-5 col-sm-12 d-md-none d-lg-block">
+                                    <div class="col-md-11 col-sm-12 d-md-none d-lg-block">
                                         <div class="form-group">
                                             <label class="text-smaller">Nama/NIK</label>
                                             <input type="text" id="search" class="form-control search_input border-0" placeholder="ex. Nama Anda" />
@@ -138,16 +138,16 @@
                         <ol>
                         @foreach($subdistricts as $item)
                         @php
-                        $trainees_subdistrict = [];
-                        array_push($subdistrict_ids, $item->id);
-                        if($trainees){
-                            foreach($trainees as $key_trainee => $item_trainee){
-                                if(@$item_trainee->trainee->subdistrict_of_residence == $item->id){
-                                    array_push($trainees_subdistrict, $item_trainee);
-                                    unset($trainees[$key_trainee]);
+                            $trainees_subdistrict = [];
+                            array_push($subdistrict_ids,$item->id);
+                            if($trainees){
+                                foreach($trainees as $key_trainee => $item_trainee){
+                                    if(@$item_trainee->trainee->subdistrict_of_residence == $item->id){
+                                        array_push($trainees_subdistrict, $item_trainee);
+                                        unset($trainees[$key_trainee]);
+                                    }
                                 }
                             }
-                        }
                         @endphp
                         <li>
                             <h6 class="text-muted">{{$item->name}}</h6>

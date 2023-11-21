@@ -52,7 +52,7 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="{{route('admin.config')}}">
                 <i class="fas fa-wrench"></i>Konfigurasi
                 </a>
             </li>

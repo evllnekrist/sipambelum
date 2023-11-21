@@ -105,6 +105,12 @@ function getData() {
         data: response.data.data,
         columns: [
             { data: 'id' },
+            {
+              data: 'localPotential',
+              render: function (data, type, row) {
+                 return data ? data.name : '';
+              }
+           },
             { data: 'nib' },
             { data: 'name' },
 

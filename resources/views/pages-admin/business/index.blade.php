@@ -26,6 +26,7 @@
                 <thead>
                   <tr>
                     <th>No</th>
+                    <th>Potensi Lokal</th>
                     <th>NIB</th>
                     <th>Nama</th>
                     <th>Karyawan</th>
@@ -63,6 +64,7 @@
             <div class="col-md-6">
               <h6>Bisnis</h6>
               <p><strong>NIB:</strong> <span id="nib"></span></p>
+              <p><strong>Potensi Lokal:</strong> <span id="local_potential"></span></p>
               <p><strong>Nama:</strong> <span id="name"></span></p>
               <p><strong>Nomor Telepon:</strong> <span id="phone"></span></p>
               <p><strong>Email:</strong> <span id="email"></span></p>

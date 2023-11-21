@@ -25,6 +25,16 @@
           </div>
           <div class="card-body">
             <form method="post" action="#" id="form">
+              <!-- Local Potential -->
+            <div class="form-group">
+              <label>Potensi Lokal <code>*</code></label>
+              <select class="form-control form-control-border border-width-2" name="id_local_potential" id="id_local_potential" required>
+                <option value="">Pilih Potensi Lokal</option>
+                @foreach($localPotentials as $localPotential)
+                  <option value="{{ $localPotential->id }}">{{ $localPotential->name }}</option>
+                @endforeach
+              </select>
+            </div>
               <!-- NIB -->
               <div class="form-group">
                 <label>NIB <code>*</code></label>

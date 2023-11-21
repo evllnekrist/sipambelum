@@ -146,7 +146,7 @@ $(function(){
             i++;
             template +=`<li>
                             <input id="search_trainee_`+i+`" class="form-check-input search-trainee-input" value="`+item.id+`" data-complete='`+JSON.stringify(item)+`' type="checkbox">
-                            <label for="search_trainee_`+i+`" class="form-check-label">`+item.name+` (<b class="text-level-`+item.level+`">`+item.level+`</b>)
+                            <label for="search_trainee_`+i+`" class="form-check-label">`+item.name+`
                             <table class="text-smaller">
                               <tr>
                                 <td>NIK</td>
