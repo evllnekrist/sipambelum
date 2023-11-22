@@ -16,6 +16,9 @@ class Training extends Model
     protected $fillable = [
         'level',
         'trainee_limit',
+        'organizer',
+        'local_pontential_id',
+        'subdistricts',
         'name',
         'desc',
         'img_main',

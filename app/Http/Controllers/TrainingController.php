@@ -9,6 +9,7 @@ use App\Models\Option;
 use App\Models\Training;
 use App\Models\Trainee_Training;
 use App\Models\Subdistrict;
+use App\Models\LocalPotential;
 use DB;
 
 class TrainingController extends Controller
@@ -52,13 +53,18 @@ class TrainingController extends Controller
 
   public function form_add()
   {
-    $data = array();
+    $data['organizers']           = Option::where('type', 'OFFICIAL')->get();
+    $data['potentials']           = localPotential::get();
+    $data['subdistricts']         = Subdistrict::where('active',1)->get();
+    $data['local_potentials']     = LocalPotential::get();
     return view('pages-admin.training.add', $data);
   }
   
   public function form_edit($id)
   {
-    $data['selected'] = Training::find($id);
+    $data['selected']             = Training::find($id);
+    $data['organizers']           = Option::where('type', 'OFFICIAL')->get();
+    $data['local_potentials']     = LocalPotential::get();
     if($data['selected']){
       return view('pages-admin.training.edit', $data);
     }else{

@@ -33,6 +33,32 @@
                 <input type="text" name="name" class="form-control form-control-border border-width-2" required>
               </div>
               <div class="form-group">
+                <label>Penyelenggara <code>*</code></label>
+                <select class="select2bs4" name="organizer" class="form-control form-control-border border-width-2" required>
+                  @foreach ($organizers as $item)
+                      <option value="{{$item->value}}">{{$item->label}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Potensi Lokal Terkait <code>*</code></label>
+                <select class="select2bs4" name="local_potential_id" class="form-control form-control-border border-width-2" required>
+                  @foreach ($potentials as $item)
+                      <option value="{{$item->id}}">{{$item->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Kecamatan <code>*</code></label>
+                <footer class="label_subtitle label_squeeze">Daftar akan menyesuaikan potensi lokal yang dipilih</footer>
+                <select class="select2bs4" name="subdistricts" class="form-control form-control-border border-width-2" multiple="multiple" required>
+                  <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
+                  @foreach ($subdistricts as $item)
+                      <option value="{{$item->id}}">{{$item->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Upload: Gambar <code>*</code></label>
                 <input id="input-file" name="img_main" type="file" class="file" data-browse-on-zone-click="true">
               </div>
@@ -130,14 +156,30 @@
 <script src="{{ asset('assets/js/page.js').'?v='.date('YmdH').'2' }}"></script>
 <script src="{{ asset('assets/js/admin/training_cu.js').'?v='.date('YmdH') }}"></script>
 <script type="text/javascript">
+
   $(document).ready(function() {
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
-    })
+    $('.select2bs4').select2({})
     $('#summernote').summernote({
       placeholder: 'Tulis sesuatu disini....',
       tabsize: 2,
       height: 200
+    })
+    $('[name="subdistricts"]').change(function(){
+      if(($(this).val()).includes('all')){
+        $('[name="subdistricts"]').val('').trigger('change')
+        $('[name="subdistricts"]').val($('[name="subdistricts"] option:first').val());
+        // $('[name="subdistricts"]').val(['all']).trigger('change')
+        // console.log('you are here')
+        // $('[name="subdistricts"] option:selected:not(:first)').each(function(index,element){
+        //   $(element).removeAttr('selected')
+        //   console.log('bye',element)
+        // })
+        // console.log('w/',$('[name="subdistricts"] option:not(:first)').val())
+        
+        
+      //  $('[name="subdistricts"] option:not(:first)').removeAttr('selected')
+      }
+      console.log('after...',$(this).val())
     })
   });
 </script>

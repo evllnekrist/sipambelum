@@ -48,7 +48,7 @@
             </li>
             <li>
                 <a href="{{route('register-list')}}">
-                <i class="fas fa-users"></i>Pengguna
+                <i class="fas fa-users"></i>Pengguna Web
                 </a>
             </li>
             <li>

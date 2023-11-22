@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Option;
+use App\Models\Subdistrict;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         $data['roles'] = Option::where('type', 'ROLE')->orderBy('id','DESC')->get();
+        $data['subdistrict'] = Subdistrict::orderBy('id','DESC')->get();
         $data['pp_ids'] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         return view('auth.register', $data);
     }
