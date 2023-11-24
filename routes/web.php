@@ -124,7 +124,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('page', [PageController::class, 'admin_index'])->name('admin.page');
         Route::get('page/add', [PageController::class, 'form_add'])->name('admin.page.add');
-        Route::get('page/edit/{code}', [PageController::class, 'form_edit'])->name('admin.page.edit');
+        Route::get('page/edit/{id}', [PageController::class, 'form_edit'])->name('admin.page.edit');
 
         Route::get('banner', [BannerController::class, 'admin_index'])->name('admin.banner');
         Route::get('banner/add', [BannerController::class, 'form_add'])->name('admin.banner.add');
@@ -132,7 +132,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('config', [ConfigController::class, 'admin_index'])->name('admin.config');
         Route::get('config/add', [ConfigController::class, 'form_add'])->name('admin.config.add');
-        Route::get('config/edit/{id}', [ConfigController::class, 'form_edit'])->name('admin.config.edit');
+        Route::post('config/edit/', [ConfigController::class, 'post_edit'])->name('admin.config.post_edit');
+        // Route::get('config/edit/{code}', [ConfigController::class, 'form_edit'])->name('admin.config.edit');
 
         Route::get('news', [NewsController::class, 'admin_index'])->name('admin.news');
         Route::get('news/add', [NewsController::class, 'form_add'])->name('admin.news.add');

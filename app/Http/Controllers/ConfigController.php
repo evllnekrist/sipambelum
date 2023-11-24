@@ -18,7 +18,8 @@ class ConfigController extends Controller
   }
   public function admin_index()
   {
-    return view('pages-admin.config.index');
+      $data['selected'] = Config::first(); // Assuming you want to edit the first configuration row
+      return view('pages-admin.config.index', $data);
   }
 
   public function form_add()
@@ -99,12 +100,41 @@ class ConfigController extends Controller
       }
   }
   
-  public function post_edit(Request $request)
+//   public function post_edit(Request $request)
+// {
+//     $validator = Validator::make($request->all(), [
+//         'code' => 'required',
+//         'value' => 'required',
+//         'img_main' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add this line for image validation
+//     ]);
+
+//     if ($validator->fails()) {
+//         return json_encode(array('status' => false, 'message' => $validator->messages()->first(), 'data' => null));
+//     }
+
+//     DB::beginTransaction();
+//     try {
+//         $data = $request->all();
+//         unset($data['code']); // Ganti 'id' menjadi 'code'
+
+//         // Validate and store the image
+//         if ($request->file('img_main')) {
+//             $imagePath = $request->file('img_main')->store('public/images'); // Adjust the storage path as needed
+//             $data['img_main'] = asset(str_replace('public', 'storage', $imagePath));
+//         }
+
+//         $output = Config::where('code', $request->get('code'))->update($data); // Ganti 'id' menjadi 'code'
+//         DB::commit();
+//         return json_encode(array('status' => true, 'message' => 'Berhasil merubah data', 'data' => $output));
+//     } catch (Exception $e) {
+//         DB::rollback();
+//         return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+//     }
+// }
+public function post_edit(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'code' => 'required',
-        'value' => 'required',
-        'img_main' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add this line for image validation
+        'label' => 'required|string|max:255',
     ]);
 
     if ($validator->fails()) {
@@ -114,22 +144,16 @@ class ConfigController extends Controller
     DB::beginTransaction();
     try {
         $data = $request->all();
-        unset($data['code']); // Ganti 'id' menjadi 'code'
-
-        // Validate and store the image
-        if ($request->file('img_main')) {
-            $imagePath = $request->file('img_main')->store('public/images'); // Adjust the storage path as needed
-            $data['img_main'] = asset(str_replace('public', 'storage', $imagePath));
-        }
-
-        $output = Config::where('code', $request->get('code'))->update($data); // Ganti 'id' menjadi 'code'
+        // Tambahkan logika untuk mengedit data bisnis di sini
+        $output = Config::where('id', $request->get('id'))->update($data);
         DB::commit();
-        return json_encode(array('status' => true, 'message' => 'Berhasil merubah data', 'data' => $output));
-    } catch (Exception $e) {
+        return json_encode(array('status' => true, 'message' => 'Berhasil mengubah data', 'data' => $output));
+    } catch (\Exception $e) {
         DB::rollback();
         return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
 }
+
 
 public function post_delete($code)
 {
