@@ -92,6 +92,15 @@ class PageController extends Controller
             return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
           }
       }
+      public function get_options(Request $request)
+      {
+        try {
+          $data = Option::where('type',$request->type)->get();
+          return json_encode(array('status'=>true, 'message'=>'Berhasil mengambil data', 'data'=>$data));
+        } catch (Exception $e) {
+          return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+        }
+      }
       public function get_listfull(Request $request)
       {
         try {

@@ -35,7 +35,40 @@
                 <label>Nama Pelatihan <code>*</code></label>
                 <input type="text" name="name" value="{{$selected->name}}" class="form-control form-control-border border-width-2" required>
               </div>
-              <div class="form-group">
+              <div class="row my-2" style="margin:0px 0px;">
+                <div class="form-group col-6">
+                  <label>Penyelenggara <code>*</code></label>
+                  <select class="select2bs4" name="organizer" required>
+                    <option></option>
+                    @foreach ($organizers as $item)
+                        <option value="{{$item->value}}" {{$selected->organizer==$item->value?"selected":""}}>{{$item->label}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group col-6">
+                  <label>Potensi Lokal Terkait <code>*</code></label>
+                  <select class="select2bs4" name="local_potential_id" required>
+                    <option></option>
+                    @foreach ($potentials as $item)
+                        <option value="{{$item->id}}" {{$selected->local_potential_id==$item->value?"selected":""}}>{{$item->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="form-group my-2">
+                @php
+                    $selected->subdistricts = explode(",",$selected->subdistricts);
+                @endphp
+                <label>Kecamatan <code>*</code></label>
+                <footer class="label_subtitle label_squeeze">Daftar akan menyesuaikan potensi lokal yang dipilih</footer>
+                <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
+                  <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
+                  @foreach ($subdistricts as $item)
+                      <option value="{{$item->id}}" {{in_array($item->id,$selected->subdistricts)?"selected":""}}>{{$item->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group my-2">
                 <label>Upload: Gambar <code>*</code></label>
                 @if($selected->img_main)
                   <br>
@@ -48,7 +81,7 @@
                   <input id="input-file" name="img_main" type="file" class="file" data-browse-on-zone-click="true">
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group my-2">
                 <label>Deskripsi </label>
                 <textarea id="summernote" name="desc">{{$selected->desc}}</textarea>
               </div>
@@ -65,6 +98,27 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+              <div class="form-group">
+                <label>Level Pelatihan <code>*</code></label>
+                <select class="select2bs4" name="level" required>
+                  @foreach ($levels as $item)
+                      <option value="{{$item->value}}" {{$selected->level==$item->value?"selected":""}}>{{$item->label}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Limit Peserta <code>*</code></label> <footer class="label_subtitle label_squeeze">Biarkan 0 untuk jumlah peserta tak terbatas</footer>
+                <input type="number" name="trainee_limit" value="{{$selected->trainee_limit}}" class="form-control form-control-border border-width-2" required>
+              </div>
+              <div class="form-group">
+                <label>Acara Berlangsung Dari <code>*</code></label>
+                <input type="datetime-local" name="event_start" value="{{$selected->event_start}}" class="form-control" required/>
+              </div>
+              <div class="form-group">
+                <label>Acara Berlangsung Hingga</label> <code>*</code></footer>
+                <input type="datetime-local" name="event_end" value="{{$selected->event_end}}" class="form-control" required/>
+              </div>
+              <hr style="margin: 30px 0px 30px 0px !important">
               <div class="form-group">
                 <label>Metode <code>*</code></label>
                 <ul class="no-ul-list no-ul-list-inline">
@@ -89,19 +143,6 @@
               <div class="form-group">
                 <label>Kontak Email</label> <footer class="label_subtitle label_squeeze">Jika lebih dari 1, pisahkan dengan comma (,)</footer>
                 <input type="email" name="contact_email" value="{{$selected->contact_email}}" placeholder="____@____.com" class="form-control form-control-border border-width-2">
-              </div>
-              <hr style="margin: 30px 0px 30px 0px !important">
-              <div class="form-group">
-                <label>Limit Peserta <code>*</code></label> <footer class="label_subtitle label_squeeze">Biarkan 0 untuk jumlah peserta tak terbatas</footer>
-                <input type="number" name="trainee_limit" value="{{$selected->trainee_limit}}" class="form-control form-control-border border-width-2" required>
-              </div>
-              <div class="form-group">
-                <label>Acara Berlangsung Dari <code>*</code></label>
-                <input type="datetime-local" name="event_start" value="{{$selected->event_start}}" class="form-control" required/>
-              </div>
-              <div class="form-group">
-                <label>Acara Berlangsung Hingga</label> <code>*</code></footer>
-                <input type="datetime-local" name="event_end" value="{{$selected->event_end}}" class="form-control" required/>
               </div>
             </div>
             <!-- /.card-body -->
@@ -143,13 +184,18 @@
 <script src="{{ asset('assets/js/admin/training_cu.js').'?v='.date('YmdH') }}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
+    $('.select2bs4').select2({    
+      placeholder: "Pilih salah satu....",
     })
     $('#summernote').summernote({
       placeholder: 'Tulis sesuatu disini....',
       tabsize: 2,
       height: 200
+    })
+    $('[name="subdistricts"]').change(function(){
+      if(($(this).val()).includes('all') && $(this).val().length > 1){
+        $('[name="subdistricts"]').val(['all']).trigger('change')
+      }
     })
   });
 </script>

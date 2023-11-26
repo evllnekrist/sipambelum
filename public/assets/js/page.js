@@ -556,17 +556,22 @@ function copyToClipboard(copyText) {
             if(style == 'min'){
               // let i = 0;
               (response.data.data).forEach((item) => {
-                template +=`<div class="col-lg-3 col-md-4 col-xs-6">
-                              <div class="property_cats_boxs">
-                                <div class="category-box `+(item.value2=='dark'?`bg-dark-web`:``)+`" title="`+item.label+`">
-                                  <a href="`+item.url_link+`" target="_blank" class="property_category_short">
-                                    <div class="kategori-icon m-2">
-                                      <img src="`+item.img_main+`" class="logoservice" alt="" />
-                                    </div>
-                                  </a>
-                                </div>	
-                              </div>
-                            </div>`;
+                // template +=`<div class="col-lg-3 col-md-4 col-xs-6">
+                //               <div class="property_cats_boxs">
+                //                 <div class="category-box `+(item.value2=='dark'?`bg-dark-web`:``)+`" title="`+item.label+`">
+                //                   <a href="`+item.url_link+`" target="_blank" class="property_category_short">
+                //                     <div class="kategori-icon m-2">
+                //                       <img src="`+item.img_main+`" class="logoservice" alt="" />
+                //                     </div>
+                //                   </a>
+                //                 </div>	
+                //               </div>
+                //             </div>`;
+                template += `
+                <a class="pertner_flexio" title="`+item.label+`" href="`+item.url_link+`" target="_blank">
+                    <img src="`+item.img_main+`" class="img-fluid" alt="" />
+                    <h5>`+item.value.toUpperCase()+`</h5>
+                </a>`;
                 // i++;
               });
             }else{

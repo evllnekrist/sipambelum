@@ -149,35 +149,8 @@
                 </div>
                 
                 <div class="row justify-content-center">
-                    <div class="col-lg-9 col-md-10 col-sm-12 flex-wrap justify-content-center text-center">
-                        <div class="pertner_flexio">
-                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
-                            <h5>Google Inc</h5>
-                        </div>
-                        <div class="pertner_flexio">
-                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
-                            <h5>Dribbbdio</h5>
-                        </div>
-                        <div class="pertner_flexio">
-                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
-                            <h5>Lio Vission</h5>
-                        </div>
-                        <div class="pertner_flexio">
-                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
-                            <h5>Alzerra</h5>
-                        </div>
-                        <div class="pertner_flexio">
-                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
-                            <h5>Skyepio</h5>
-                        </div>
-                        <div class="pertner_flexio">
-                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
-                            <h5>Twikller</h5>
-                        </div>
-                        <div class="pertner_flexio">
-                            <img src="https://via.placeholder.com/250x250" class="img-fluid" alt="" />
-                            <h5>Sincherio</h5>
-                        </div>
+                    <div class="col-lg-9 col-md-10 col-sm-12 flex-wrap justify-content-center text-center" id="collaboratorPreview">
+                        
                     </div>
                 </div>
                 

@@ -12310,8 +12310,10 @@ span.tes_quote {
     padding: 1rem 1.8rem;
 }
 .pertner_flexio img {
-    max-width: 35px;
+    /* max-width: 35px; */
     margin-right: 10px;
+    height: 50px;
+    width: auto;
 }
 .pertner_flexio h5 {
     margin: 0;
@@ -15420,4 +15422,7 @@ ul.foot_social li a {
 }
 .icon-span-content{
     margin-top: 3px;padding-right: 10px;
+}
+.select2-selection.select2-selection--single{
+    font-size: smaller;
 }
