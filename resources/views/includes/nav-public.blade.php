@@ -26,7 +26,7 @@
                         </ul>
                     </li>
                     <li><a href="{{route('user.news')}}">Berita<span class="submenu-indicator"></span></a>
-                    <li><a href="">Produk Unggulan<span class="submenu-indicator"></span></a>
+                    <li><a href="{{route('user.localpotential')}}">Produk Unggulan<span class="submenu-indicator"></span></a>
                     <li><a>Tentang Kami<span class="submenu-indicator"></span></a>
                     <ul class="nav-dropdown nav-submenu">
                         @foreach($pages as $page)
