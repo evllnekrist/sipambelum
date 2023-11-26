@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Option;
 use App\Models\Training;
 use App\Models\Trainee_Training;
+use App\Models\Subdistrict_LocalPotential;
 use App\Models\Subdistrict;
 use App\Models\LocalPotential;
 use DB;
@@ -53,18 +54,20 @@ class TrainingController extends Controller
 
   public function form_add()
   {
+    $data['levels']               = Option::where('type', 'GRADE_LEVEL')->whereNot('value', 'NEW')->get();
     $data['organizers']           = Option::where('type', 'OFFICIAL')->get();
-    $data['potentials']           = localPotential::get();
     $data['subdistricts']         = Subdistrict::where('active',1)->get();
-    $data['local_potentials']     = LocalPotential::get();
+    $data['potentials']           = LocalPotential::get();
     return view('pages-admin.training.add', $data);
   }
   
   public function form_edit($id)
   {
     $data['selected']             = Training::find($id);
+    $data['levels']               = Option::where('type', 'GRADE_LEVEL')->whereNot('value', 'NEW')->get();
     $data['organizers']           = Option::where('type', 'OFFICIAL')->get();
-    $data['local_potentials']     = LocalPotential::get();
+    $data['subdistricts']         = Subdistrict::where('active',1)->get();
+    $data['potentials']           = LocalPotential::get();
     if($data['selected']){
       return view('pages-admin.training.edit', $data);
     }else{
@@ -170,7 +173,6 @@ class TrainingController extends Controller
         // return redirect()->back()->withInput();
         return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
       }
-
       DB::beginTransaction();
       try {
         $data = $request->all(); 
@@ -192,6 +194,15 @@ class TrainingController extends Controller
           }else{
             unset($data[$index]);
           }
+        }
+        if(in_array('all',$data['subdistricts'])){
+          $data['subdistricts'] = Subdistrict_LocalPotential::where('id_local_potential',$data['local_potential_id'])->pluck('id_subdistrict')->toArray();
+          if(!(sizeof($data['subdistricts'])>1)){
+            return json_encode(array('status'=>false, 'message'=>'Tidak dapat menyimpan. Potensi lokal yang Anda pilih belum dimiliki oleh kecamatan manapun!'));
+          }
+          $data['subdistricts'] = implode(",",$data['subdistricts']);
+        }else{
+          $data['subdistricts'] = implode(",",$data['subdistricts']);
         }
         $output = Training::create($data);
         DB::commit();
@@ -237,6 +248,15 @@ class TrainingController extends Controller
         unset($data['id']);
         if(isset($data['files'])){
           unset($data['files']);
+        }
+        if(in_array('all',$data['subdistricts'])){
+          $data['subdistricts'] = Subdistrict_LocalPotential::where('id_local_potential',$data['local_potential_id'])->pluck('id_subdistrict')->toArray();
+          if(!(sizeof($data['subdistricts'])>1)){
+            return json_encode(array('status'=>false, 'message'=>'Tidak dapat menyimpan. Potensi lokal yang Anda pilih belum dimiliki oleh kecamatan manapun!'));
+          }
+          $data['subdistricts'] = implode(",",$data['subdistricts']);
+        }else{
+          $data['subdistricts'] = implode(",",$data['subdistricts']);
         }
         $output = Training::where('id',$request->get('id'))->update($data);
         DB::commit();

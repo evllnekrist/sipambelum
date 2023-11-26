@@ -29,5 +29,5 @@ $(function(){
   getStatistics_traineeOfTraining()
   getNewsList(1,4)
   getTrainingList()
-  getSelectionList('#collaboratorPreview','COLLABORATOR')
+  getSelectionList('#collaboratorPreview','OFFICIAL')
 });
