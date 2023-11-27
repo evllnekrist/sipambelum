@@ -66,7 +66,15 @@
                             <i class="ti-search"></i>
                         </div>
                     </div>
-                   
+                    <div class="form-group">
+                    <small class="text-dark-bold-freesize">Kecamatan</small>
+                    <select name="_subdistrict" class="form-control input-sm">
+                        <option value="">Pilih Kecamatan</option>
+                        @foreach($subdistricts as $subdistrict)
+                            <option value="{{ $subdistrict->id }}">{{ $subdistrict->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                     <div class="row">
                         <div class="col-4 pt-4">
                             <button onclick="resetFilter()" class="btn full-width" title="reset filter"><i class="fa fa-retweet text-warning"></i></button>

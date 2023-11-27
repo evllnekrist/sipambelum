@@ -45,10 +45,10 @@ class Business extends Model
 {
     return $this->belongsTo(Trainee::class, 'id_trainee', 'id');
 }
-    public function localPotential()
-    {
-        return $this->belongsTo(LocalPotential::class, 'id_local_potential', 'id');
-    }
+public function localPotential()
+{
+    return $this->belongsTo(LocalPotential::class, 'id_local_potential');
+}
 
     protected static function booted()
     {

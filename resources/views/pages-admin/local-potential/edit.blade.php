@@ -68,7 +68,7 @@
               </div>
             <!-- Subdistrict -->
             <div class="form-group">
-            <label>Kecamatan <code>*</code></label>
+            <label>Kecamatan <code>*</code></label><footer class="label_subtitle label_squeeze">Jika lebih dari 1, Pencet keyboard CTRL + KLIK</footer>
             <select class="form-control form-control-border border-width-2" name="subdistrict[]" multiple required>
                 <option value="">Pilih Kecamatan</option>
                 @foreach($subdistricts as $subdistrict)

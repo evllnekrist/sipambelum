@@ -106,11 +106,10 @@ function getData() {
         columns: [
             { data: 'id' },
             {
-              data: 'localPotential',
-              render: function (data, type, row) {
-                 return data ? data.name : '';
+              data: 'localPotentialName', render: function (data, type, row) {
+                  return data;
               }
-           },
+          },
             { data: 'nib' },
             { data: 'name' },
 

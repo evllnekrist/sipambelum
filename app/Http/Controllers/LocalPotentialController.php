@@ -28,19 +28,20 @@ class LocalPotentialController extends Controller
             'abc-reverse' => 'Alfabet Judul Z-A',
         );
     
-        $query = LocalPotential::query();
+        $query = LocalPotential::where('active', 1);
     
         // Filter by name
         if ($request->has('_title') && !empty($request->_title)) {
             $query->where('name', 'like', '%' . $request->_title . '%');
         }
     
-        // Filter by subdistrict
-        if ($request->has('_subdistrict') && !empty($request->_subdistrict)) {
+         // Filter by subdistrict
+         if ($request->has('_subdistrict') && !empty($request->_subdistrict)) {
             $subdistrictId = $request->_subdistrict;
             $query->whereHas('subdistricts', function ($q) use ($subdistrictId) {
-                $q->where('id', $subdistrictId);
+                $q->where('ms_subdistrict.id', $subdistrictId);
             });
+            
         }
         $totalItems = $query->count(); 
         // Paginate the results
@@ -57,24 +58,34 @@ class LocalPotentialController extends Controller
         return view('pages.local_potential', $data);
     }
     
-public function search(Request $request)
-{
-    $subdistricts = Subdistrict::all();
-    $data['data_sorted_by'] = array(
-        'latest'            => 'Paling Baru',
-        'abc'               => 'Alfabet Judul A-Z',
-        'abc-reverse'       => 'Alfabet Judul Z-A',
-    );
-
-    $query = LocalPotential::query();
-
-    // Filter by name
-    if ($request->has('_title') && !empty($request->_title)) {
-        $query->where('name', 'like', '%' . $request->_title . '%');
-    }
-
-    // Count data
-    $totalItems = $query->count(); 
+    public function search(Request $request)
+    {
+        $subdistricts = Subdistrict::all();
+        $data['data_sorted_by'] = array(
+            'latest'       => 'Paling Baru',
+            'abc'          => 'Alfabet Judul A-Z',
+            'abc-reverse'  => 'Alfabet Judul Z-A',
+        );
+    
+        $query = LocalPotential::where('active', 1);
+    
+        // Filter by name
+        if ($request->has('_title') && !empty($request->_title)) {
+            $query->where('name', 'like', '%' . $request->_title . '%');
+        }
+    
+        // Filter by subdistrict
+        if ($request->has('_subdistrict') && !empty($request->_subdistrict)) {
+            $subdistrictId = $request->_subdistrict;
+            $query->whereHas('subdistricts', function ($q) use ($subdistrictId) {
+                $q->where('ms_subdistrict.id', $subdistrictId);
+            });
+            
+        }
+    
+        // Count data
+        $totalItems = $query->count();
+    
         // Paginate the results
         $page = $request->has('_page') ? $request->_page : 1;
         $pageSize = 9;
@@ -85,9 +96,10 @@ public function search(Request $request)
         $data['totalItems'] = $totalItems;
         $data['currentPage'] = $page;
         $data['pageSize'] = $pageSize;
-
-    return view('pages.local_potential', $data);
-}
+    
+        return view('pages.local_potential', $data);
+    }
+    
 
     public function admin_index()
     {
@@ -223,25 +235,37 @@ public function search(Request $request)
     }
 }
 
-    public function post_delete($id)
-    {
-        $validator = Validator::make(['id' => $id], [
-            'id' => 'required',
-        ]);
+public function post_delete($id)
+{
+    $validator = Validator::make(['id' => $id], [
+        'id' => 'required',
+    ]);
 
-        if ($validator->fails()) {
-            return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
-        }
-
-        DB::beginTransaction();
-        try {
-            $output = LocalPotential::where('id', $id)->delete();
-            DB::commit();
-            return json_encode(array('status'=>true, 'message'=>'Berhasil menghapus data', 'data'=>$output));
-        } catch (\Exception $e) {
-            DB::rollback();
-            return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
-        }
+    if ($validator->fails()) {
+        return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
     }
+
+    DB::beginTransaction();
+    try {
+        // Hapus record dari tabel LocalPotential
+        $localPotential = LocalPotential::find($id);
+        if (!$localPotential) {
+            throw new \Exception('Data tidak ditemukan');
+        }
+
+        // Hapus record dari tabel map_subdistrict_local_potential
+        $localPotential->subdistricts()->detach();
+
+        // Hapus record dari tabel LocalPotential
+        $localPotential->delete();
+
+        DB::commit();
+        return json_encode(array('status'=>true, 'message'=>'Berhasil menghapus data', 'data'=>null));
+    } catch (\Exception $e) {
+        DB::rollback();
+        return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+    }
+}
+
     // -------------------------------------- CALLED BY AJAX ---------------------------- end
 }

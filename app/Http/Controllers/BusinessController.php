@@ -174,11 +174,19 @@ public function mapToBusiness(Request $request)
 {
     try {
         $data = Business::with(['subdistrict', 'trainees', 'localPotential'])->orderBy('created_at', 'DESC')->get();
+        
+        // Modify the data to include the local potential name
+        $data = $data->map(function ($business) {
+            $business->localPotentialName = $business->localPotential ? $business->localPotential->name : '';
+            return $business;
+        });
+
         return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
     } catch (Exception $e) {
         return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
 }
+
     
 
 
