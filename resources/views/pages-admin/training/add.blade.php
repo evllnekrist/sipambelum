@@ -43,7 +43,7 @@
               </div>
               <div class="form-group">
                 <label>Potensi Lokal Terkait <code>*</code></label>
-                <select class="select2bs4" name="local_potential_id" required>
+                <select class="select2bs4" name="id_local_potential" required>
                   <option></option>
                   @foreach ($potentials as $item)
                       <option value="{{$item->id}}">{{$item->name}}</option>

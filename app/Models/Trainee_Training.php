@@ -15,6 +15,8 @@ class Trainee_Training extends Model
     protected $table = 'map_trainee_training';
     protected $fillable = [
         'id_training',
+        'id_local_potential',
+        'level',
         'id_trainee',
         'active',
         'is_passed',

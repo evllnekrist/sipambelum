@@ -164,7 +164,7 @@ class NewsController extends Controller
         $data['keywords'] = isset($data['keywords'])?implode(',',$data['keywords']):'';
         $output = News::where('id',$request->get('id'))->update($data);
         DB::commit();
-        return json_encode(array('status'=>true, 'message'=>'Berhasil menrubah data', 'data'=>$output));
+        return json_encode(array('status'=>true, 'message'=>'Berhasil mengubah data', 'data'=>$output));
       } catch (Exception $e) {
         DB::rollback();
         return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));

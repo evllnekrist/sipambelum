@@ -518,7 +518,7 @@ $(function() {
 	
 	// Select Town
 	$('#subdistrict').select2({
-		placeholder: "Semua Kecamatan",
+		placeholder: "Semua (sesuai yang berlaku)",
 		allowClear: true
 	});
 	

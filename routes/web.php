@@ -40,8 +40,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/get-training-list', [TrainingController::class, 'get_list']);
     // Route::post('/get-trainee-listfull', [TraineeController::class, 'get_listfull']);
     Route::post('/get-trainee-list', [TraineeController::class, 'get_list']);
-    Route::post('/get-trainee-list-adv', [TraineeController::class, 'get_list_adv']);
-    Route::post('/get-trainee-list-tb', [TraineeController::class, 'get_list_tb']);
+    Route::post('/get-trainee-list-tt', [TraineeController::class, 'get_list_tt']); // trainee training 
+    Route::post('/get-trainee-list-tb', [TraineeController::class, 'get_list_tb']); // trainee business
     Route::post('/get-subdistrict-list', [SubdistrictController::class, 'get_list']);
     Route::post('/get-subdistrict-listful', [SubdistrictController::class, 'get_list']);
     Route::get('/subdistricts/{subdistrictId}', [SubdistrictController::class, 'getSubdistrictName']);

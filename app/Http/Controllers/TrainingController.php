@@ -77,7 +77,7 @@ class TrainingController extends Controller
 
   public function form_edit_trainees($id)
   {
-    $data['selected']     = Training::with('trainees')->find($id);
+    $data['selected']     = Training::with('local_potential')->with('trainees')->find($id);
     $data['subdistricts'] = Subdistrict::get();
     $data['grade_levels'] = Option::where('type', 'GRADE_LEVEL')->get();
     $data['trainees']     = Trainee_Training::with('trainee')->where('id_training',$id)->get();
@@ -196,7 +196,7 @@ class TrainingController extends Controller
           }
         }
         if(in_array('all',$data['subdistricts'])){
-          $data['subdistricts'] = Subdistrict_LocalPotential::where('id_local_potential',$data['local_potential_id'])->pluck('id_subdistrict')->toArray();
+          $data['subdistricts'] = Subdistrict_LocalPotential::where('id_local_potential',$data['id_local_potential'])->pluck('id_subdistrict')->toArray();
           if(!(sizeof($data['subdistricts'])>1)){
             return json_encode(array('status'=>false, 'message'=>'Tidak dapat menyimpan. Potensi lokal yang Anda pilih belum dimiliki oleh kecamatan manapun!'));
           }
@@ -250,7 +250,7 @@ class TrainingController extends Controller
           unset($data['files']);
         }
         if(in_array('all',$data['subdistricts'])){
-          $data['subdistricts'] = Subdistrict_LocalPotential::where('id_local_potential',$data['local_potential_id'])->pluck('id_subdistrict')->toArray();
+          $data['subdistricts'] = Subdistrict_LocalPotential::where('id_local_potential',$data['id_local_potential'])->pluck('id_subdistrict')->toArray();
           if(!(sizeof($data['subdistricts'])>1)){
             return json_encode(array('status'=>false, 'message'=>'Tidak dapat menyimpan. Potensi lokal yang Anda pilih belum dimiliki oleh kecamatan manapun!'));
           }
@@ -260,7 +260,7 @@ class TrainingController extends Controller
         }
         $output = Training::where('id',$request->get('id'))->update($data);
         DB::commit();
-        return json_encode(array('status'=>true, 'message'=>'Berhasil menrubah data', 'data'=>$output));
+        return json_encode(array('status'=>true, 'message'=>'Berhasil mengubah data', 'data'=>$output));
       } catch (Exception $e) {
         DB::rollback();
         return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
@@ -282,6 +282,7 @@ class TrainingController extends Controller
       try {
         $output = [];
         $data = $request->all();
+        $selected = Training::find($id);
 
         // 1__create or not if exist 
         if($data['trainees_new']){
@@ -289,7 +290,7 @@ class TrainingController extends Controller
           $output['trainees'] = [];
           foreach ($data['trainees'] as $key => $value) {
             $output['trainees'][$value] = Trainee_Training::firstOrCreate(
-              ['id_training'=>$id, 'id_trainee'=>$value]
+              ['id_training'=>$id,'id_local_potential'=>$selected->id_local_potential,'level'=>$selected->level,'id_trainee'=>$value]
             );
           }
         }
@@ -326,7 +327,7 @@ class TrainingController extends Controller
           }
         } 
         DB::commit();
-        return json_encode(array('status'=>true, 'message'=>'Berhasil menrubah data', 'data'=>$output));
+        return json_encode(array('status'=>true, 'message'=>'Berhasil mengubah data', 'data'=>$output));
       } catch (Exception $e) {
         DB::rollback();
         return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));

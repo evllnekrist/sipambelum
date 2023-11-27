@@ -32,28 +32,81 @@
             <div class="container">
                 
                 <h3 class="notsobig-header-capt mb-0">Cari Peserta</h3>
-                <p class="text-center text-smaller mb-4">Tambahkan peserta untuk pelatihan: <b class="text-blue-b">{{$selected->name}}</b></p>
+                <p class="text-center text-smaller mb-4">Tambahkan peserta untuk :</p>
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-12 col-md-12">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    {{$selected->name}}
+                                </button>
+                                </h2>
+                            </div>
+                        
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body text-smaller">
+                                    <table class="table">
+                                        <thead class="text-muted">
+                                            <tr>
+                                                <td>Penyelenggara</td>
+                                                <td>Potensi Lokal</td>
+                                                <td>Berlaku untuk Kecamatan</td>
+                                                <td>Level<br>Pelatihan</td>
+                                                <td>Limit<br>Peserta</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>{{$selected->organizer}}</th>
+                                                <th>{{$selected->local_potential->name}}</th>
+                                                <th>
+                                                    @php
+                                                        $selected->subdistricts = explode(",",$selected->subdistricts);
+                                                        $subdistricts_remap = [];
+                                                    @endphp
+                                                    @foreach($subdistricts as $item)
+                                                        @if(in_array($item->id, $selected->subdistricts))
+                                                            {{$item->name}}, 
+                                                            @php
+                                                                array_push($subdistricts_remap,$item);
+                                                            @endphp
+                                                        @endif
+                                                    @endforeach
+                                                </th>
+                                                <th>{{$selected->level}}</th>
+                                                <th id="_limit" data-value="{{$selected->trainee_limit}}">{{!$selected->trainee_limit?'~':$selected->trainee_limit}}</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row justify-content-center">
                     <div class="col-xl-10 col-lg-12 col-md-12">
                         <div class="full_search_box nexio_search lightanic_search hero_search-radius modern">
                             <div class="search_hero_wrapping">
                         
                                 <div class="row">
-                                    <div class="col-md-4 col-sm-12">
+                                    <div class="col-md-5 col-sm-12">
                                         <div class="form-group">
                                             <label class="text-smaller">Kecamatan</label>
                                             <div class="input-with-icon">
                                                 <select id="subdistrict" class="form-control">
                                                     <option value="">&nbsp;</option>
-                                                    @foreach($subdistricts as $item)
-                                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                                    @foreach($subdistricts_remap as $item)
+                                                        <option value="{{$item->id}}">{{$item->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="col-md-3 col-sm-12">
+                                    {{-- <div class="col-md-3 col-sm-12">
                                         <div class="form-group">
                                             <label class="text-smaller">Level Peserta</label>
                                             <div class="input-with-icon">
@@ -65,16 +118,16 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     
-                                    <div class="col-md-4 col-sm-12 d-md-none d-lg-block">
+                                    <div class="col-md-5 col-sm-12 d-lg-block">
                                         <div class="form-group">
                                             <label class="text-smaller">Nama/NIK</label>
                                             <input type="text" id="search" class="form-control search_input border-0" placeholder="ex. Nama Anda" />
                                         </div>
                                     </div>
                                     
-                                    <div class="col-md-1 col-sm-12 small-padd">
+                                    <div class="col-md-2 col-sm-12 small-padd">
                                         <div class="form-group none">
                                             <button type="button" class="btn theme-bg full-width" id="btn-trainees-search"><i class="fa fa-search"></i></button>
                                         </div>
@@ -83,13 +136,19 @@
                                 <!-- Collapse: Search -->
                                 <div id="advance-search" aria-expanded="false" style="display:none">
                                     <!-- row -->
+                                    <div class="row text-smaller" id="advance-search-trainee-not-eligible-wrap" style="display:none">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                            <i>Ada <b id="advance-search-trainee-not-eligible-count"></b> data lain yang ditemukan dengan input Anda, tapi tidak memenuhi syarat. 
+                                                <br>Contoh: tidak sesuai kecamatan, sudah pernah mengikuti pelatihan berbasis potensi lokal yang sama dengan level setara atau di atas ini, dsb.</i>
+                                        </div>
+                                    </div>
+                                    <!-- /row -->
+                                    <!-- row -->
                                     <div class="row">
-                                    
                                         <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                             <h6 class="text-dark">Pilih dari hasil pencarian berikut :</h6>
                                             <ul class="no-ul-list third-row" id="advance-search-trainee-list"></ul>
                                         </div>
-                                        
                                     </div>
                                     <!-- /row -->
                                     <!-- row -->
@@ -176,7 +235,7 @@
                         @endphp
                         <!-- subdistrict::start -->
                         <ol>
-                        @foreach($subdistricts as $item)
+                        @foreach($subdistricts_remap as $item)
                         @php
                             $trainees_subdistrict = [];
                             array_push($subdistrict_ids,$item->id);

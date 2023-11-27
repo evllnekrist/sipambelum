@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use Auth;
 use App\Models\Trainee_Training;
+use App\Models\LocalPotential;
 
 class Training extends Model
 {
@@ -17,7 +18,7 @@ class Training extends Model
         'level',
         'trainee_limit',
         'organizer',
-        'local_pontential_id',
+        'id_local_potential',
         'subdistricts',
         'name',
         'desc',
@@ -31,6 +32,10 @@ class Training extends Model
         'event_end',
     ];
 
+    public function local_potential()
+    {
+        return $this->hasOne(LocalPotential::class,'id','id_local_potential');
+    }
     
     public function trainees()
     {

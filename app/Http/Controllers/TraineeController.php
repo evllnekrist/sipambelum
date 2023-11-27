@@ -141,9 +141,10 @@ public function getBasicList(Request $request)
             return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
         }
     }
-    public function get_list_adv(Request $request)
+    public function get_list_tt(Request $request) // trainee training 
     {
-        try {
+        // try {
+            $selected = Training::find($request->get('_training_id'));
             $data['products'] = Trainee::with('subdistrict')->with('businessHistory')->with('trainingHistory');
             if($request->get('_search')){
                 $data['products'] = $data['products']->where(function($q) use ($request) {
@@ -151,19 +152,37 @@ public function getBasicList(Request $request)
                         ->orWhere('nik','like','%'.$request->get('_search').'%');
                 });
             }
+            $data['products_not_eligible'] = $data['products'];
+            $data['products_not_eligible'] = $data['products_not_eligible']->count();
             if($request->get('_subdistrict')){
                 $data['products'] = $data['products']->where('subdistrict_of_residence',$request->get('_subdistrict'));
+            }else{
+                $data['products'] = $data['products']->whereIn('subdistrict_of_residence',explode(',',$selected->subdistricts));
             }
-            if($request->get('_level')){
-                $data['products'] = $data['products']->where('level',$request->get('_level'));
-            }
+            // if($request->get('_level')){
+            //     $data['products'] = $data['products']->where('level',$request->get('_level'));
+            // }
+            $data['products'] = $data['products']->whereNotExists(function($query) use ($selected)
+            {
+                $query->select(DB::raw(1))
+                      ->from('map_trainee_training')
+                      ->where('map_trainee_training.id_training', '=', $selected->id)
+                      ->where('map_trainee_training.id_trainee', '=', 'ms_trainee.id')
+                      ->where('map_trainee_training.id_local_potential', '=', $selected->id_local_potential);
+            });
+
+            // join('map_trainee_training', function(JoinClause $join) { 
+            //     $join->on('map_trainee_training.id_training', '=', 'tr_training.id');
+            //     switch($selected->level)
+            // });
             $data['products'] = $data['products']->get();
+            // $data['products_not_eligible'] = $data['products_not_eligible']-sizeof($data['products']);
             return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
-        } catch (\Exception $e) {
-            return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
-        }
+        // } catch (\Exception $e) {
+        //     return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+        // }
     }
-    public function get_list_tb(Request $request)
+    public function get_list_tb(Request $request) // trainee business
     {
         try {
             $data['products'] = Trainee::with('subdistrict')->with('businessHistory');

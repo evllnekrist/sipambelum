@@ -2,6 +2,7 @@ console.log('training trainee CU 231030')
 // console.log('datetime',(new Date).toLocaleString('id-ID'))
 
 const subdistrict_ids     = ($("[name='subdistrict_ids']").val()).split(",");
+const limit               = parseInt($("#_limit").data('value'));
 let trainees_new          = [];
 let trainees_to_delete    = [];
 let trainees_approved_not = [];
@@ -112,6 +113,17 @@ $(function(){
   $("#btn-trainees-add").click(function(e){
     // let search_trainee = [];
     let search_trainee_data = {};
+    let potential_length = parseInt($('#summary-count-trainees-displayed').html())+parseInt($('.search-trainee-input:checked').length);
+    if(limit > 0 && potential_length > limit){
+      Swal.fire({
+        position: 'top-end',
+        icon: 'warning',
+        title: "Mohon check kembali!",
+        html: 'Jumlah data yang ditambahkan melebihi limit peserta...',
+        showConfirmButton: true,
+      });
+      return;
+    }
     $('.search-trainee-input:checked').each(function() {
       // search_trainee.push($(this).val());
       trainees_new.push($(this).val())
@@ -178,6 +190,7 @@ $(function(){
         });
       }
     };
+    valuateDisplay(false);
   });
 
   $("#btn-trainees-search").click(function(e){
@@ -186,17 +199,19 @@ $(function(){
     $(appendTo+'-loading').show();
     $(appendTo).hide();
     // return
-    let payload = {};
+    let payload = {
+      '_training_id': $("[name='id']").val()
+    };
     if($('#subdistrict').val()){
       payload['_subdistrict'] = $('#subdistrict').val();
     }
-    if($('#level').val()){
-      payload['_level'] = $('#level').val();
-    }
+    // if($('#level').val()){
+    //   payload['_level'] = $('#level').val();
+    // }
     if($('#search').val()){
       payload['_search'] = $('#search').val();
     }
-    axios.post(baseUrl+'/api/get-trainee-list-adv', payload, apiHeaders)
+    axios.post(baseUrl+'/api/get-trainee-list-tt', payload, apiHeaders)
     .then(function (response) {
       console.log('[TRAINING TRAINEE] response..',response);
       let template = '';
@@ -208,7 +223,7 @@ $(function(){
             i++;
             template +=`<li>
                             <input id="search_trainee_`+i+`" class="form-check-input search-trainee-input" value="`+item.id+`" data-complete='`+JSON.stringify(item)+`' type="checkbox">
-                            <label for="search_trainee_`+i+`" class="form-check-label">`+item.name+` (<b class="text-level-`+item.level+`">`+item.level+`</b>)
+                            <label for="search_trainee_`+i+`" class="form-check-label">`+item.name+`
                             <table class="text-smaller">
                               <tr>
                                 <td>NIK</td>
@@ -222,6 +237,14 @@ $(function(){
                             </label>
                         </li>`;
           });
+          console.log('....',response.data.data.products_not_eligible)
+          if(response.data.data.products_not_eligible>0){
+            console.log('you are here')
+            $(appendTo+'-trainee-not-eligible-wrap').show();
+            $(appendTo+'-trainee-not-eligible-count').html(response.data.data.products_not_eligible);
+          }else{
+            $(appendTo+'-trainee-not-eligible-wrap').hide();
+          }
           $(appendTo+'-trainee-list').html(template);
           $(appendTo+'-info').hide();
           $(appendTo).show();
