@@ -213,5 +213,5 @@
 @endsection
 @section('addition_script')
     <script src="{{ asset('assets/js/page.js') }}"></script>
-    <script src="{{ asset('assets/js/user/home.js') }}"></script>
+    <script src="{{ asset('assets/js/user/home.js') }}?v=002"></script>
 @endsection
