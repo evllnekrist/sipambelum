@@ -377,7 +377,7 @@ function copyToClipboard(copyText) {
 
                             <div class="grid_agents-wrap">
                               <div class="fr-grid-thumb">
-                                <a href="agent-page.html">
+                                <a href="#">
                                   <img id="training_`+item.id+`_img" src="`+imgToDisplay+`" class="img-fluid mx-auto my-auto" alt="">
                                 </a>
                                 <ul class="inline_social">
@@ -406,7 +406,8 @@ function copyToClipboard(copyText) {
                                   `<b class="badge badge-success">Offline</b>`)
                                 +`
                                 </div>
-                                <h5 class="fr-can-name"><a href="`+baseUrl+`/training/`+item.slug+`">`+item.name+`</a></h5>
+                                <h5 class="fr-can-name"><a href="#" data-forward="`+baseUrl+`/training/`+item.id+`">`+item.name+`</a></h5>
+                                <small><b>`+((item.organizer?'Oleh '+item.organizer.toUpperCase():''))+`</b></small><br>
                                 <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small>
                               </div>
                             </div>

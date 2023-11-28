@@ -241,7 +241,8 @@ $(function(){
           if(response.data.data.products_not_eligible>0){
             console.log('you are here')
             $(appendTo+'-trainee-not-eligible-wrap').show();
-            $(appendTo+'-trainee-not-eligible-count').html(response.data.data.products_not_eligible);
+            $(appendTo+'-trainee-not-eligible-total-count').html(response.data.data.products_not_eligible-response.data.data.products.length);
+            $(appendTo+'-trainee-not-eligible-level-count').html(response.data.data.products_exclude.length);
           }else{
             $(appendTo+'-trainee-not-eligible-wrap').hide();
           }

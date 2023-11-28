@@ -113,6 +113,7 @@ class TrainingController extends Controller
           $year = explode(";",$request->get('_year'));
           $data['products'] = $data['products']->whereRaw('(YEAR(event_start) BETWEEN '.$year[0].' AND '.$year[1].')');
         }
+        
         if($request->get('_level')){
           $data['products'] = $data['products']->whereIn('level',$request->get('_level'));
           $level_total      = Option::where('type', 'GRADE_LEVEL')->count();

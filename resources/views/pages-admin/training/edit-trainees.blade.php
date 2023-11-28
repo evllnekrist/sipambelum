@@ -138,8 +138,8 @@
                                     <!-- row -->
                                     <div class="row text-smaller" id="advance-search-trainee-not-eligible-wrap" style="display:none">
                                         <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                                            <i>Ada <b id="advance-search-trainee-not-eligible-count"></b> data lain yang ditemukan dengan input Anda, tapi tidak memenuhi syarat. 
-                                                <br>Contoh: tidak sesuai kecamatan, sudah pernah mengikuti pelatihan berbasis potensi lokal yang sama dengan level setara atau di atas ini, dsb.</i>
+                                            <i>Ada <b id="advance-search-trainee-not-eligible-total-count"></b> data lain yang ditemukan dengan input Anda, tapi tidak memenuhi syarat. 
+                                                <br><b id="advance-search-trainee-not-eligible-level-count"></b> diantaranya sudah lulus mengikuti pelatihan berbasis potensi lokal yang sama dengan level setara atau di atas ini.</i>
                                         </div>
                                     </div>
                                     <!-- /row -->

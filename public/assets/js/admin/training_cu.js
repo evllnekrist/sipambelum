@@ -74,7 +74,7 @@ $(function(){
             // html: "...",
             confirmButtonText: 'Ya, terima kasih',
           });
-          // window.location = baseUrl+'/admin-katkab/training';
+          window.location = baseUrl+'/admin-katkab/training';
         }else{
           Swal.fire({
             icon: 'warning',

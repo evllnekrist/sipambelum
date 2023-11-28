@@ -50,7 +50,7 @@
                   <select class="select2bs4" name="id_local_potential" required>
                     <option></option>
                     @foreach ($potentials as $item)
-                        <option value="{{$item->id}}" {{$selected->id_local_potential==$item->value?"selected":""}}>{{$item->name}}</option>
+                        <option value="{{$item->id}}" {{$selected->id_local_potential==$item->id?"selected":""}}>{{$item->name}}</option>
                     @endforeach
                   </select>
                 </div>

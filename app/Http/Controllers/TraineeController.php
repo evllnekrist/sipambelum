@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Trainee;
 use App\Models\Training;
+use App\Models\Trainee_Training;
 use App\Models\Subdistrict;
 use App\Models\MapTraineeBusiness;
 use Illuminate\Support\Facades\DB;
@@ -162,20 +163,24 @@ public function getBasicList(Request $request)
             // if($request->get('_level')){
             //     $data['products'] = $data['products']->where('level',$request->get('_level'));
             // }
-            $data['products'] = $data['products']->whereNotExists(function($query) use ($selected)
-            {
-                $query->select(DB::raw(1))
-                      ->from('map_trainee_training')
-                      ->where('map_trainee_training.id_training', '=', $selected->id)
-                      ->where('map_trainee_training.id_trainee', '=', 'ms_trainee.id')
-                      ->where('map_trainee_training.id_local_potential', '=', $selected->id_local_potential);
-            });
-
-            // join('map_trainee_training', function(JoinClause $join) { 
-            //     $join->on('map_trainee_training.id_training', '=', 'tr_training.id');
-            //     switch($selected->level)
-            // });
-            $data['products'] = $data['products']->get();
+            $exclude_levels = ['beginner','mid','adv'];
+            switch($selected->level){
+                case 'beginner':
+                    // as is
+                    break;
+                case 'mid':
+                    $exclude_levels = ['mid','adv'];
+                    break;
+                case 'adv':
+                    $exclude_levels = ['adv'];
+                    break;
+            }
+            $data['products_exclude']       = Trainee_Training::where('active',1)->where('is_passed',1)->where('id_local_potential',1)->whereIn('level',$exclude_levels)->pluck('id_trainee')->toArray();
+            if($data['products_exclude']){
+                $data['products']               = $data['products']->whereNotIn('id',$data['products_exclude']);
+            }
+            $data['products_raw_sql']       = $data['products']->toSql();
+            $data['products']               = $data['products']->get();
             // $data['products_not_eligible'] = $data['products_not_eligible']-sizeof($data['products']);
             return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
         // } catch (\Exception $e) {
