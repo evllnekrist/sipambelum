@@ -14,6 +14,46 @@
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
 
+        @section('addition_script')
+        <script>
+          $(function(){
+            $('[name="role"]').on('change', function() {
+              let role = $(this).find(":selected").val();
+              console.log('role..',role)
+              $('#select-opd-wrap').hide();
+              $('#select-kec-wrap').hide();
+              if(role == 'opd'){
+                $('#select-opd-wrap').show();
+              }else if(role == 'kec'){
+                $('#select-kec-wrap').show();
+              }
+            });
+          });
+        </script>
+        @endsection
+        <br>
+        <div style="display: none" id="select-opd-wrap">
+          <x-input-label for="official" :value="__('OPD')" />
+          <select class="form-control block mt-1 w-full" name="official" :value="old('official')">
+            <option disabled>------ pilih salah satu ------</option>
+            @foreach(@$officials as $official)
+              <option value="{{$official->value}}">{{$official->label}}</option>
+            @endforeach
+          </select>
+          <x-input-error :messages="$errors->get('official')" class="mt-2" />
+        </div>
+
+        <div style="display: none" id="select-kec-wrap">
+          <x-input-label for="subdistrict" :value="__('Kecamatan')" />
+          <select class="form-control block mt-1 w-full" name="subdistrict" :value="old('subdistrict')">
+            <option disabled>------ pilih salah satu ------</option>
+            @foreach(@$subdistricts as $subdistrict)
+              <option value="{{$subdistrict->id}}">{{$subdistrict->name}}</option>
+            @endforeach
+          </select>
+          <x-input-error :messages="$errors->get('subdistrict')" class="mt-2" />
+        </div>
+
         <!-- Name -->
         <div class="mt-4">
             <x-input-label for="name" :value="__('Nama')" />

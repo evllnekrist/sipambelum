@@ -28,7 +28,8 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         $data['roles'] = Option::where('type', 'ROLE')->orderBy('id','DESC')->get();
-        $data['subdistrict'] = Subdistrict::orderBy('id','DESC')->get();
+        $data['officials'] = Option::where('type', 'OFFICIAL')->orderBy('id','DESC')->get();
+        $data['subdistricts'] = Subdistrict::orderBy('id','DESC')->get();
         $data['pp_ids'] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         return view('auth.register', $data);
     }
@@ -47,13 +48,22 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $data = [
             'role' => $request->role,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'img_profile_id' => $request->pp,
-        ]);
+        ];
+        switch ($request->role) {
+            case 'opd':
+                $data['official'] = @$request->official;
+                break;
+            case 'kec':
+                $data['subdistrict'] = @$request->subdistrict;
+                break;
+        }
+        $user = User::create($data);
 
         event(new Registered($user));
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use App\Models\Option;
+use App\Models\Subdistrict;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,8 @@ class ProfileController extends Controller
     {
         $data['user'] = User::find($id);
         $data['roles'] = Option::where('type', 'ROLE')->orderBy('id','DESC')->get();
+        $data['officials'] = Option::where('type', 'OFFICIAL')->orderBy('id','DESC')->get();
+        $data['subdistricts'] = Subdistrict::orderBy('id','DESC')->get();
         $data['pp_ids'] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
         return view('profile.edit', $data);
     }
@@ -40,6 +43,14 @@ class ProfileController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->img_profile_id = $request->pp;
+        switch ($request->role) {
+            case 'opd':
+                $data['official'] = @$request->official;
+                break;
+            case 'kec':
+                $data['subdistrict'] = @$request->subdistrict;
+                break;
+        }
         $user->save();
 
         // org ------ start

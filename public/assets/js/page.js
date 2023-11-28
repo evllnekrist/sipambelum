@@ -218,7 +218,7 @@ function copyToClipboard(copyText) {
               </li>`;
             }
             $(appendTo+'_pagination').html(template);
-            $(appendTo+'_filterInfo').html(`Menampilkan `+response.data.data_count_start+`-`+response.data.data_count_end+` dari `+response.data.data_count_total+` data`);
+            // $(appendTo+'_filterInfo').html(`Menampilkan `+response.data.data_count_start+`-`+response.data.data_count_end+` dari `+response.data.data_count_total+` data`);
           }
         // i::data pagination------------------------------------------------------------------------------END
         // i::data display-------------------------------------------------------------------------------START
