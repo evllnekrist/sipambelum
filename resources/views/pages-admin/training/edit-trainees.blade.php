@@ -221,9 +221,15 @@
                             <div class="col-6" style="text-align:end">
                                 <div class="_leads_action">
                                     Aksi Massal: 
+                                    @if(in_array(Auth::user()->role,['70x7','opd','kec']))
                                     <a class="bg-danger text-white trainee-delete" title="hapus"><i class="ti-close"></i></a>
+                                    @if(in_array(Auth::user()->role,['70x7','opd']))
                                     <a class="theme-bg text-white trainee-approve" title="setujui"><i class="ti-check"></i></a>
                                     <a class="text-white trainee-approve-not" style="background-color:grey" title="batal setujui"><i class="ti-layout-width-full"></i></a>
+                                    @else
+                                    <b> | Persetujuan dan Penilaian Akhir Peserta dilakukan OPD Terkait</b>
+                                    @endif
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -256,7 +262,7 @@
                                         <tr>
                                             <th scope="col"><input type="checkbox" class="check-all" data-group="{{$item->id}}"></th>
                                             <th scope="col">Nama/NIK</th>
-                                            <th scope="col">Level</th>
+                                            <th scope="col">Update</th>
                                             <th scope="col">Terkait UMKM</th>
                                             <th scope="col">Kelas Terdahulu</th>
                                             <th scope="col">Aksi</th>
@@ -293,7 +299,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="_leads_status"><span class="active">{{$item_ts->trainee->level}}</span></div>
+                                                {{-- <div class="_leads_status"><span class="active">{{$item_ts->trainee->level}}</span></div> --}}
                                                 <span>Update terakhir {{ date($item_ts->trainee->created_at) }}</span>
                                             </td>
                                             <td>

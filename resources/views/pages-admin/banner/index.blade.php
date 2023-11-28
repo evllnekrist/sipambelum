@@ -17,7 +17,9 @@
         <div class="card">
           <div class="card-header">
             <div class="col-4">
+              @if(in_array(Auth::user()->role,['70x7','opd']))
               <a class="btn btn-theme-light-2 rounded" href="{{route('admin.banner.add')}}"><i class="fas fa-plus mr-2"></i>Tambah Baru</a>
+              @endif
             </div>
           </div>
           <div class="card-body">

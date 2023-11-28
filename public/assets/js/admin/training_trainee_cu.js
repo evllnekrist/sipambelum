@@ -22,7 +22,7 @@ function qualifiedToMark(id){
   if(!document.getElementById("trainee-"+id+"-approved")){
     Swal.fire({
       position: 'top-end',
-      html: '<b>Penilaian tidak bisa dilakukan</b><br><small>Peserta belum/tidak disetujui Admin</small>',
+      html: '<b>Penilaian tidak bisa dilakukan</b><br><small>Peserta belum/tidak disetujui Admin/OPD</small>',
       showConfirmButton: false,
     });
     return false
@@ -162,7 +162,6 @@ $(function(){
                 </div>
             </td>
             <td>
-                <div class="_leads_status"><span class="active">`+item.level+`</span></div>
                 <span>Update terakhir `+(new Date(item.created_at)).toLocaleString('id-ID')+`</span>
             </td>
             <td>
