@@ -30,7 +30,6 @@
                   <th>No</th>
                   <th>NIK</th>
                   <th>Nama</th>
-                  <!-- <th>Level</th> -->
                   <th>Jenis Kelamin</th>
                   <th>Agama</th>
                   <th>Tempat Lahir</th>
