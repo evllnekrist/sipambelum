@@ -201,7 +201,7 @@ public function getBasicList(Request $request)
                 });
             }
             if($request->get('_subdistrict')){
-                $data['products'] = $data['products']->where('subdistrict_of_residence',$request->get('_subdistrict'));
+                $data['products'] = $data['products']->where('subdistrict',$request->get('_subdistrict'));
             }
            
             $data['products'] = $data['products']->get();
