@@ -71,7 +71,7 @@ function getData() {
             return '<a href="'+baseUrl+'/admin-katkab/trainee/edit/'+data.id+'" target="_blank" class="text-blue-b">'+data.name+'</a>';
           } 
         },
-          { data: 'level' },
+          // { data: 'level' },
           {
             data: 'sex', render: function (data, type, row) {
                 return data === 'm' ? 'Laki-Laki' : 'Perempuan';

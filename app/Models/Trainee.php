@@ -16,7 +16,7 @@ class Trainee extends Model
 
     protected $table = 'ms_trainee';
     protected $fillable = [
-        'level',
+        // 'level',
         'nik',
         'name',
         'sex',

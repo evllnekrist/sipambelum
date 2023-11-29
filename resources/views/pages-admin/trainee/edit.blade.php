@@ -44,10 +44,10 @@
       </div>
 
       <!-- Level -->
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Level</label>
         <input type="text" name="level" value="{{@$selected->level}}" class="form-control form-control-border border-width-2">
-      </div>
+      </div> -->
 
       <!-- Jenis Kelamin -->
       <div class="form-group">
@@ -60,9 +60,17 @@
 
       <!-- Agama -->
       <div class="form-group">
-        <label>Agama</label>
-        <input type="text" name="religion" value="{{@$selected->religion}}" class="form-control form-control-border border-width-2">
-      </div>
+    <label>Agama</label>
+    <select class="form-control form-control-border border-width-2" name="religion">
+        <option value="Islam" {{ @$selected->religion == 'Islam' ? 'selected' : '' }}>Islam</option>
+        <option value="Kristen" {{ @$selected->religion == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+        <option value="Katolik" {{ @$selected->religion == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+        <option value="Hindu" {{ @$selected->religion == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+        <option value="Buddha" {{ @$selected->religion == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+        <option value="Konghucu" {{ @$selected->religion == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+    </select>
+</div>
+
 
       <!-- Tempat Lahir -->
       <div class="form-group">

@@ -40,7 +40,7 @@
       </div>
 
       <!-- Level -->
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Level</label>
         <select class="form-control form-control-border border-width-2" name="level">
           <option value="new">New</option>
@@ -48,7 +48,7 @@
           <option value="mid">Mid</option>
           <option value="Expert">Expert</option>
         </select>
-      </div>
+      </div> -->
 
       <!-- Jenis Kelamin -->
       <div class="form-group">
@@ -61,9 +61,18 @@
 
       <!-- Agama -->
       <div class="form-group">
-        <label>Agama</label>
-        <input type="text" name="religion" class="form-control form-control-border border-width-2">
-      </div>
+    <label>Agama</label>
+    <select class="form-control form-control-border border-width-2" name="religion">
+        <option value="">Pilih Agama</option>
+        <option value="Islam">Islam</option>
+        <option value="Kristen">Kristen</option>
+        <option value="Katolik">Katolik</option>
+        <option value="Hindu">Hindu</option>
+        <option value="Buddha">Buddha</option>
+        <option value="Konghucu">Konghucu</option>
+    </select>
+</div>
+
 
       <!-- Tempat Lahir -->
       <div class="form-group">
@@ -96,15 +105,21 @@
       </div>
 
       <!-- Kecamatan Tempat Tinggal -->
-       <div class="form-group">
-                <label>Kecamatan Tempat Tinggal<code>*</code></label>
-                <select class="form-control form-control-border border-width-2" name="subdistrict_of_residence" required>
-                  <option value="">Pilih Kecamatan</option>
-                  @foreach($subdistricts as $subdistrict)
-                    <option value="{{ $subdistrict->id }}">{{ $subdistrict->name }}</option>
-                  @endforeach
-                </select>
-              </div>
+      <div class="form-group">
+    <label>Kecamatan Tempat Tinggal<code>*</code></label>
+    @if(in_array(Auth::user()->role, ['70x7', 'opd']))
+        <select class="form-control form-control-border border-width-2" name="subdistrict_of_residence" required>
+            <option value="">Pilih Kecamatan</option>
+            @foreach($subdistricts as $subdistrict)
+                <option value="{{ $subdistrict->id }}">{{ $subdistrict->name }}</option>
+            @endforeach
+        </select>
+    @endif
+
+    @if(in_array(Auth::user()->role, ['kec']))
+        <input type="hidden" name="subdistrict_of_residence" class="form-control form-control-border border-width-2" value="{{ Auth::user()->subdistrict }}" readonly>
+    @endif
+</div>
 
       <!-- Tombol Simpan -->
       <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-submit-add">Simpan</button>
