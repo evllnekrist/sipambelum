@@ -3,7 +3,7 @@
 @section('content')
 <div class="content-wrapper">
   @include('includes.loading')
-  <form method="post" action="#" id="form" enctype="multipart/form-data">
+  <form method="post" action="" id="form" enctype="multipart/form-data">
   @csrf
 
     <div class="container-fluid">
