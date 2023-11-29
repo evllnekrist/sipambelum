@@ -116,7 +116,7 @@
               <div class="row justify-content-center" id="trainingItemPreview"></div>
             </div>
             
-            
+
           </div>
         </div>	
 			</section>

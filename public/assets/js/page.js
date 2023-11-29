@@ -406,12 +406,36 @@ function copyToClipboard(copyText) {
                                   `<b class="badge badge-success">Offline</b>`)
                                 +`
                                 </div>
-                                <h5 class="fr-can-name"><a href="#" data-forward="`+baseUrl+`/training/`+item.id+`">`+item.name+`</a></h5>
+                                <h5 class="fr-can-name">
+                                  <a href="#" data-forward="`+baseUrl+`/training/`+item.id+`" data-toggle="modal" data-target="#training_`+item.id+`_modal">`+item.name+`</a>
+                                </h5>
                                 <small><b>`+((item.organizer?'Oleh '+item.organizer.toUpperCase():''))+`</b></small><br>
                                 <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small>
                               </div>
                             </div>
 
+                          </div>
+                        </div>`;
+
+                        
+            template +=`<div class="modal fade" id="training_`+item.id+`_modal" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">`+item.name+`</h5>
+                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <small><b>`+((item.organizer?'Oleh '+item.organizer.toUpperCase():''))+`</b></small><br>
+                                <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small>
+                                <div class="mb-2">
+                                `+(item.is_online?
+                                  `<i class="fas fa-wifi text-blue" title="Online"></i>`:
+                                  `<i class="fas fa-map-marker-alt text-danger" title="Offline"></i>`)
+                                +` `+item.address+`
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>`;
           });
