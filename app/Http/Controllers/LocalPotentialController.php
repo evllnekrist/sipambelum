@@ -115,7 +115,7 @@ class LocalPotentialController extends Controller
     public function form_edit($id)
     {
         $data['selected'] = LocalPotential::find($id);
-        $data['subdistricts'] = Subdistrict::all();
+        $data['subdistricts']         = Subdistrict::where('active',1)->get();
     
         if ($data['selected']) {
             return view('pages-admin.local-potential.edit', $data);

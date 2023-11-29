@@ -68,18 +68,21 @@
               </div>
             <!-- Subdistrict -->
             <div class="form-group">
-                @php
-                    $selected->subdistricts = explode(",",$selected->subdistricts);
-                @endphp
-                <label>Kecamatan <code>*</code></label>
-                <footer class="label_subtitle label_squeeze">Pilih beberapa kecamatan sesuai potensi lokal</footer>
-                <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
-                  <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
-                  @foreach ($subdistricts as $item)
-                      <option value="{{$item->id}}" {{in_array($item->id,$selected->subdistricts)?"selected":""}}>{{$item->name}}</option>
-                  @endforeach
-                </select>
-              </div>
+            @php
+                $selected->subdistricts = is_array($selected->subdistricts) ? collect($selected->subdistricts) : $selected->subdistricts;
+            @endphp
+            <label>Kecamatan <code>*</code></label>
+            <footer class="label_subtitle label_squeeze">Pilih beberapa kecamatan sesuai potensi lokal</footer>
+            <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
+                <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
+                @foreach($subdistricts as $subdistrict)
+                    <option value="{{ $subdistrict->id }}" {{ $selected->subdistricts->contains('id', $subdistrict->id) ? 'selected' : '' }}>
+                        {{ $subdistrict->name }}
+                    </option>
+                @endforeach
+            </select>
+            </div>
+
             <!-- <div class="form-group">
             <label>Kecamatan <code>*</code></label><footer class="label_subtitle label_squeeze">Jika lebih dari 1, Pencet keyboard CTRL + KLIK</footer>
             <select class="form-control form-control-border border-width-2" name="subdistrict[]" multiple required>
@@ -136,6 +139,23 @@
       theme: "fas",
       language: "id",
     });
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.select2bs4').select2({    
+      placeholder: "Pilih salah satu....",
+    })
+    $('#summernote').summernote({
+      placeholder: 'Tulis sesuatu disini....',
+      tabsize: 2,
+      height: 200
+    })
+    $('[name="subdistricts"]').change(function(){
+      if(($(this).val()).includes('all') && $(this).val().length > 1){
+        $('[name="subdistricts"]').val(['all']).trigger('change')
+      }
+    })
   });
 </script>
 @endsection

@@ -61,7 +61,7 @@ class SubdistrictController extends Controller
         }
 
         try {
-            $data = Subdistrict::orderBy('created_at', 'desc')->limit($request->page_size)->get();
+            $data = Subdistrict::orderBy('created_at', 'desc')->get();
             return json_encode(array('status' => true, 'message' => 'Berhasil mengambil data', 'data' => $data));
         } catch (\Exception $e) {
             return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));

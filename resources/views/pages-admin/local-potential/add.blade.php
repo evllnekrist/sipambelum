@@ -104,10 +104,15 @@
 <!-- FILE INPUT ** end   -->
 <script src="{{ asset('assets/js/page.js').'?v='.date('YmdH').'2' }}"></script>
 <script src="{{ asset('assets/js/admin/local_potential_cu.js').'?v='.date('YmdH') }}"></script>
-<!-- <script type="text/javascript">
+<script type="text/javascript">
   $(document).ready(function() {
+    $('.select2bs4').select2({    
+      placeholder: "Pilih salah satu....",
+    })
+    
   });
-</script> -->
+  
+</script>
 @endsection
 
 @section('addition_css')
