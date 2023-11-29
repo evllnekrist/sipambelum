@@ -74,8 +74,7 @@
               <label>Kecamatan <code>*</code></label>
               <footer class="label_subtitle label_squeeze">Pilih beberapa kecamatan sesuai potensi lokal</footer>
               <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
-                  <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
-                  @foreach($subdistricts as $subdistrict)
+                      @foreach($subdistricts as $subdistrict)
                       <option value="{{ $subdistrict->id }}" {{ $selected->subdistricts->contains('id', $subdistrict->id) ? 'selected' : '' }}>
                           {{ $subdistrict->name }}
                       </option>
