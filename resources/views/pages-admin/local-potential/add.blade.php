@@ -4,7 +4,7 @@
 @section('content')
 <div class="content-wrapper">
   @include('includes.loading')
-  <form method="post" action="#" id="form" enctype="multipart/form-data">
+  <form method="post" action="" id="form" enctype="multipart/form-data">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
@@ -60,6 +60,16 @@
           </select>
         </div>
         <div class="form-group">
+                <label>Kecamatan <code>*</code></label>
+                <footer class="label_subtitle label_squeeze">Pilih beberapa kecamatan sesuai potensi lokal</footer>
+                <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
+                  <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
+                  @foreach ($subdistricts as $item)
+                      <option value="{{$item->id}}">{{$item->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+        <!-- <div class="form-group">
         <label>Kecamatan <code>*</code></label><footer class="label_subtitle label_squeeze">Jika lebih dari 1, Pencet keyboard CTRL + KLIK</footer>
     <select class="form-control form-control-border border-width-2 selectpicker" name="subdistrict[]" multiple data-live-search="true" required>
         <option value="">Pilih Kecamatan</option>
@@ -67,7 +77,7 @@
             <option value="{{ $subdistrict->id }}">{{ $subdistrict->name }}</option>
         @endforeach
     </select>
-</div>
+</div> -->
 
         <!-- Tombol Simpan -->
         <div class="form-group">

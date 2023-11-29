@@ -68,6 +68,19 @@
               </div>
             <!-- Subdistrict -->
             <div class="form-group">
+                @php
+                    $selected->subdistricts = explode(",",$selected->subdistricts);
+                @endphp
+                <label>Kecamatan <code>*</code></label>
+                <footer class="label_subtitle label_squeeze">Pilih beberapa kecamatan sesuai potensi lokal</footer>
+                <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
+                  <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
+                  @foreach ($subdistricts as $item)
+                      <option value="{{$item->id}}" {{in_array($item->id,$selected->subdistricts)?"selected":""}}>{{$item->name}}</option>
+                  @endforeach
+                </select>
+              </div>
+            <!-- <div class="form-group">
             <label>Kecamatan <code>*</code></label><footer class="label_subtitle label_squeeze">Jika lebih dari 1, Pencet keyboard CTRL + KLIK</footer>
             <select class="form-control form-control-border border-width-2" name="subdistrict[]" multiple required>
                 <option value="">Pilih Kecamatan</option>
@@ -77,7 +90,7 @@
                     </option>
                 @endforeach
             </select>
-        </div>
+        </div> -->
               <!-- Tombol Simpan -->
               <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-submit-edit">Simpan</button>
