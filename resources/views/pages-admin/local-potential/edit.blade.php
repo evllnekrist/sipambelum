@@ -67,7 +67,7 @@
                 </select>
               </div>
             <!-- Subdistrict -->
-            <div class="form-group">
+            <!-- <div class="form-group">
             @php
                 $selected->subdistricts = is_array($selected->subdistricts) ? collect($selected->subdistricts) : $selected->subdistricts;
             @endphp
@@ -81,9 +81,9 @@
                     </option>
                 @endforeach
             </select>
-            </div>
+            </div> -->
 
-            <!-- <div class="form-group">
+            <div class="form-group">
             <label>Kecamatan <code>*</code></label><footer class="label_subtitle label_squeeze">Jika lebih dari 1, Pencet keyboard CTRL + KLIK</footer>
             <select class="form-control form-control-border border-width-2" name="subdistrict[]" multiple required>
                 <option value="">Pilih Kecamatan</option>
@@ -93,7 +93,7 @@
                     </option>
                 @endforeach
             </select>
-        </div> -->
+        </div>
               <!-- Tombol Simpan -->
               <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-submit-edit">Simpan</button>
