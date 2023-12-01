@@ -23,8 +23,8 @@ class Subdistrict extends Model
         return $subdistrict ? $subdistrict->name : null;
     }   
     public function localPotentials()
-{
-    return $this->belongsToMany(LocalPotential::class, 'map_subdistrict_local_potential', 'id_subdistrict', 'id_local_potential');
-}
+    {
+        return $this->belongsToMany(LocalPotential::class, 'map_subdistrict_local_potential', 'id_subdistrict', 'id_local_potential');
+    }
 
 }

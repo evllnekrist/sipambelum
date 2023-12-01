@@ -3,7 +3,7 @@
         <img src="{{asset('/assets/img/profile/'.Auth::user()->img_profile_id.'.png')}}" class="img-fluid avater" alt="">
         <h6>{{Auth::user()->name}}</h6>
         <span>{{Auth::user()->role}}</span>
-    </div>
+            </div>
     <div class="dash_user_menues">
         <ul>
             @if(in_array(Auth::user()->role,['70x7','opd','kec']))

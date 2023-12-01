@@ -59,13 +59,13 @@
             <a class="filter_links" data-toggle="collapse" href="#fltbox" role="button" aria-expanded="false" aria-controls="fltbox">Buka Filter<i class="fa fa-sliders-h ml-2"></i></a>
             <div class="collapse" id="fltbox">
                 <div class="sidebar-widgets p-4">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <small class="text-dark-bold-freesize">Judul</small>
                         <div class="input-with-icon">
                             <input name="_title" type="text" class="form-control input-sm" placeholder="Contoh: perikanan">
                             <i class="ti-search"></i>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                     <small class="text-dark-bold-freesize">Kecamatan</small>
                     <select name="_subdistrict" class="form-control input-sm">

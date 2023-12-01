@@ -30,8 +30,8 @@ class LocalPotential extends Model
         return $this->hasMany(Business::class, 'id_local_potential', 'id');
     }
     public function subdistricts()
-{
-    return $this->belongsToMany(Subdistrict::class, 'map_subdistrict_local_potential', 'id_local_potential', 'id_subdistrict');
-}
+    {
+        return $this->belongsToMany(Subdistrict::class, 'map_subdistrict_local_potential', 'id_local_potential', 'id_subdistrict');
+    }
 
 }

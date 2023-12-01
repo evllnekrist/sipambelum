@@ -18,7 +18,7 @@
                     </li>
                     <li><a>Pelatihan<span class="submenu-indicator"></span></a>
                         <ul class="nav-dropdown nav-submenu">
-                            <li><a href="{{route('user.training')}}">Daftar Pelatihan<span class="submenu-indicator"></span></a>
+                            <li><a href="{{route('user.training')}}">List Pelatihan<span class="submenu-indicator"></span></a>
                             </li>
 
                             <li><a href="{{route('user.trainee')}}">Cari Peserta<span class="submenu-indicator"></span></a>

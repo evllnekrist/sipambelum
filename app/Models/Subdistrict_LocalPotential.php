@@ -16,4 +16,8 @@ class Subdistrict_LocalPotential extends Model
         'id_subdistrict',
         'id_local_potential',
     ];
+    public function localPotential()
+    {
+        return $this->belongsTo(LocalPotential::class, 'id_local_potential');
+    }
 }

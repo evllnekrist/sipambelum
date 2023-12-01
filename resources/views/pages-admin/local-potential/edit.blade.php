@@ -68,22 +68,22 @@
               </div>
             <!-- Subdistrict -->
             <div class="form-group">
-            @php
-                $selected->subdistricts = is_array($selected->subdistricts) ? collect($selected->subdistricts) : $selected->subdistricts;
-            @endphp
-            <label>Kecamatan <code>*</code></label>
-            <footer class="label_subtitle label_squeeze">Pilih beberapa kecamatan sesuai potensi lokal</footer>
-            <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
-                <option value="all">Semua (yang sesuai dengan potensi lokal)</option>
-                @foreach($subdistricts as $subdistrict)
-                    <option value="{{ $subdistrict->id }}" {{ $selected->subdistricts->contains('id', $subdistrict->id) ? 'selected' : '' }}>
-                        {{ $subdistrict->name }}
-                    </option>
-                @endforeach
-            </select>
-            </div>
+              @php
+                  $selected->subdistricts = is_array($selected->subdistricts) ? collect($selected->subdistricts) : $selected->subdistricts;
+              @endphp
+              <label>Kecamatan <code>*</code></label>
+              <footer class="label_subtitle label_squeeze">Pilih beberapa kecamatan sesuai potensi lokal</footer>
+              <select class="select2bs4" name="subdistricts[]" multiple="multiple" required>
+                      @foreach($subdistricts as $subdistrict)
+                      <option value="{{ $subdistrict->id }}" {{ $selected->subdistricts->contains('id', $subdistrict->id) ? 'selected' : '' }}>
+                          {{ $subdistrict->name }}
+                      </option>
+                  @endforeach
+              </select>
+          </div>
 
-            <!-- <div class="form-group">
+<!-- 
+            <div class="form-group">
             <label>Kecamatan <code>*</code></label><footer class="label_subtitle label_squeeze">Jika lebih dari 1, Pencet keyboard CTRL + KLIK</footer>
             <select class="form-control form-control-border border-width-2" name="subdistrict[]" multiple required>
                 <option value="">Pilih Kecamatan</option>

@@ -223,7 +223,7 @@ public function getBasicList(Request $request)
         $validator = Validator::make($request->all(), [
             'nik' => 'required|string|max:20',
             'name' => 'required|string|max:255',
-            'level' => 'required|string|max:10',
+            // 'level' => 'required|string|max:10',
             'sex' => 'nullable|string|max:2',
             'religion' => 'nullable|string|max:20',
             'place_of_birth' => 'nullable|string|max:255',
@@ -255,7 +255,7 @@ public function getBasicList(Request $request)
         $validator = Validator::make($request->all(), [
             'nik' => 'required|string|max:20',
             'name' => 'required|string|max:255',
-            'level' => 'required|string|max:10',
+            // 'level' => 'required|string|max:10',
             'sex' => 'nullable|string|max:2',
             'religion' => 'nullable|string|max:20',
             'place_of_birth' => 'nullable|string|max:255',

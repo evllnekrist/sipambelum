@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\LocalPotential;
 use App\Models\Subdistrict;
+use App\Models\Subdistrict_LocalPotential;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\Paginator;
 use DB;
@@ -115,7 +116,7 @@ class LocalPotentialController extends Controller
     public function form_edit($id)
     {
         $data['selected'] = LocalPotential::find($id);
-        $data['subdistricts']         = Subdistrict::where('active',1)->get();
+        $data['subdistricts'] = Subdistrict::all();
     
         if ($data['selected']) {
             return view('pages-admin.local-potential.edit', $data);
@@ -143,67 +144,101 @@ class LocalPotentialController extends Controller
         return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
 }
-
-
-    public function post_add(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'img_main'  => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'name'      => 'required|string|max:50',
-            'desc'      => 'nullable|string',
-            'url_link'  => 'nullable|string',
-            'active'    => 'boolean',
-            'subdistrict' => 'array',
-        ]);
-
-        if ($validator->fails()) {
-            return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
-        }
-
-        DB::beginTransaction();
-        try {
-            $data = $request->all();
-            if($request->hasFile('img_main')) {
-                $file = $request->file('img_main');
-                $filename = 'img_main_' . time() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/assets/img/localpotential', $filename);
-                $data['img_main'] = $filename;
-            }
-
-            // Jika 'active' tidak ada di request, setel nilai default ke 1 (aktif)
-            $data['active'] = isset($data['active']) ? $data['active'] : 1;
-
-            $output = LocalPotential::create($data);
-            DB::commit();
-            return json_encode(array('status'=>true, 'message'=>'Berhasil menyimpan data', 'data'=>$output));
-        } catch (\Exception $e) {
-            DB::rollback();
-            return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
-        }
-    }
-
-    public function post_edit(Request $request)
+public function post_add(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'name'      => 'required|string|max:50',
-        'desc'      => 'nullable|string',
-        'url_link'  => 'nullable|string',
-        'active'    => 'boolean',
-        'subdistrict' => 'array', // Ensure subdistrict is an array
+        'img_main'    => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'name'        => 'required|string|max:50',
+        'desc'        => 'nullable|string',
+        'url_link'    => 'nullable|string',
+        'active'      => 'boolean',
+        'subdistricts' => 'array', // Ubah 'subdistrict' menjadi 'subdistricts' agar sesuai dengan form HTML
     ]);
 
     if ($validator->fails()) {
-        return json_encode(array('status'=>false, 'message'=>$validator->messages()->first(), 'data'=>null));
+        return json_encode(array('status' => false, 'message' => $validator->messages()->first(), 'data' => null));
     }
 
     DB::beginTransaction();
     try {
-        $data = $request->except(['id', 'img_main', '_token', 'subdistrict']); // Exclude unnecessary fields
+        $data = $request->all();
+        if ($request->hasFile('img_main')) {
+            $file = $request->file('img_main');
+            $filename = 'img_main_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/assets/img/localpotential', $filename);
+            $data['img_main'] = $filename;
+        }
+
+        // Jika 'active' tidak ada di request, setel nilai default ke 1 (aktif)
+        $data['active'] = isset($data['active']) ? $data['active'] : 1;
+
+        // Tambahkan record baru ke tabel local_potentials
+        $localPotential = LocalPotential::create($data);
+
+        // Tambahkan record ke tabel map_subdistrict_local_potential
+        if (!empty($data['subdistricts'])) {
+            $subdistricts = $data['subdistricts'];
+
+            // Cek apakah 'all' ada di dalam array subdistricts
+            if (in_array('all', $subdistricts)) {
+                // Ambil ID subdistricts yang terkait dengan local potential
+                $subdistrictIds = Subdistrict_LocalPotential::where('id_local_potential', $localPotential->id)
+                    ->pluck('id_subdistrict')
+                    ->toArray();
+
+                // Periksa apakah ada lebih dari satu ID subdistrict
+                if (!(sizeof($subdistrictIds) > 1)) {
+                    DB::rollBack();
+                    return json_encode(array('status' => false, 'message' => 'Tidak dapat menyimpan. Potensi lokal yang Anda pilih belum dimiliki oleh kecamatan manapun!'));
+                }
+
+                // Ubah array subdistricts menjadi string dengan koma
+                $data['subdistricts'] = implode(",", $subdistrictIds);
+            } else {
+                // Jika 'all' tidak ada di dalam array, ubah array subdistricts menjadi string dengan koma
+                $data['subdistricts'] = implode(",", $subdistricts);
+
+                // Tambahkan record baru ke tabel map_subdistrict_local_potential
+                foreach ($subdistricts as $subdistrictId) {
+                    Subdistrict_LocalPotential::create([
+                        'id_local_potential' => $localPotential->id,
+                        'id_subdistrict' => $subdistrictId,
+                        // Tambahkan kolom timestamp dan lainnya sesuai kebutuhan
+                    ]);
+                }
+            }
+        }
+
+        DB::commit();
+        return json_encode(array('status' => true, 'message' => 'Berhasil menyimpan data', 'data' => $localPotential));
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
+    }
+}
+
+public function post_edit(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'name'        => 'required|string|max:50',
+        'desc'        => 'nullable|string',
+        'url_link'    => 'nullable|string',
+        'active'      => 'boolean',
+        'subdistricts' => 'array', // Ensure subdistricts is an array
+    ]);
+
+    if ($validator->fails()) {
+        return json_encode(array('status' => false, 'message' => $validator->messages()->first(), 'data' => null));
+    }
+
+    DB::beginTransaction();
+    try {
+        $data = $request->except(['id', 'img_main', '_token', 'subdistricts']); // Exclude unnecessary fields
         $id = $request->input('id');
 
         // Convert array of subdistrict IDs to comma-separated string
-        if ($request->has('subdistrict') && is_array($request->input('subdistrict'))) {
-            $data['id_subdistrict'] = implode(',', $request->input('subdistrict'));
+        if ($request->has('subdistricts') && is_array($request->input('subdistricts'))) {
+            $data['id_subdistrict'] = implode(',', $request->input('subdistricts'));
         } else {
             $data['id_subdistrict'] = '';
         }
@@ -223,18 +258,17 @@ class LocalPotentialController extends Controller
         $localPotential->update($data);
 
         // Update associated subdistricts
-        $localPotential->subdistricts()->sync($request->input('subdistrict'));
+        $localPotential->subdistricts()->sync($request->input('subdistricts'));
 
         DB::commit();
 
         // Redirect to a specific route after successful update
-        return json_encode(array('status'=>true, 'message'=>'Berhasil merubah data', 'data'=>null));
+        return json_encode(array('status' => true, 'message' => 'Berhasil merubah data', 'data' => null));
     } catch (\Exception $e) {
         DB::rollback();
-        return json_encode(array('status'=>false, 'message'=>$e->getMessage(), 'data'=>null));
+        return json_encode(array('status' => false, 'message' => $e->getMessage(), 'data' => null));
     }
 }
-
 public function post_delete($id)
 {
     $validator = Validator::make(['id' => $id], [
@@ -253,8 +287,8 @@ public function post_delete($id)
             throw new \Exception('Data tidak ditemukan');
         }
 
-        // Hapus record dari tabel map_subdistrict_local_potential
-        $localPotential->subdistricts()->detach();
+        // Hapus record dari tabel Subdistrict_LocalPotential
+        Subdistrict_LocalPotential::where('id_local_potential', $localPotential->id)->delete();
 
         // Hapus record dari tabel LocalPotential
         $localPotential->delete();
