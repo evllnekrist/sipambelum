@@ -10,7 +10,6 @@ function resetFilter(){
 }
 
 $(function(){
-    console.log('get Listing');
     getTrainingList(1,true);
 });
   

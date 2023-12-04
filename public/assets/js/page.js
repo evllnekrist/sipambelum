@@ -1,4 +1,4 @@
-console.log('SHARED PAGE')
+// console.log('SHARED PAGE')
 
 const apiHeaders = {
   "Accept": "*/*",
@@ -286,7 +286,7 @@ function copyToClipboard(copyText) {
     let payload = {};
     let appendTo = '#trainingItemPreview';
     $(appendTo).html(loadingElement);
-    console.log('whithPagination',withPagination)
+    
     if(withPagination){
       let level   = $('.level:checkbox:checked').map(function() {return this.value;}).get();
       $('#filter_info').html(``);
@@ -308,8 +308,9 @@ function copyToClipboard(copyText) {
     
     axios.post(baseUrl+'/api/get-training-list', payload, apiHeaders)
     .then(function (response) {
-      console.log('[TRAINING] response..',response);
+      // console.log('[TRAINING] response..',response);
       let template = '';
+      let template_mid = '';
       let template_card_class = 'col-xl-3 col-lg-3 col-md-6 col-sm-6'
       if(response.data.status) {
         if(withPagination){
@@ -362,6 +363,7 @@ function copyToClipboard(copyText) {
         }
         // i::data display-------------------------------------------------------------------------------START
         template = ''
+        let subdistricts = []; let i = 0;
         if(response.data.data.products && response.data.data.products.length > 0) {
           (response.data.data.products).forEach((item) => {
             let imgToDisplay = baseUrl+'/assets/img/no-image-clean.png'
@@ -417,23 +419,43 @@ function copyToClipboard(copyText) {
                           </div>
                         </div>`;
 
-                        
+            template_mid = ``; i = 0;
+            subdistricts = item.subdistricts?item.subdistricts.split(','):[];
+            // console.log('subdistrict',subdistricts);
+
+            response.data.data.subdistrict.forEach(item2 => {
+              if(subdistricts.includes(String(item2.id))){
+                i++;
+                template_mid += `<br>`+i+`. `+item2.name;
+              }
+            });
             template +=`<div class="modal fade" id="training_`+item.id+`_modal" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog">
+                          <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                               <div class="modal-header">
                                 <h5 class="modal-title">`+item.name+`</h5>
                                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                <small><b>`+((item.organizer?'Oleh '+item.organizer.toUpperCase():''))+`</b></small><br>
-                                <small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small>
-                                <div class="mb-2">
-                                `+(item.is_online?
-                                  `<i class="fas fa-wifi text-blue" title="Online"></i>`:
-                                  `<i class="fas fa-map-marker-alt text-danger" title="Offline"></i>`)
-                                +` `+item.address+`
-                                </div>
+                                <table class="table table-condensed">
+                                  <tbody>
+                                    <tr>
+                                      <td><small>`+((item.organizer?'Diselenggarakan oleh<br><b>'+item.organizer.toUpperCase()+'</b>':''))+`</small></td>
+                                      <td><small>`+moment(item.event_start).format('DD MMM YYYY, h:mm a')+` s/d<br>`+moment(item.event_end).format('DD MMM YYYY, h:mm a')+`</small></td>
+                                      <td>
+                                        <div class="mb-2">
+                                        `+(item.is_online?
+                                          `<i class="fas fa-wifi text-blue" title="Online"></i>`:
+                                          `<i class="fas fa-map-marker-alt text-danger" title="Offline"></i>`)
+                                        +` `+item.address+`
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                        <td><small>Berlaku untuk peserta dari kecamatan`+template_mid+`</small></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
                               </div>
                             </div>
                           </div>

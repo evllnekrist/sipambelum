@@ -99,6 +99,7 @@ class TrainingController extends Controller
       if($request->get('_page')){
         $page           = intval($request->get('_page'));
         $offset         = ($page?($page-1)*$limit:0);
+        $data['subdistrict']            = Subdistrict::get();
         $data['filter']                 = $request->all();
         $data['filter']['_page']        = $page;
         $data['filter']['_limit']       = $limit;
